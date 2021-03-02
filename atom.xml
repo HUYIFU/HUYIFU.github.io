@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
-    <title>Gridea</title>
-    <updated>2021-03-02T07:47:45.470Z</updated>
+    <title>古月的blog</title>
+    <updated>2021-03-02T07:53:50.011Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
+    <subtitle>123455
+</subtitle>
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2021, Gridea</rights>
+    <rights>All rights reserved 2021, 古月的blog</rights>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://huyifu.github.io/post/hello-gridea/</id>
