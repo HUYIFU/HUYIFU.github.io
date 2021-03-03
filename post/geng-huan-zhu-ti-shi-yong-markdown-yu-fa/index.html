@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1614772033346">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1614772883468">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -18,7 +18,8 @@
 
 
 
-    <meta name="description" content="一级标题
+    <meta name="description" content="
+一级标题
 二级标题
 markdown段落直接
 换行
@@ -51,8 +52,8 @@ c
 
 
 d
-  ..." />
-    <meta name="keywords" content="" />
+ ..." />
+    <meta name="keywords" content="blogs" />
   </head>
   <body>
     <div id="app" class="main">
@@ -61,7 +62,7 @@ d
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1614772033346" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1614772883468" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -115,7 +116,7 @@ d
 
     </div>
     <div class="site-footer">
-       | <a class="rss" href="https://huyifu.github.io/atom.xml" target="_blank">RSS</a>
+      Cover by HuSir | <a class="rss" href="https://huyifu.github.io/atom.xml" target="_blank">RSS</a>
     </div>
   </div>
 </div>
@@ -128,7 +129,8 @@ d
             <div class="post-date">2021-03-03</div>
             
             <div class="post-content" v-pre>
-              <h1 id="一级标题">一级标题</h1>
+              <!-- more -->
+<h1 id="一级标题">一级标题</h1>
 <h2 id="二级标题">二级标题</h2>
 <p>markdown段落直接<br>
 换行</p>
@@ -204,6 +206,14 @@ d
 
             </div>
             
+              <div class="tag-container">
+                
+                  <a href="https://huyifu.github.io/tag/blogs/" class="tag">
+                    blogs
+                  </a>
+                
+              </div>
+            
             
               <div class="next-post">
                 <div class="next">下一篇</div>
@@ -237,6 +247,11 @@ var app = new Vue({
 
 </script>
 
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
 
 
 
