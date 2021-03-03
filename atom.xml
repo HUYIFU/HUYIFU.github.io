@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-03T12:07:23.122Z</updated>
+    <updated>2021-03-03T13:06:36.874Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -11,6 +11,26 @@
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
+    <entry>
+        <title type="html"><![CDATA[路径 相对和绝对]]></title>
+        <id>https://huyifu.github.io/post/lu-jing-xiang-dui-he-jue-dui/</id>
+        <link href="https://huyifu.github.io/post/lu-jing-xiang-dui-he-jue-dui/">
+        </link>
+        <updated>2021-03-03T12:28:44.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>绝对路径</strong><br>
+从根目录为起点到你想到到达的目录<br>
+<strong>相对路径</strong><br>
+以一个基准点(自身)为起点到达你想到达的目录<br>
+/ 根目录(基准点的最上层目录) 即windows系统下某个盘<br>
+./当前目录  ../上一级目录  (相对的)</p>
+<p>例子<br>
+c:/website/web/xz/index.html<br>
+c:/website/img/images/photo.jpg<br>
+在index.html中导入photo.jpg<br>
+绝对路径： src=&quot;c:/website/img/images/photo.jpg&quot; (本电脑)<br>
+相对路径 :   src=&quot;../../img/images/photo.jpg&quot; (只要保持相对位置就可以使用)</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[更换主题使用markdown语法]]></title>
         <id>https://huyifu.github.io/post/geng-huan-zhu-ti-shi-yong-markdown-yu-fa/</id>
