@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>路径 相对和绝对 | 古月的blog</title>
+<title>ES6 let命令 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,15 +18,13 @@
 
 
 
-    <meta name="description" content="绝对路径
-从根目录为起点到你想到到达的目录
-相对路径
-以一个基准点(自身)为起点到达你想到达的目录
-/ 根目录(基准点的最上层目录) 即windows系统下某个盘
-./当前目录  ../上一级目录  (相对的)
-例子
-c:/website/..." />
-    <meta name="keywords" content="HTML学习,detail" />
+    <meta name="description" content="let类似var 不过声明的变量只在let命令下的代码块生效
+var a = [];
+for (var i = 0; i &lt; 10; i++) {
+  a[i] = function () {
+    console.log(i);
+..." />
+    <meta name="keywords" content="" />
   </head>
   <body>
     <div id="app" class="main">
@@ -98,43 +96,64 @@ c:/website/..." />
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">路径 相对和绝对</h2>
-            <div class="post-date">2021-03-03</div>
+            <h2 class="post-title">ES6 let命令</h2>
+            <div class="post-date">2021-03-04</div>
             
             <div class="post-content" v-pre>
-              <p><strong>绝对路径</strong><br>
-从根目录为起点到你想到到达的目录<br>
-<strong>相对路径</strong><br>
-以一个基准点(自身)为起点到达你想到达的目录<br>
-/ 根目录(基准点的最上层目录) 即windows系统下某个盘<br>
-./当前目录  ../上一级目录  (相对的)</p>
-<p>例子<br>
-c:/website/web/xz/index.html<br>
-c:/website/img/images/photo.jpg<br>
-在index.html中导入photo.jpg<br>
-绝对路径： src=&quot;c:/website/img/images/photo.jpg&quot; (本电脑)<br>
-相对路径 :   src=&quot;../../img/images/photo.jpg&quot; (只要保持相对位置就可以使用)</p>
+              <p><strong>let类似var 不过声明的变量只在let命令下的代码块生效</strong></p>
+<pre><code>var a = [];
+for (var i = 0; i &lt; 10; i++) {
+  a[i] = function () {
+    console.log(i);
+  };
+}
+a[6](); // 10  a为函数数组 var 在（）创建的变量 会存在于循环外部的执行环境中 故输出10
+for (let i = 0; i &lt; 10; i++) {
+    a[i] = function () {
+      console.log(i);
+    };
+  }
+a[6](); // 6  let 块级作用域 每一轮i变量重新声明 并由于js引擎内部记忆上一轮的值 计算后赋值
+</code></pre>
+<blockquote>
+<p>for循环还有一个特别之处，就是设置循环变量的那部分是一个父作用域，而循环体内部是一个单独的子作用域。</p>
+</blockquote>
+<p>以下为代码实践证明</p>
+<pre><code>for (let i = 0; i &lt; 5; i++) {
+    i++; //let不声明i 开始影响（）里声明的i变量 子作用域影响父作用域
+    console.log(i);
+  }
+//输出1 3 5
+  for (let i = 0; i &lt; 5; i++) {
+    let i=10; //let声明i 单独的子作用域 
+    console.log(i);
+  }
+//输出5遍10
+</code></pre>
+<p><strong>var存在变量提升  let不存在</strong><br>
+变量提升</p>
+<ul>
+<li>var关键字声明的变量，无论实际声明的位置在何处，都会被视为声明在函数的顶部（如果声明不在任意函数内，则视为在全局作用域的顶部）</li>
+<li>JavaScript引擎的工作方式是，先预解析代码， 获取所有被声明的变量和函数声明，然后再一行一行地运行，这就使所有变量声明的语句，都会被提升到代码的头部，这就是变量提升</li>
+</ul>
+<pre><code>// var 的情况
+console.log(foo); // 输出undefined
+var foo = 2;
+
+// let 的情况
+console.log(bar); // 报错ReferenceError
+let bar = 2;
+</code></pre>
+<p>未完</p>
 
             </div>
-            
-              <div class="tag-container">
-                
-                  <a href="https://huyifu.github.io/tag/html-xue-xi/" class="tag">
-                    HTML学习
-                  </a>
-                
-                  <a href="https://huyifu.github.io/tag/detail/" class="tag">
-                    detail
-                  </a>
-                
-              </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://huyifu.github.io/post/geng-huan-zhu-ti-shi-yong-markdown-yu-fa/">
+                <a href="https://huyifu.github.io/post/lu-jing-xiang-dui-he-jue-dui/">
                   <h3 class="post-title">
-                    更换主题使用markdown语法
+                    路径 相对和绝对
                   </h3>
                 </a>
               </div>

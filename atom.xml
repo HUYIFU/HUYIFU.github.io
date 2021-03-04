@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-03T13:06:36.874Z</updated>
+    <updated>2021-03-04T12:36:33.481Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -11,6 +11,59 @@
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
+    <entry>
+        <title type="html"><![CDATA[ES6 let命令]]></title>
+        <id>https://huyifu.github.io/post/es6-let-ming-ling/</id>
+        <link href="https://huyifu.github.io/post/es6-let-ming-ling/">
+        </link>
+        <updated>2021-03-04T11:43:43.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>let类似var 不过声明的变量只在let命令下的代码块生效</strong></p>
+<pre><code>var a = [];
+for (var i = 0; i &lt; 10; i++) {
+  a[i] = function () {
+    console.log(i);
+  };
+}
+a[6](); // 10  a为函数数组 var 在（）创建的变量 会存在于循环外部的执行环境中 故输出10
+for (let i = 0; i &lt; 10; i++) {
+    a[i] = function () {
+      console.log(i);
+    };
+  }
+a[6](); // 6  let 块级作用域 每一轮i变量重新声明 并由于js引擎内部记忆上一轮的值 计算后赋值
+</code></pre>
+<blockquote>
+<p>for循环还有一个特别之处，就是设置循环变量的那部分是一个父作用域，而循环体内部是一个单独的子作用域。</p>
+</blockquote>
+<p>以下为代码实践证明</p>
+<pre><code>for (let i = 0; i &lt; 5; i++) {
+    i++; //let不声明i 开始影响（）里声明的i变量 子作用域影响父作用域
+    console.log(i);
+  }
+//输出1 3 5
+  for (let i = 0; i &lt; 5; i++) {
+    let i=10; //let声明i 单独的子作用域 
+    console.log(i);
+  }
+//输出5遍10
+</code></pre>
+<p><strong>var存在变量提升  let不存在</strong><br>
+变量提升</p>
+<ul>
+<li>var关键字声明的变量，无论实际声明的位置在何处，都会被视为声明在函数的顶部（如果声明不在任意函数内，则视为在全局作用域的顶部）</li>
+<li>JavaScript引擎的工作方式是，先预解析代码， 获取所有被声明的变量和函数声明，然后再一行一行地运行，这就使所有变量声明的语句，都会被提升到代码的头部，这就是变量提升</li>
+</ul>
+<pre><code>// var 的情况
+console.log(foo); // 输出undefined
+var foo = 2;
+
+// let 的情况
+console.log(bar); // 报错ReferenceError
+let bar = 2;
+</code></pre>
+<p>未完</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[路径 相对和绝对]]></title>
         <id>https://huyifu.github.io/post/lu-jing-xiang-dui-he-jue-dui/</id>
