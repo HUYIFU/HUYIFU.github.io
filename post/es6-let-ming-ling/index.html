@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" >
 
-<title>ES6 let命令 | 古月的blog</title>
+<title>ES6 let命令 和const命令 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1614923344752">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1614960143114">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -24,7 +24,7 @@ for (var i = 0; i &lt; 10; i++) {
   a[i] = function () {
     console.log(i);
 ..." />
-    <meta name="keywords" content="" />
+    <meta name="keywords" content="es6,blogs,detail" />
   </head>
   <body>
     <div id="app" class="main">
@@ -33,7 +33,7 @@ for (var i = 0; i &lt; 10; i++) {
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1614923344752" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1614960143114" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -96,7 +96,7 @@ for (var i = 0; i &lt; 10; i++) {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">ES6 let命令</h2>
+            <h2 class="post-title">ES6 let命令 和const命令</h2>
             <div class="post-date">2021-03-04</div>
             
             <div class="post-content" v-pre>
@@ -144,9 +144,54 @@ var foo = 2;
 console.log(bar); // 报错ReferenceError
 let bar = 2;
 </code></pre>
-<p>未完</p>
+<p><strong>暂时性死区</strong><br>
+用let声明变量之前，该变量不可用</p>
+<ul>
+<li>typeof 不是百分百不报错 ——</li>
+</ul>
+<pre><code>typeof x; //ReferenceError
+let x;
+</code></pre>
+<ul>
+<li>let与var</li>
+</ul>
+<pre><code>var  x = x;//不报错
+let   x = x;//报错
+</code></pre>
+<p><strong>const</strong></p>
+<ul>
+<li>声明常量（不变） 所以后必须马上赋值</li>
+<li>块级作用域有效</li>
+<li>暂时性死区</li>
+<li>不可重复声明</li>
+<li>对象冻结，应该使用Object.freeze方法。<br>
+保证常量值不改变本质是<strong>防止变量所指向内存的地址内数据进行更改</strong><br>
+简单的数据类型可以保证不改变<br>
+而对于复合型（数组和对象）则只能保证变量存放的指针不变 指向的数据结构内部无法控制</li>
+</ul>
+<pre><code>const a = [];
+a.push('Hello'); // 可执行
+a.length = 0;    // 可执行
+a = ['Dave'];    // 报错
+</code></pre>
 
             </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://huyifu.github.io/tag/es6/" class="tag">
+                    es6
+                  </a>
+                
+                  <a href="https://huyifu.github.io/tag/blogs/" class="tag">
+                    blogs
+                  </a>
+                
+                  <a href="https://huyifu.github.io/tag/detail/" class="tag">
+                    detail
+                  </a>
+                
+              </div>
             
             
               <div class="next-post">

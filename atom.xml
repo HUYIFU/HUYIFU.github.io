@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-05T05:49:07.837Z</updated>
+    <updated>2021-03-05T16:02:38.128Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -12,7 +12,7 @@
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
     <entry>
-        <title type="html"><![CDATA[ES6 let命令]]></title>
+        <title type="html"><![CDATA[ES6 let命令 和const命令]]></title>
         <id>https://huyifu.github.io/post/es6-let-ming-ling/</id>
         <link href="https://huyifu.github.io/post/es6-let-ming-ling/">
         </link>
@@ -61,7 +61,36 @@ var foo = 2;
 console.log(bar); // 报错ReferenceError
 let bar = 2;
 </code></pre>
-<p>未完</p>
+<p><strong>暂时性死区</strong><br>
+用let声明变量之前，该变量不可用</p>
+<ul>
+<li>typeof 不是百分百不报错 ——</li>
+</ul>
+<pre><code>typeof x; //ReferenceError
+let x;
+</code></pre>
+<ul>
+<li>let与var</li>
+</ul>
+<pre><code>var  x = x;//不报错
+let   x = x;//报错
+</code></pre>
+<p><strong>const</strong></p>
+<ul>
+<li>声明常量（不变） 所以后必须马上赋值</li>
+<li>块级作用域有效</li>
+<li>暂时性死区</li>
+<li>不可重复声明</li>
+<li>对象冻结，应该使用Object.freeze方法。<br>
+保证常量值不改变本质是<strong>防止变量所指向内存的地址内数据进行更改</strong><br>
+简单的数据类型可以保证不改变<br>
+而对于复合型（数组和对象）则只能保证变量存放的指针不变 指向的数据结构内部无法控制</li>
+</ul>
+<pre><code>const a = [];
+a.push('Hello'); // 可执行
+a.length = 0;    // 可执行
+a = ['Dave'];    // 报错
+</code></pre>
 ]]></content>
     </entry>
     <entry>
