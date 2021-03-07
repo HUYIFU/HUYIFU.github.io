@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-05T16:04:17.259Z</updated>
+    <updated>2021-03-07T02:26:38.994Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -11,6 +11,24 @@
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
+    <entry>
+        <title type="html"><![CDATA[css relative和absolute]]></title>
+        <id>https://huyifu.github.io/post/css-relative-he-absolute/</id>
+        <link href="https://huyifu.github.io/post/css-relative-he-absolute/">
+        </link>
+        <updated>2021-03-07T02:07:41.000Z</updated>
+        <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[css height width  auto和100% ]]></title>
+        <id>https://huyifu.github.io/post/css-height-width-auto-he-100/</id>
+        <link href="https://huyifu.github.io/post/css-height-width-auto-he-100/">
+        </link>
+        <updated>2021-03-06T04:21:29.000Z</updated>
+        <content type="html"><![CDATA[<p>.margin 0 auto 为何居中</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[ES6 let命令 和const命令]]></title>
         <id>https://huyifu.github.io/post/es6-let-ming-ling/</id>
