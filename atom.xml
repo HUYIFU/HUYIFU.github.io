@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-07T02:28:01.606Z</updated>
+    <updated>2021-03-13T05:26:34.125Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -11,6 +11,35 @@
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
+    <entry>
+        <title type="html"><![CDATA[document.body.scrollTop与document.documentElement.scrollTop兼容]]></title>
+        <id>https://huyifu.github.io/post/documentbodyscrolltop-yu-documentdocumentelementscrolltop-jian-rong/</id>
+        <link href="https://huyifu.github.io/post/documentbodyscrolltop-yu-documentdocumentelementscrolltop-jian-rong/">
+        </link>
+        <updated>2021-03-13T05:04:57.000Z</updated>
+        <content type="html"><![CDATA[<p>#scrollTop<br>
+scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离</p>
+<p>#获取当前页面的滚动条纵坐标位置<br>
+使用document.documentElement.scrollTop;</p>
+<p>#网页被卷去的高： document.body.scrollTop;<br>
+document.body.scrollTop 可以获取到当前页面被卷去的高度。</p>
+<p>#不同浏览器兼容性不同<br>
+IE6/7/8：<br>
+可以使用 document.documentElement.scrollTop；<br>
+IE9及以上：<br>
+可以使用window.pageYOffset或者document.documentElement.scrollTop<br>
+Safari:<br>
+safari： window.pageYOffset 与document.body.scrollTop都可以；<br>
+Firefox:<br>
+火狐等等相对标准些的浏览器就省心多了，直接用window.pageYOffset 或者 document.documentElement.scrollTop ；<br>
+Chrome：<br>
+谷歌浏览器只认识document.body.scrollTop;</p>
+<p>#总结：<br>
+两者同时存在时只有一个值生效 另一个值为0<br>
+故 var sTop=document.body.scrollTop+document.documentElement.scrollTop;<br>
+或 var sTop=document.body.scrollTop||document.documentElement.scrollTop;</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[css relative和absolute]]></title>
         <id>https://huyifu.github.io/post/css-relative-he-absolute/</id>
