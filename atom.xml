@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-17T06:57:55.945Z</updated>
+    <updated>2021-03-17T07:39:40.883Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -108,23 +108,34 @@ Chrome：<br>
         <link href="https://huyifu.github.io/post/css-height-width-auto-he-100/">
         </link>
         <updated>2021-03-06T04:21:29.000Z</updated>
-        <content type="html"><![CDATA[<p>#两种盒子模型  w3c盒子模型 IE盒子模型<br>
-box-sizing ： content-box w3c盒子模型<br>
+        <content type="html"><![CDATA[<h3 id="两种盒子模型-w3c盒子模型-ie盒子模型">两种盒子模型  w3c盒子模型 IE盒子模型</h3>
+<p>box-sizing ： content-box w3c盒子模型<br>
 box-sizing ： border-box IE盒子模型<br>
 可视width（height） = content + padding + border +margin</p>
 <ul>
 <li>w3c盒子模型 width（height） = content</li>
 <li>IE盒子模型 width（height） = content + padding + border</li>
 </ul>
-<p>#width (height )100%<br>
-height width百分数是相对于包含块的。<br>
+<h3 id="width-height-100">width (height )100%</h3>
+<p>height width百分数是相对于包含块的。<br>
 如果没有显示声明包含块的height，百分数高度会重置为auto。  ——《css权威指南》</p>
 <ul>
 <li>%设定宽高是根据父级宽高来定</li>
 <li>width height 没有设置 默认auto</li>
-<li></li>
+<li>auto 一侧定值 一侧auto 则auto为剩余空间 （类似float）</li>
+<li>两侧如果均是auto 则平分空间</li>
 </ul>
-<p>margin 0 auto 为何居中</p>
+<h3 id="margin-0-auto-为何水平居中">margin 0 auto 为何水平居中？</h3>
+<p>——两侧 auto左右平分空间</p>
+<h3 id="auto实现垂直居中">auto实现垂直居中</h3>
+<pre><code>position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+</code></pre>
+<p>试验：</p>
+<p>原理： 盒子四侧全部</p>
 <p>未完。。</p>
 ]]></content>
     </entry>
