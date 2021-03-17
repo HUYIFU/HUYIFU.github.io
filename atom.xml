@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-14T12:08:26.452Z</updated>
+    <updated>2021-03-17T05:04:06.933Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -11,6 +11,59 @@
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
+    <entry>
+        <title type="html"><![CDATA[[Javascript]cssText使用]]></title>
+        <id>https://huyifu.github.io/post/javascriptcsstext-shi-yong/</id>
+        <link href="https://huyifu.github.io/post/javascriptcsstext-shi-yong/">
+        </link>
+        <updated>2021-03-15T13:33:07.000Z</updated>
+        <content type="html"><![CDATA[<p>#引言<br>
+再写小米官网时候 遇到了需要在js中添加样式的问题<br>
+之前一直是用xxx.style.width(or height 等等) 想添加上边框时用不了<br>
+border-top: 1px solid #ccc;<br>
+看到了xxx.style.cssText 使用方法便头一次看到了新的css添加方法<br>
+便使用</p>
+<pre><code>dropDownbox[0].style.cssText = 'border-top: 1px solid #ccc;';
+</code></pre>
+<p>结果又有bug 搜索后总结使用方法如下：</p>
+<ul>
+<li>cssText，DOMString类型</li>
+<li>cssText特性必须返回序列化的CSS规则。</li>
+<li>当设置cssText特性时运行这些步骤：
+<ol>
+<li>解析其值。</li>
+<li>如果解析失败则终止运行。</li>
+<li>如果新对象的type并不匹配当前对象的type则抛出&quot;InvalidModificationError&quot;异常。</li>
+<li>替换当前对象为新对象。<br>
+——以上摘自<a href="https://segmentfault.com/a/1190000000703778">https://segmentfault.com/a/1190000000703778</a></li>
+</ol>
+</li>
+</ul>
+<h3 id="第四条会导致新对象覆盖目标元素之前所有的样式继承不算">第四条会导致新对象覆盖目标元素之前所有的样式（继承不算）</h3>
+<p>例：<br>
+#xxx{width:200px;height:300px;}</p>
+<pre><code>var xxx-point = document.getElementById('xxx');
+xxx-point.style.cssText = 'width:300px; ';
+</code></pre>
+<p>最终.xxx{width:300px;}</p>
+<p>如果想单独添加某个css样式 方法如下:<br>
+#xxx{width:200px;height:300px;}</p>
+<pre><code>var xxx-point = document.getElementById('xxx');
+var xxx_style = xxx-point.style.cssText;
+xxx_style += 'border-top: 1px solid #ccc;';
+xxx-point.style.cssText = xxx_style;
+</code></pre>
+<h3 id="ie678-返回全为大写而且最后没有分号">IE6/7/8 返回全为大写而且最后没有分号</h3>
+<p>#xxx{width:200px;height:300px;}<br>
+则cssText 为'WIDTH:200PX;HEIGHT:300PX'<br>
+故若考虑 IE6/7/8 兼容则需</p>
+<pre><code>var xxx-point = document.getElementById('xxx');
+var xxx_style = xxx-point.style.cssText.toLowerCase(); //转化为小写
+xxx_style  = 'border-top: 1px solid #ccc;'+xxx_style; //如果没有分号不影响
+xxx-point.style.cssText = xxx_style;
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[document.body.scrollTop与document.documentElement.scrollTop兼容]]></title>
         <id>https://huyifu.github.io/post/documentbodyscrolltop-yu-documentdocumentelementscrolltop-jian-rong/</id>
@@ -55,7 +108,24 @@ Chrome：<br>
         <link href="https://huyifu.github.io/post/css-height-width-auto-he-100/">
         </link>
         <updated>2021-03-06T04:21:29.000Z</updated>
-        <content type="html"><![CDATA[<p>.margin 0 auto 为何居中</p>
+        <content type="html"><![CDATA[<p>#两种盒子模型  w3c盒子模型 IE盒子模型<br>
+box-sizing ： content-box w3c盒子模型<br>
+box-sizing ： border-box IE盒子模型<br>
+可视width（height） = content + padding + border +margin</p>
+<ul>
+<li>w3c盒子模型 width（height） = content</li>
+<li>IE盒子模型 width（height） = content + padding + border</li>
+</ul>
+<p>#width (height )100%<br>
+height width百分数是相对于包含块的。<br>
+如果没有显示声明包含块的height，百分数高度会重置为auto。  ——《css权威指南》</p>
+<ul>
+<li>%设定宽高是根据父级宽高来定</li>
+<li>width height 没有设置 默认auto</li>
+<li></li>
+</ul>
+<p>margin 0 auto 为何居中</p>
+<p>未完。。</p>
 ]]></content>
     </entry>
     <entry>

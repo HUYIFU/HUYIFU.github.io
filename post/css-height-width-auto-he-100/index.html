@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1615723664301">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1615957443683">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -18,8 +18,10 @@
 
 
 
-    <meta name="description" content=".margin 0 auto 为何居中
-" />
+    <meta name="description" content="#两种盒子模型  w3c盒子模型 IE盒子模型
+box-sizing ： content-box w3c盒子模型
+box-sizing ： border-box IE盒子模型
+可视width（height） = content + padd..." />
     <meta name="keywords" content="" />
   </head>
   <body>
@@ -29,7 +31,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1615723664301" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1615957443683" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -96,7 +98,24 @@
             <div class="post-date">2021-03-06</div>
             
             <div class="post-content" v-pre>
-              <p>.margin 0 auto 为何居中</p>
+              <p>#两种盒子模型  w3c盒子模型 IE盒子模型<br>
+box-sizing ： content-box w3c盒子模型<br>
+box-sizing ： border-box IE盒子模型<br>
+可视width（height） = content + padding + border +margin</p>
+<ul>
+<li>w3c盒子模型 width（height） = content</li>
+<li>IE盒子模型 width（height） = content + padding + border</li>
+</ul>
+<p>#width (height )100%<br>
+height width百分数是相对于包含块的。<br>
+如果没有显示声明包含块的height，百分数高度会重置为auto。  ——《css权威指南》</p>
+<ul>
+<li>%设定宽高是根据父级宽高来定</li>
+<li>width height 没有设置 默认auto</li>
+<li></li>
+</ul>
+<p>margin 0 auto 为何居中</p>
+<p>未完。。</p>
 
             </div>
             
