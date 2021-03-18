@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>[Javascript]cssText使用 | 古月的blog</title>
+<title>居中方法和原理 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,11 +18,8 @@
 
 
 
-    <meta name="description" content="#引言
-再写小米官网时候 遇到了需要在js中添加样式的问题
-之前一直是用xxx.style.width(or height 等等) 想添加上边框时用不了
-border-top: 1px solid #ccc;
-看到了xxx.style.cs..." />
+    <meta name="description" content="1
+" />
     <meta name="keywords" content="Css学习,detail" />
   </head>
   <body>
@@ -95,55 +92,11 @@ border-top: 1px solid #ccc;
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">[Javascript]cssText使用</h2>
-            <div class="post-date">2021-03-15</div>
+            <h2 class="post-title">居中方法和原理</h2>
+            <div class="post-date">2021-03-18</div>
             
             <div class="post-content" v-pre>
-              <p>#引言<br>
-再写小米官网时候 遇到了需要在js中添加样式的问题<br>
-之前一直是用xxx.style.width(or height 等等) 想添加上边框时用不了<br>
-border-top: 1px solid #ccc;<br>
-看到了xxx.style.cssText 使用方法便头一次看到了新的css添加方法<br>
-便使用</p>
-<pre><code>dropDownbox[0].style.cssText = 'border-top: 1px solid #ccc;';
-</code></pre>
-<p>结果又有bug 搜索后总结使用方法如下：</p>
-<ul>
-<li>cssText，DOMString类型</li>
-<li>cssText特性必须返回序列化的CSS规则。</li>
-<li>当设置cssText特性时运行这些步骤：
-<ol>
-<li>解析其值。</li>
-<li>如果解析失败则终止运行。</li>
-<li>如果新对象的type并不匹配当前对象的type则抛出&quot;InvalidModificationError&quot;异常。</li>
-<li>替换当前对象为新对象。<br>
-——以上摘自<a href="https://segmentfault.com/a/1190000000703778">https://segmentfault.com/a/1190000000703778</a></li>
-</ol>
-</li>
-</ul>
-<h3 id="第四条会导致新对象覆盖目标元素之前所有的样式继承不算">第四条会导致新对象覆盖目标元素之前所有的样式（继承不算）</h3>
-<p>例：<br>
-#xxx{width:200px;height:300px;}</p>
-<pre><code>var xxx-point = document.getElementById('xxx');
-xxx-point.style.cssText = 'width:300px; ';
-</code></pre>
-<p>最终.xxx{width:300px;}</p>
-<p>如果想单独添加某个css样式 方法如下:<br>
-#xxx{width:200px;height:300px;}</p>
-<pre><code>var xxx-point = document.getElementById('xxx');
-var xxx_style = xxx-point.style.cssText;
-xxx_style += 'border-top: 1px solid #ccc;';
-xxx-point.style.cssText = xxx_style;
-</code></pre>
-<h3 id="ie678-返回全为大写而且最后没有分号">IE6/7/8 返回全为大写而且最后没有分号</h3>
-<p>#xxx{width:200px;height:300px;}<br>
-则cssText 为'WIDTH:200PX;HEIGHT:300PX'<br>
-故若考虑 IE6/7/8 兼容则需</p>
-<pre><code>var xxx-point = document.getElementById('xxx');
-var xxx_style = xxx-point.style.cssText.toLowerCase(); //转化为小写
-xxx_style  = 'border-top: 1px solid #ccc;'+xxx_style; //如果没有分号不影响
-xxx-point.style.cssText = xxx_style;
-</code></pre>
+              <p>1</p>
 
             </div>
             
@@ -162,9 +115,9 @@ xxx-point.style.cssText = xxx_style;
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://huyifu.github.io/post/documentbodyscrolltop-yu-documentdocumentelementscrolltop-jian-rong/">
+                <a href="https://huyifu.github.io/post/fu-dong-qing-chu-fu-dong/">
                   <h3 class="post-title">
-                    document.body.scrollTop与document.documentElement.scrollTop兼容
+                    浮动 清除浮动
                   </h3>
                 </a>
               </div>

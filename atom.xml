@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-17T16:13:22.731Z</updated>
+    <updated>2021-03-18T14:53:08.946Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -11,6 +11,46 @@
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
+    <entry>
+        <title type="html"><![CDATA[伪类与伪元素]]></title>
+        <id>https://huyifu.github.io/post/wei-lei-yu-wei-yuan-su/</id>
+        <link href="https://huyifu.github.io/post/wei-lei-yu-wei-yuan-su/">
+        </link>
+        <updated>2021-03-18T13:50:43.000Z</updated>
+        <content type="html"><![CDATA[<p>什么是伪类？<br>
+——伪类用于定义元素的特殊状态。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[居中方法和原理]]></title>
+        <id>https://huyifu.github.io/post/ju-zhong-fang-fa-he-yuan-li/</id>
+        <link href="https://huyifu.github.io/post/ju-zhong-fang-fa-he-yuan-li/">
+        </link>
+        <updated>2021-03-18T11:24:00.000Z</updated>
+        <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[浮动 清除浮动]]></title>
+        <id>https://huyifu.github.io/post/fu-dong-qing-chu-fu-dong/</id>
+        <link href="https://huyifu.github.io/post/fu-dong-qing-chu-fu-dong/">
+        </link>
+        <updated>2021-03-18T10:34:03.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="遇到父元素高度崩塌的问题">遇到父元素高度崩塌的问题</h1>
+<ul>
+<li>css标准文档流 默认状态 元素自动从左到右 从上往下的流式排列</li>
+<li>浮动 float 会导致元素脱离文档流</li>
+<li>浮动的框可以向左或向右移动，直到它的外边缘碰到包含框或另一个浮动框的边框为止。</li>
+<li>由于浮动框不在文档的普通流中，所以文档的普通流中的块框表现得就像浮动框不存在一样。</li>
+<li>浮动会影响标准流的排列 其中导致父级元素高度坍塌问题<br>
+例如 父元素包裹两个子div 一个左浮动 一个右浮动<br>
+之后的与父元素同级的兄弟元素会直接占位<br>
+父元素高度为0<br>
+未完<br>
+解决方法：</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[[Javascript]cssText使用]]></title>
         <id>https://huyifu.github.io/post/javascriptcsstext-shi-yong/</id>
@@ -321,33 +361,6 @@ c:/website/img/images/photo.jpg<br>
     </tr>
 </table>
 <p>This is another regular paragraph.</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[第一篇]]></title>
-        <id>https://huyifu.github.io/post/di-yi-pian/</id>
-        <link href="https://huyifu.github.io/post/di-yi-pian/">
-        </link>
-        <updated>2021-03-02T13:39:37.000Z</updated>
-        <content type="html"><![CDATA[<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
 ]]></content>
     </entry>
 </feed>
