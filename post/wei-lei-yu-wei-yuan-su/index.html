@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1616135695079">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1616140690743">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -19,8 +19,12 @@
 
 
     <meta name="description" content="什么是伪类？
-——伪类用于定义元素的特殊状态。
-" />
+——伪类是选择器的一种，它用于选择处于特定状态的元素。
+伪类有很多种，它们都为我们提供了基于其特征无法访问或难以访问的特征来定位元素的方法。
+伪类的类型：
+
+动态伪类
+:hover :focus :link  :visited..." />
     <meta name="keywords" content="" />
   </head>
   <body>
@@ -30,7 +34,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1616135695079" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1616140690743" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -97,8 +101,34 @@
             <div class="post-date">2021-03-18</div>
             
             <div class="post-content" v-pre>
-              <p>什么是伪类？<br>
-——伪类用于定义元素的特殊状态。</p>
+              <h2 id="什么是伪类">什么是伪类？</h2>
+<p>——伪类是选择器的一种，它用于选择处于特定状态的元素。<br>
+伪类有很多种，它们都为我们提供了基于其特征无法访问或难以访问的特征来定位元素的方法。<br>
+伪类的类型：</p>
+<ol>
+<li>动态伪类<br>
+:hover :focus :link  :visited</li>
+<li>基于状态的伪类<br>
+:checked可以应用于复选框（）<br>
+:fullscreen 定位当前以全屏模式显示的任何元素</li>
+<li>结构伪类<br>
+:first-child，:last-child</li>
+<li>杂项伪类<br>
+:not(x)选择与选择器x不匹配的元素   :lang(language-code) 选择哪些内容采用特定语言的元素</li>
+</ol>
+<h2 id="什么是伪元素">什么是伪元素？</h2>
+<p>——伪元素用于创建一些不在文档树中的元素，并为其添加样式。<br>
+ps:利用伪元素插入的dom 在dom结构中是看不到的 不过可以在css 中看到<br>
+::before/::after/::first-letter/::first-line/::selection ........</p>
+<h2 id="区别">区别：</h2>
+<p>伪类的操作对象是文档树中已有的元素，而伪元素则创建了一个文档数外的元素。<br>
+有没有创建一个文档树之外的元素。</p>
+<p>元素指的是 HTML 文档中的标签，它是 DOM 树的一部分。而类是元素上的一个属性，是人为规定的当前元素的一个类别。</p>
+<h1 id="总结">总结：</h1>
+<ul>
+<li>伪类与被标记的元素是一种包含关系，类添加到了这个元素上</li>
+<li>伪元素与被被标记的元素是同级关系，css最终会作用在这个创造出的伪元素的位置上</li>
+</ul>
 
             </div>
             

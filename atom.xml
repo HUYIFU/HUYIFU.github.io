@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-19T06:36:34.468Z</updated>
+    <updated>2021-03-19T07:58:11.763Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -17,8 +17,34 @@
         <link href="https://huyifu.github.io/post/wei-lei-yu-wei-yuan-su/">
         </link>
         <updated>2021-03-18T13:50:43.000Z</updated>
-        <content type="html"><![CDATA[<p>什么是伪类？<br>
-——伪类用于定义元素的特殊状态。</p>
+        <content type="html"><![CDATA[<h2 id="什么是伪类">什么是伪类？</h2>
+<p>——伪类是选择器的一种，它用于选择处于特定状态的元素。<br>
+伪类有很多种，它们都为我们提供了基于其特征无法访问或难以访问的特征来定位元素的方法。<br>
+伪类的类型：</p>
+<ol>
+<li>动态伪类<br>
+:hover :focus :link  :visited</li>
+<li>基于状态的伪类<br>
+:checked可以应用于复选框（）<br>
+:fullscreen 定位当前以全屏模式显示的任何元素</li>
+<li>结构伪类<br>
+:first-child，:last-child</li>
+<li>杂项伪类<br>
+:not(x)选择与选择器x不匹配的元素   :lang(language-code) 选择哪些内容采用特定语言的元素</li>
+</ol>
+<h2 id="什么是伪元素">什么是伪元素？</h2>
+<p>——伪元素用于创建一些不在文档树中的元素，并为其添加样式。<br>
+ps:利用伪元素插入的dom 在dom结构中是看不到的 不过可以在css 中看到<br>
+::before/::after/::first-letter/::first-line/::selection ........</p>
+<h2 id="区别">区别：</h2>
+<p>伪类的操作对象是文档树中已有的元素，而伪元素则创建了一个文档数外的元素。<br>
+有没有创建一个文档树之外的元素。</p>
+<p>元素指的是 HTML 文档中的标签，它是 DOM 树的一部分。而类是元素上的一个属性，是人为规定的当前元素的一个类别。</p>
+<h1 id="总结">总结：</h1>
+<ul>
+<li>伪类与被标记的元素是一种包含关系，类添加到了这个元素上</li>
+<li>伪元素与被被标记的元素是同级关系，css最终会作用在这个创造出的伪元素的位置上</li>
+</ul>
 ]]></content>
     </entry>
     <entry>
@@ -31,7 +57,7 @@
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[浮动 清除浮动]]></title>
+        <title type="html"><![CDATA[浮动 清除浮动及其原理]]></title>
         <id>https://huyifu.github.io/post/fu-dong-qing-chu-fu-dong/</id>
         <link href="https://huyifu.github.io/post/fu-dong-qing-chu-fu-dong/">
         </link>
@@ -46,9 +72,40 @@
 例如 父元素包裹两个子div 一个左浮动 一个右浮动<br>
 之后的与父元素同级的兄弟元素会直接占位<br>
 父元素高度为0<br>
-未完<br>
 解决方法：</li>
 </ul>
+<h2 id="1-clearboth">1. clear：both</h2>
+<p>clear 属性规定元素的哪一侧不允许其他浮动元素。<br>
+在 CSS1 和 CSS2 中，这是通过自动为清除元素（即设置了 clear 属性的元素）增加上外边距实现的。在 CSS2.1 中，会在元素上外边距之上增加清除空间，而外边距本身并不改变。不论哪一种改变，最终结果都一样，如果声明为左边或右边清除，会使元素的上外边框边界刚好在该边上浮动元素的下外边距边界之下。<br>
+应用：在内部末尾添加一个div 设置 clear：both   —— 会利用上margin把父元素撑开</p>
+<h3 id="即设置clear属性的元素会有上margin大小为没有浮动元素为止">即设置clear属性的元素会有上margin大小为没有浮动元素为止</h3>
+<h2 id="2-父级添加overflowhidden">2. 父级添加overflow：hidden</h2>
+<p>实质上是应用了BFC一个特性 计算BFC高度时，浮动元素也参与计算<br>
+那什么是BFC呢？<br>
+BFC(Block formatting context)直译为&quot;块级格式化上下文&quot;。它是一个独立的渲染区域，只有Block-level box参与， 它规定了内部的Block-level Box如何布局，并且与这个区域外部毫不相干。默认情况下只有根元素（即body）一个块级上下文。</p>
+<h3 id="bfc的布局规则">BFC的布局规则</h3>
+<ul>
+<li>内部的Box会在垂直方向，一个接一个地放置。</li>
+<li>Box垂直方向的距离由margin决定。属于同一个BFC的两个相邻Box的margin会发生重叠。</li>
+<li>每个盒子（块盒与行盒）的margin box的左边，与包含块border box的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此。</li>
+<li>BFC的区域不会与float box重叠。</li>
+<li>BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。<br>
+计算BFC的高度时，浮动元素也参与计算。</li>
+</ul>
+<h3 id="如何创建bfc">如何创建BFC</h3>
+<ul>
+<li>float的值不是none。</li>
+<li>position的值不是static或者relative。</li>
+<li>display的值是inline-block、table-cell、flex、table-caption或者inline-flex</li>
+<li>overflow的值不是visible</li>
+</ul>
+<p>到这里已经可以解释为什么overflow hidden 能清除浮动了 ——把父元素创建成了BFC 计算高度考虑浮动元素<br>
+同样的，可以设置float属性 但是父级元素的父级又得可能会有浮动引发的问题<br>
+可以设置 display absolute等等</p>
+<h2 id="3-使用after伪元素清除浮动">3. 使用after伪元素清除浮动</h2>
+<ol start="4">
+<li></li>
+</ol>
 ]]></content>
     </entry>
     <entry>
