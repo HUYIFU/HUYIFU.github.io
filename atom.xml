@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-19T07:58:11.763Z</updated>
+    <updated>2021-03-21T13:48:06.602Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -103,9 +103,28 @@ BFC(Block formatting context)直译为&quot;块级格式化上下文&quot;。它
 同样的，可以设置float属性 但是父级元素的父级又得可能会有浮动引发的问题<br>
 可以设置 display absolute等等</p>
 <h2 id="3-使用after伪元素清除浮动">3. 使用after伪元素清除浮动</h2>
-<ol start="4">
-<li></li>
-</ol>
+<pre><code>.clearfix:after{/*伪元素是行内元素 正常浏览器清除浮动方法*/
+        content: &quot;&quot;;
+        display: block;
+        height: 0;
+        clear:both;
+        visibility: hidden;
+    }
+    .clearfix{
+        *zoom: 1;/*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
+    }
+</code></pre>
+<ul>
+<li>
+<p>在需要清除的元素添加 clearfix类<br>
+after伪元素 内容空 clear:both  原理与1 相同</p>
+</li>
+<li>
+<p>其中Zoom属性是IE浏览器的专有属性， 它可以设置或检索对象的缩放比例。<br>
+当设置了zoom的值之后，所设置的元素就会就会扩大或者缩小，高度宽度就会重新计算了，这里一旦改变zoom值时其实也会发生重新渲染，运用这个原理，也就解决了ie下子元素浮动时候父元素不随着自动扩大的问题。</p>
+</li>
+</ul>
+<h2 id="总结清除浮动根本原理两大类-clearboth-设置为bfc元素">总结：清除浮动根本原理两大类 clear：both  设置为BFC元素</h2>
 ]]></content>
     </entry>
     <entry>
@@ -191,12 +210,38 @@ Chrome：<br>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[css relative和absolute]]></title>
+        <title type="html"><![CDATA[css position属性]]></title>
         <id>https://huyifu.github.io/post/css-relative-he-absolute/</id>
         <link href="https://huyifu.github.io/post/css-relative-he-absolute/">
         </link>
         <updated>2021-03-07T02:07:41.000Z</updated>
-        <content type="html"><![CDATA[<p>1</p>
+        <content type="html"><![CDATA[<p>先来看W3教程 介绍的五个值<br>
+absolute	<br>
+生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。</p>
+<p>元素的位置通过 &quot;left&quot;, &quot;top&quot;, &quot;right&quot; 以及 &quot;bottom&quot; 属性进行规定。</p>
+<p>fixed	<br>
+生成绝对定位的元素，相对于浏览器窗口进行定位。</p>
+<p>元素的位置通过 &quot;left&quot;, &quot;top&quot;, &quot;right&quot; 以及 &quot;bottom&quot; 属性进行规定。</p>
+<p>relative	<br>
+生成相对定位的元素，相对于其正常位置进行定位。</p>
+<p>因此，&quot;left:20&quot; 会向元素的 LEFT 位置添加 20 像素。</p>
+<p>static	默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。</p>
+<p>inherit	规定应该从父元素继承 position 属性的值。</p>
+<ul>
+<li>left right 指的是距离left right 多少像素</li>
+<li>float 与absolute 不能同时使用</li>
+<li>文档流布局的概念</li>
+<li>absolute是相对于最近的不为static position的祖先元素进行定位  如果没有则相对body进行定位</li>
+<li>relative 原来的空间会被保留<br>
+什么是文档流布局？<br>
+将窗体自上而下分成一行行， 并在每行中按从左至右的顺序排放元素，即为文档流。  <br>
+每个非浮动块级元素都独占一行， 浮动元素则按规定浮在行的一端。 若当前行容不下， 则另起新行再浮动。 内联元素也不会独占一行。 几乎所有元素(包括块级，内联和列表元素）均可生成子行， 用于摆放子元素。有三种情况将使得元素脱离文档流而存在，分别是 浮动，绝对定位， 固定定位。 但是在IE6中浮动元素也存在于文档流中。</li>
+</ul>
+<h2 id="absolute-与-relative">absolute 与 relative</h2>
+<p>absolute属性的元素：元素从原来的静态（position=static）安排的位置被“挤出”平面空间，自己开始新的位置，形象地说是在其他平面上，原来的平面空间被其他元素占有。<br>
+relative属性的元素：遵从静态（position=static）文档流安排，但可使用top、bottom、left、right属性进行位置偏移（不影响同级文档流的位置）。形象地说原来的位置还留着，但它可以随意移动穿插与不同位置而不影响其他元素的排布。<br>
+两者的共同点是：都可以随意偏移原本文档位置而不影响同级元素的排布。<br>
+不同点是：relative的空间被保留下来，而absolute的空间被占有了。</p>
 ]]></content>
     </entry>
     <entry>

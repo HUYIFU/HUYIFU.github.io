@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1616140690743">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1616333515943">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -33,7 +33,7 @@ css标准文档流 默认状态 元素自动从左到右 从上往下的流式�
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1616140690743" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1616333515943" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -141,9 +141,28 @@ BFC(Block formatting context)直译为&quot;块级格式化上下文&quot;。它
 同样的，可以设置float属性 但是父级元素的父级又得可能会有浮动引发的问题<br>
 可以设置 display absolute等等</p>
 <h2 id="3-使用after伪元素清除浮动">3. 使用after伪元素清除浮动</h2>
-<ol start="4">
-<li></li>
-</ol>
+<pre><code>.clearfix:after{/*伪元素是行内元素 正常浏览器清除浮动方法*/
+        content: &quot;&quot;;
+        display: block;
+        height: 0;
+        clear:both;
+        visibility: hidden;
+    }
+    .clearfix{
+        *zoom: 1;/*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
+    }
+</code></pre>
+<ul>
+<li>
+<p>在需要清除的元素添加 clearfix类<br>
+after伪元素 内容空 clear:both  原理与1 相同</p>
+</li>
+<li>
+<p>其中Zoom属性是IE浏览器的专有属性， 它可以设置或检索对象的缩放比例。<br>
+当设置了zoom的值之后，所设置的元素就会就会扩大或者缩小，高度宽度就会重新计算了，这里一旦改变zoom值时其实也会发生重新渲染，运用这个原理，也就解决了ie下子元素浮动时候父元素不随着自动扩大的问题。</p>
+</li>
+</ul>
+<h2 id="总结清除浮动根本原理两大类-clearboth-设置为bfc元素">总结：清除浮动根本原理两大类 clear：both  设置为BFC元素</h2>
 
             </div>
             

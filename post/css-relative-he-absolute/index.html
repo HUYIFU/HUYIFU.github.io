@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" >
 
-<title>css relative和absolute | 古月的blog</title>
+<title>css position属性 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1616140690743">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1616333515943">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -18,8 +18,10 @@
 
 
 
-    <meta name="description" content="1
-" />
+    <meta name="description" content="先来看W3教程 介绍的五个值
+absolute	
+生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。
+元素的位置通过 &quot;left&quot;, &quot;top&quot;, &quot;right&qu..." />
     <meta name="keywords" content="" />
   </head>
   <body>
@@ -29,7 +31,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1616140690743" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1616333515943" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -92,11 +94,37 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">css relative和absolute</h2>
+            <h2 class="post-title">css position属性</h2>
             <div class="post-date">2021-03-07</div>
             
             <div class="post-content" v-pre>
-              <p>1</p>
+              <p>先来看W3教程 介绍的五个值<br>
+absolute	<br>
+生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。</p>
+<p>元素的位置通过 &quot;left&quot;, &quot;top&quot;, &quot;right&quot; 以及 &quot;bottom&quot; 属性进行规定。</p>
+<p>fixed	<br>
+生成绝对定位的元素，相对于浏览器窗口进行定位。</p>
+<p>元素的位置通过 &quot;left&quot;, &quot;top&quot;, &quot;right&quot; 以及 &quot;bottom&quot; 属性进行规定。</p>
+<p>relative	<br>
+生成相对定位的元素，相对于其正常位置进行定位。</p>
+<p>因此，&quot;left:20&quot; 会向元素的 LEFT 位置添加 20 像素。</p>
+<p>static	默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。</p>
+<p>inherit	规定应该从父元素继承 position 属性的值。</p>
+<ul>
+<li>left right 指的是距离left right 多少像素</li>
+<li>float 与absolute 不能同时使用</li>
+<li>文档流布局的概念</li>
+<li>absolute是相对于最近的不为static position的祖先元素进行定位  如果没有则相对body进行定位</li>
+<li>relative 原来的空间会被保留<br>
+什么是文档流布局？<br>
+将窗体自上而下分成一行行， 并在每行中按从左至右的顺序排放元素，即为文档流。  <br>
+每个非浮动块级元素都独占一行， 浮动元素则按规定浮在行的一端。 若当前行容不下， 则另起新行再浮动。 内联元素也不会独占一行。 几乎所有元素(包括块级，内联和列表元素）均可生成子行， 用于摆放子元素。有三种情况将使得元素脱离文档流而存在，分别是 浮动，绝对定位， 固定定位。 但是在IE6中浮动元素也存在于文档流中。</li>
+</ul>
+<h2 id="absolute-与-relative">absolute 与 relative</h2>
+<p>absolute属性的元素：元素从原来的静态（position=static）安排的位置被“挤出”平面空间，自己开始新的位置，形象地说是在其他平面上，原来的平面空间被其他元素占有。<br>
+relative属性的元素：遵从静态（position=static）文档流安排，但可使用top、bottom、left、right属性进行位置偏移（不影响同级文档流的位置）。形象地说原来的位置还留着，但它可以随意移动穿插与不同位置而不影响其他元素的排布。<br>
+两者的共同点是：都可以随意偏移原本文档位置而不影响同级元素的排布。<br>
+不同点是：relative的空间被保留下来，而absolute的空间被占有了。</p>
 
             </div>
             
