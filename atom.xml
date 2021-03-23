@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-21T13:48:06.602Z</updated>
+    <updated>2021-03-23T06:47:17.113Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -11,6 +11,184 @@
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
+    <entry>
+        <title type="html"><![CDATA[Node.js 学习]]></title>
+        <id>https://huyifu.github.io/post/nodejs-xue-xi/</id>
+        <link href="https://huyifu.github.io/post/nodejs-xue-xi/">
+        </link>
+        <updated>2021-03-22T13:24:50.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="node三部分">node三部分</h1>
+<p>引入required模块：我们可以使用require指令来载入Node.js模块。</p>
+<p>创建服务器：服务器可以监听客户端的请求，类似于Apache 、Nginx等HTTP服务器。</p>
+<p>接收请求与响应请求：服务器很容易创建，客户端可以使用浏览器或终端发送HTTP请求，服务器接收请求后返回响应数据。</p>
+<h3 id="nvm和npm关系">nvm和npm关系</h3>
+<p>nvm：nodejs 版本管理工具。<br>
+也就是说：一个 nvm 可以管理很多 node 版本和 npm 版本。<br>
+nodejs：在项目开发时的所需要的代码库<br>
+npm：nodejs 包管理工具。<br>
+在安装的 nodejs 的时候，npm 也会跟着一起安装，它是包管理工具。<br>
+nvm 管理 nodejs 和 npm 的版本<br>
+npm 可以管理 nodejs 的第三方插件</p>
+<h3 id="使用模块化开发的原因">使用模块化开发的原因</h3>
+<p>JS 文件依赖问题<br>
+a.js-&gt;b.js-&gt;c.js  c.js无法单独使用<br>
+命名冲突<br>
+c.js num=1 a.js num=2</p>
+<h3 id="node-模块化开发规范">node 模块化开发规范</h3>
+<p>一个js文件就是一个模块 模块内部变量函数默认情况下在外部无法得到<br>
+模块内部使用exports对象进行成员导出 使用require方法导入其他模块<br>
+另一种方式<br>
+module.exports.version = version;<br>
+exports是module.exports的别名 指向引用关系 指向同一个导出对象<br>
+当指向不同对象 导出对象是moudule.exports对象</p>
+<h2 id="系统模块">系统模块</h2>
+<p>系统模块 node运行环境提供的API<br>
+PS: 回调函数 （err，doc） =&gt; {}   如果成功 err是NULL 不成功是一个对象</p>
+<h3 id="fs-文件操作">fs 文件操作</h3>
+<p>引入 const fs = require('fs')<br>
+读取<br>
+fs.readFile('文件路径/文件名称',['文件编码'],callback); 【】代表可选参数<br>
+写入<br>
+fs.writeFile('文件路径/文件名称','数据',callback);</p>
+<h3 id="path-路径操作">path 路径操作</h3>
+<p>路径拼接 不同操作系统路径分隔符不统一 windows / \  Linux /<br>
+const path = require('path')<br>
+const finalPath = path.join('a','b','c')<br>
+finalPath -&gt;  a\b\c<br>
+结合<br>
+const fs = require('fs');<br>
+const path = require('path');<br>
+TIP 使用__dirname  （两个下划线）<br>
+当前js文件当前文件夹的绝对路径<br>
+因此路径可以表示为  path.join(__dirname, 'xx.js')   join 会自动添加<br>
+fs.readFile()</p>
+<p>TIP:</p>
+<h3 id="相对路径和绝对路径">相对路径和绝对路径</h3>
+<p>绝大部分使用绝对路径   因为相对路径是相对的命令行工具的当前工作目录<br>
+读取文件 设置文件路径 绝对路径</p>
+<h2 id="第三方模块">第三方模块</h2>
+<p>三方模块 两种形式<br>
+以js文件存在 提供API接口  -&gt; 具体功能<br>
+命令行工具形式存在 辅助项目开发</p>
+<h3 id="三方模块-nodemon-命令行工具">三方模块 nodemon 命令行工具</h3>
+<p>cmd 可以执行 但是vs终端无法执行？？</p>
+<h3 id="nrm">nrm</h3>
+<p>npm下载地址切换工具<br>
+npm默认下载地址 npmjs.com<br>
+国内下载地址服务器同步 npm.taobao.org<br>
+查询下载地址列表 nrm ls<br>
+切换npm下载地址 nrm use 下载地址</p>
+<p>TIP:<br>
+clear 清屏   上箭头 上一次命令 下箭头 下一次命令<br>
+ctrl C 终止操作</p>
+<h3 id="gulp">Gulp</h3>
+<p>基于node平台开发的前端构建工具<br>
+将机械化操作变成命令</p>
+<p>功能<br>
+HTML CSS JS 压缩合并<br>
+语法转换 es6 ..less..<br>
+修改文件浏览器自动刷新<br>
+使用</p>
+<p>1使用npm install gulp下载gulp库文件<br>
+（命令行当前文件下配置好了 node_modules文件夹和package-lock.json)<br>
+2在项目根目录下建立gulpfile.js文件<br>
+（命名固定了）<br>
+3重构项目的文件夹结构 src目录放置源代码文件 dist目录放置构建后文件<br>
+4在gulpfile.js文件中编写任务.<br>
+5在命令行工具中执行gulp任务</p>
+<p>方法<br>
+gulp.src() 获取任务要处理的文件<br>
+gulp.dest() 输出文件<br>
+gulp.task() 建立gulp任务<br>
+gulp.watch() 监考文件变化</p>
+<p>gulp.task('任务的名称',() =&gt;{<br>
+}) ;</p>
+<p>gulp-cli  命名行工具<br>
+执行任务  项目根目录 gulp 任务名称<br>
+Gulp插件<br>
+gulp-htmlmin: html 文件压缩</p>
+<pre><code>// html压缩任务
+// html文件中代码的压缩操作
+// 抽取html文件中的公共代码
+const htmlmin = require('gulp-htmlmin');
+const fileinClude = require('gulp-file-include');
+gulp.task('htmlmin',()=&gt;{
+    //*. 所有的文件
+    gulp.src('./src/*.html')
+        //抽取放入common文件夹
+        .pipe(fileinClude())
+       //压缩
+      .pipe(htmlmin({collapseWhitespace: true}))
+      .pipe(gulp.dest('dist'));
+});
+</code></pre>
+<p>@@include('./common/head.html')<br>
+将公共代码引入进来<br>
+gulp-csso :压缩css<br>
+gulp-file-include 公共文件包含<br>
+.....</p>
+<p>构建任务<br>
+TIP 当任务取名为defult gulp命令直接运行 gulp defult<br>
+gulp.task('defult',['任务一名字','任务二名字'],....)</p>
+<h3 id="packagejson">package.json</h3>
+<p>（1）node_modules文件夹的问题<br>
+文件夹以及文件过多过碎，当我们将项目整体拷贝给别人的时候,，传输速度会很慢很慢.<br>
+复杂的模块依赖关系需要被记录，确保模块的版本和当前保持一致，否则会导致当前项目运行报错<br>
+（2）package.json文件的作用<br>
+项目描述文件，记录了当前项目信息，例如项目名称、版本、作者、github地址、当前项目依赖了哪些第三方模块等。<br>
+使用npm init -y命令生成。  -y全填默认值<br>
+（3）项目依赖<br>
+在项目的开发阶段和线上运营阶段，都需要依赖的第三方包，称为项目依赖<br>
+使用npm install 包名命令下载的文件会默认被添加到 package.json 文件的 dependencies 字段中<br>
+{<br>
+&quot;dependencies&quot;: {<br>
+&quot;jquery&quot;: &quot;^3.3.1“<br>
+}<br>
+}<br>
+（4）开发依赖<br>
+在项目的开发阶段需要依赖，线上运营阶段不需要依赖的第三方包，称为开发依赖<br>
+使用npm install 包名 --save-dev命令将包添加到package.json文件的devDependencies字段中<br>
+{<br>
+&quot;devDependencies&quot;: {<br>
+&quot;gulp&quot;: &quot;^3.9.1“<br>
+}<br>
+}<br>
+5）package-lock.json文件的作用<br>
+锁定包的版本，确保再次下载时不会因为包版本不同而产生问题<br>
+加快下载速度，因为该文件中已经记录了项目所依赖第三方包的树状结构和包的下载地址，重新安装时只需下载即可，不需要做额外的工作</p>
+<p>npm install --production 只安装项目依赖<br>
+npm install  全部</p>
+<p>TIP：<br>
+package.json<br>
+&quot;scripts&quot;:{<br>
+&quot;命令别名&quot; : &quot;命令代码&quot;<br>
+}<br>
+cmd 敲入 npm run 别名   即可运行</p>
+<h3 id="node-模块加载机制">Node 模块加载机制</h3>
+<ol>
+<li>当模块拥有路径但没有后缀<br>
+require方法根据模块路径查找模块，如果是完整路径，直接引入模块。<br>
+如果模块后缀省略，先找同名JS文件再找同名JS文件夹<br>
+如果找到了同名文件夹，找文件夹中的index.js<br>
+如果文件夹中没有index.js就会去当前文件夹中的package.json文件中查找main选项中的入口文件<br>
+如果找指定的入口文件不存在或者没有指定入口文件就会报错，模块没有被找到</li>
+<li>模块没有路径没有后缀<br>
+假设它是系统模块<br>
+node_moudules文件中<br>
+同名js文件<br>
+同名文件夹<br>
+同名文件夹里面的index.js<br>
+package.json main选项的入口文件</li>
+</ol>
+<h3 id="node全局对象">Node全局对象</h3>
+<p>Node全局对象 global  ——浏览器全局对象 window<br>
+global对象里 有<br>
+console.log<br>
+setTimeout<br>
+...<br>
+等等方法</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[伪类与伪元素]]></title>
         <id>https://huyifu.github.io/post/wei-lei-yu-wei-yuan-su/</id>
@@ -381,88 +559,6 @@ c:/website/img/images/photo.jpg<br>
 在index.html中导入photo.jpg<br>
 绝对路径： src=&quot;c:/website/img/images/photo.jpg&quot; (本电脑)<br>
 相对路径 :   src=&quot;../../img/images/photo.jpg&quot; (只要保持相对位置就可以使用)</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[更换主题使用markdown语法]]></title>
-        <id>https://huyifu.github.io/post/geng-huan-zhu-ti-shi-yong-markdown-yu-fa/</id>
-        <link href="https://huyifu.github.io/post/geng-huan-zhu-ti-shi-yong-markdown-yu-fa/">
-        </link>
-        <updated>2021-03-03T07:11:31.000Z</updated>
-        <content type="html"><![CDATA[<!-- more -->
-<h1 id="一级标题">一级标题</h1>
-<h2 id="二级标题">二级标题</h2>
-<p>markdown段落直接<br>
-换行</p>
-<p>第二段？？<br>
-换行==两个空格以上加换行</p>
-<p><strong>加粗</strong> <em>斜体</em></p>
-<blockquote>
-<p>引用</p>
-<blockquote>
-<p>引用的嵌套</p>
-</blockquote>
-</blockquote>
-<p>有序列表</p>
-<ol>
-<li>
-<p>first item</p>
-</li>
-<li>
-<p>second item</p>
-<ol>
-<li>a</li>
-<li>b
-<ol>
-<li>三层</li>
-<li>嵌套</li>
-</ol>
-</li>
-<li>c</li>
-</ol>
-</li>
-<li>
-<p>d</p>
-<pre><code>         &lt;html&gt;
-   &lt;head&gt;
-     &lt;title&gt;代码块&lt;/title&gt;
-   &lt;/head&gt;
-</code></pre>
-</li>
-<li>
-<p>e</p>
-</li>
-</ol>
-<p>无序列表</p>
-<ul>
-<li>first item</li>
-<li>second item
-<ul>
-<li>二层</li>
-<li>嵌套</li>
-</ul>
-<blockquote>
-<p>四个空格</p>
-</blockquote>
-</li>
-<li>third item</li>
-</ul>
-<p>分隔线</p>
-<hr>
-<p>分隔线</p>
-<p>链接<br>
-<a href="www.hao123.com">链接显示文本</a><br>
-网址加链接&lt;&gt;<br>
-<a href="https://markdown.com.cn">https://markdown.com.cn</a></p>
-<p>图片<br>
-<img src="%E5%9B%BE%E7%89%87%E9%93%BE%E6%8E%A5" alt="图片alt" title="图片title" loading="lazy"></p>
-<p>This is a regular paragraph.</p>
-<table>
-    <tr>
-        <td>Foo</td>
-    </tr>
-</table>
-<p>This is another regular paragraph.</p>
 ]]></content>
     </entry>
 </feed>
