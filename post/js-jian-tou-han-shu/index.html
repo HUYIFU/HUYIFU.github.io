@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JS 箭头函数 | 古月的blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617024108643">
+<link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="引言：在学习nonde 回调函数时频繁出现箭头函数 此文来详细了解箭头函数深入的特性。
+箭头函数表达式的语法比函数表达式更简洁，并且没有自己的this，arguments，super，new.target。箭头函数表达式更适用于那些本来需要..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://huyifu.github.io">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1617024108643" class="site-logo">
+        <h1 class="site-title">古月的blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://huyifu.github.io" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      Nothing for nothing
+
+    </div>
+    <div class="site-footer">
+      Cover by HuSir | <a class="rss" href="https://huyifu.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">JS 箭头函数</h2>
+            <div class="post-date">2021-03-29</div>
+            
+            <div class="post-content" v-pre>
+              <p>引言：在学习nonde 回调函数时频繁出现箭头函数 此文来详细了解箭头函数深入的特性。</p>
+<h3 id="箭头函数表达式的语法比函数表达式更简洁并且没有自己的thisargumentssupernewtarget-箭头函数表达式更适用于那些本来需要匿名函数的地方并且它不能用作构造函数-因为构造函数用this指向新构建的对象">箭头函数表达式的语法比函数表达式更简洁，并且没有自己的this，arguments，super，new.target。箭头函数表达式更适用于那些本来需要匿名函数的地方，并且它不能用作构造函数。因为构造函数用this指向新构建的对象。</h3>
+<p>五种基础表达形式</p>
+<pre><code>1. (param1, param2, …, paramN) =&gt; { statements } //标准 参数1~N 执行statements
+2. (param1, param2, …, paramN) =&gt; expression // 只有一个表达式 相当于 相当于：(param1, param2, …, paramN) =&gt;{ return expression; }
+3. singleParam =&gt; { statements }  //只有一个参数可不写（）
+4. () =&gt;{statements}  //无参数使用（） 应用1.
+5.() =&gt; expression   //无参数使用（） 应用2.
+</code></pre>
+<p>此外还有其他表达形式</p>
+<pre><code>//加括号的函数体返回对象字面量表达式：
+params =&gt; ({foo: bar})
+//支持剩余参数和默认参数
+(param1, param2, ...rest) =&gt; { statements }
+(param1 = defaultValue1, param2, …, paramN = defaultValueN) =&gt; {
+statements }
+//同样支持参数列表解构
+let f = ([a, b] = [1, 2], {x: c} = {x: a + b}) =&gt; a + b + c;
+f();  // 6
+</code></pre>
+<h3 id="箭头函数没有单独的this箭头函数不会创建自己的this它只会从自己的作用域链的上一层继承this">箭头函数没有单独的this，箭头函数不会创建自己的this,它只会从自己的作用域链的上一层继承this。</h3>
+<p>以下为用this时候出现的一些问题</p>
+<pre><code>function Counter() {
+  this.num = 0;
+  this.timer = setInterval(function add() {
+    this.num++;
+    console.log(this.num);
+  }, 1000);
+}
+var a = new Counter();
+</code></pre>
+<p>输出：<br>
+NaN<br>
+.. 1s一个<br>
+this指向window对象  this理解另一篇进行深入探讨  此处出现问题<br>
+当使用箭头函数改写</p>
+<pre><code>function Counter() {
+  this.num = 0;
+  this.timer = setInterval(()=&gt;{
+      this.num++;
+      console.log(num);
+  },1000)
+}
+var a = new Counter();
+</code></pre>
+<p>预期输出<br>
+1<br>
+2<br>
+..</p>
+<h3 id="通过call-apply调用箭头函数">通过call、apply调用箭头函数</h3>
+<p>由于箭头函数没有自己的this指针，通过call()、apply()方法调用时，第一个参数会被忽略。（箭头函数中若用了this，这个this指向包裹箭头函数的第一个普通函数的 this。）</p>
+<h3 id="不绑定arguments">不绑定arguments</h3>
+<p>大多数情况下，使用剩余参数是相较于arguments对象的更好选择。</p>
+<h3 id="箭头函数没有prototype属性">箭头函数没有prototype属性。</h3>
+<pre><code>var Foo = () =&gt; {};
+console.log(Foo.prototype); // undefined
+</code></pre>
+<h3 id="闭包">闭包</h3>
+<pre><code>// 标准的闭包函数
+function A(){
+      var i=0;
+      return function b(){
+              return (++i);
+      };
+};
+var v=A();
+v();    //1
+v();    //2
+//箭头函数体的闭包（ i=0 是默认参数）
+var Add = (i=0) =&gt; {return (() =&gt; (++i) )};
+var v = Add();
+v();           //1
+v();           //2
+//因为仅有一个返回，return 及括号（）也可以省略
+var Add = (i=0)=&gt; ()=&gt; (++i);
+</code></pre>
+<h2 id="总结">总结：</h2>
+<ul>
+<li>没有 this</li>
+<li>没有 arguments</li>
+<li>不能使用 new 进行调用</li>
+<li>它们也没有 super</li>
+</ul>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://huyifu.github.io/post/js-hui-diao-han-shu/">
+                  <h3 class="post-title">
+                    JS 回调函数
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

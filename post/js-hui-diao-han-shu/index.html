@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Css学习 | 古月的blog</title>
+<title>JS 回调函数 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,8 +18,15 @@
 
 
 
-    <meta name="description" content="Nothing for nothing
-">
+    <meta name="description" content="回调函数
+代码实例
+function doSomething(msg, callback){
+alert(msg);
+if(typeof callback == &quot;function&quot;)
+callback();
+}
+doS..." />
+    <meta name="keywords" content="es6,detail" />
   </head>
   <body>
     <div id="app" class="main">
@@ -90,88 +97,61 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: Css学习</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/wei-lei-yu-wei-yuan-su/">
-                  <h2 class="post-title">伪类与伪元素</h2>
-                </a>
-                <div class="post-date">
-                  2021-03-18
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/ju-zhong-fang-fa-he-yuan-li/">
-                  <h2 class="post-title">居中方法和原理</h2>
-                </a>
-                <div class="post-date">
-                  2021-03-18
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/fu-dong-qing-chu-fu-dong/">
-                  <h2 class="post-title">浮动 清除浮动及其原理</h2>
-                </a>
-                <div class="post-date">
-                  2021-03-18
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/javascriptcsstext-shi-yong/">
-                  <h2 class="post-title">[Javascript]cssText使用</h2>
-                </a>
-                <div class="post-date">
-                  2021-03-15
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/documentbodyscrolltop-yu-documentdocumentelementscrolltop-jian-rong/">
-                  <h2 class="post-title">document.body.scrollTop与document.documentElement.scrollTop兼容</h2>
-                </a>
-                <div class="post-date">
-                  2021-03-13
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
+          <div class="post-detail">
+            <h2 class="post-title">JS 回调函数</h2>
+            <div class="post-date">2021-03-29</div>
+            
+            <div class="post-content" v-pre>
+              <p>回调函数<br>
+代码实例<br>
+function doSomething(msg, callback){<br>
+alert(msg);<br>
+if(typeof callback == &quot;function&quot;)<br>
+callback();<br>
+}<br>
+doSomething(&quot;回调函数&quot;, function(){<br>
+alert(&quot;匿名函数实现回调!&quot;);<br>
+});</p>
+<p>声明函数 doSomething  参数msg  第二个参数callback的声明在下面调用 doSometing 的时候进行</p>
+<p>例子<br>
+function delay(ms) {<br>
+return new Promise(resolve =&gt; setTimeout(resolve, ms));<br>
+}</p>
+<p>delay(3000).then(() =&gt; alert('runs after 3 seconds'));</p>
+<p>首先声明delay函数带一个参数ms<br>
+返回的是一个Promise对象 其中声明了第一个参数resolve 调用setTiomeout函数的声明<br>
+接收两个参数 一个是延迟ms后发生发生的resolve函数 另一个指定延迟时间</p>
+<p>调用delay(3000) 此时将3000传值给ms 返回一个Promise对象 .then() 开始调用setTimeout函数<br>
+3s后  resolve回调函数执行  箭头函数调用  无参数执行alert('runs after 3 seconds')；</p>
 
-          <div class="pagination-container">
-  
-  
-</div>
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://huyifu.github.io/tag/es6/" class="tag">
+                    es6
+                  </a>
+                
+                  <a href="https://huyifu.github.io/tag/detail/" class="tag">
+                    detail
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://huyifu.github.io/post/es6-zhong-de-promise-dui-xiang/">
+                  <h3 class="post-title">
+                    Es6中的Promise对象 
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
 
         </div>
       </div>

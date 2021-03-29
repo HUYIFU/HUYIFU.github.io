@@ -2,15 +2,166 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-03-27T08:04:39.742Z</updated>
+    <updated>2021-03-29T13:22:03.121Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
-    <subtitle>123455
+    <subtitle>Nothing for nothing
 </subtitle>
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
+    <entry>
+        <title type="html"><![CDATA[JS 箭头函数]]></title>
+        <id>https://huyifu.github.io/post/js-jian-tou-han-shu/</id>
+        <link href="https://huyifu.github.io/post/js-jian-tou-han-shu/">
+        </link>
+        <updated>2021-03-29T12:09:30.000Z</updated>
+        <content type="html"><![CDATA[<p>引言：在学习nonde 回调函数时频繁出现箭头函数 此文来详细了解箭头函数深入的特性。</p>
+<h3 id="箭头函数表达式的语法比函数表达式更简洁并且没有自己的thisargumentssupernewtarget-箭头函数表达式更适用于那些本来需要匿名函数的地方并且它不能用作构造函数-因为构造函数用this指向新构建的对象">箭头函数表达式的语法比函数表达式更简洁，并且没有自己的this，arguments，super，new.target。箭头函数表达式更适用于那些本来需要匿名函数的地方，并且它不能用作构造函数。因为构造函数用this指向新构建的对象。</h3>
+<p>五种基础表达形式</p>
+<pre><code>1. (param1, param2, …, paramN) =&gt; { statements } //标准 参数1~N 执行statements
+2. (param1, param2, …, paramN) =&gt; expression // 只有一个表达式 相当于 相当于：(param1, param2, …, paramN) =&gt;{ return expression; }
+3. singleParam =&gt; { statements }  //只有一个参数可不写（）
+4. () =&gt;{statements}  //无参数使用（） 应用1.
+5.() =&gt; expression   //无参数使用（） 应用2.
+</code></pre>
+<p>此外还有其他表达形式</p>
+<pre><code>//加括号的函数体返回对象字面量表达式：
+params =&gt; ({foo: bar})
+//支持剩余参数和默认参数
+(param1, param2, ...rest) =&gt; { statements }
+(param1 = defaultValue1, param2, …, paramN = defaultValueN) =&gt; {
+statements }
+//同样支持参数列表解构
+let f = ([a, b] = [1, 2], {x: c} = {x: a + b}) =&gt; a + b + c;
+f();  // 6
+</code></pre>
+<h3 id="箭头函数没有单独的this箭头函数不会创建自己的this它只会从自己的作用域链的上一层继承this">箭头函数没有单独的this，箭头函数不会创建自己的this,它只会从自己的作用域链的上一层继承this。</h3>
+<p>以下为用this时候出现的一些问题</p>
+<pre><code>function Counter() {
+  this.num = 0;
+  this.timer = setInterval(function add() {
+    this.num++;
+    console.log(this.num);
+  }, 1000);
+}
+var a = new Counter();
+</code></pre>
+<p>输出：<br>
+NaN<br>
+.. 1s一个<br>
+this指向window对象  this理解另一篇进行深入探讨  此处出现问题<br>
+当使用箭头函数改写</p>
+<pre><code>function Counter() {
+  this.num = 0;
+  this.timer = setInterval(()=&gt;{
+      this.num++;
+      console.log(num);
+  },1000)
+}
+var a = new Counter();
+</code></pre>
+<p>预期输出<br>
+1<br>
+2<br>
+..</p>
+<h3 id="通过call-apply调用箭头函数">通过call、apply调用箭头函数</h3>
+<p>由于箭头函数没有自己的this指针，通过call()、apply()方法调用时，第一个参数会被忽略。（箭头函数中若用了this，这个this指向包裹箭头函数的第一个普通函数的 this。）</p>
+<h3 id="不绑定arguments">不绑定arguments</h3>
+<p>大多数情况下，使用剩余参数是相较于arguments对象的更好选择。</p>
+<h3 id="箭头函数没有prototype属性">箭头函数没有prototype属性。</h3>
+<pre><code>var Foo = () =&gt; {};
+console.log(Foo.prototype); // undefined
+</code></pre>
+<h3 id="闭包">闭包</h3>
+<pre><code>// 标准的闭包函数
+function A(){
+      var i=0;
+      return function b(){
+              return (++i);
+      };
+};
+var v=A();
+v();    //1
+v();    //2
+//箭头函数体的闭包（ i=0 是默认参数）
+var Add = (i=0) =&gt; {return (() =&gt; (++i) )};
+var v = Add();
+v();           //1
+v();           //2
+//因为仅有一个返回，return 及括号（）也可以省略
+var Add = (i=0)=&gt; ()=&gt; (++i);
+</code></pre>
+<h2 id="总结">总结：</h2>
+<ul>
+<li>没有 this</li>
+<li>没有 arguments</li>
+<li>不能使用 new 进行调用</li>
+<li>它们也没有 super</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JS 回调函数]]></title>
+        <id>https://huyifu.github.io/post/js-hui-diao-han-shu/</id>
+        <link href="https://huyifu.github.io/post/js-hui-diao-han-shu/">
+        </link>
+        <updated>2021-03-29T11:06:11.000Z</updated>
+        <content type="html"><![CDATA[<p>回调函数<br>
+代码实例<br>
+function doSomething(msg, callback){<br>
+alert(msg);<br>
+if(typeof callback == &quot;function&quot;)<br>
+callback();<br>
+}<br>
+doSomething(&quot;回调函数&quot;, function(){<br>
+alert(&quot;匿名函数实现回调!&quot;);<br>
+});</p>
+<p>声明函数 doSomething  参数msg  第二个参数callback的声明在下面调用 doSometing 的时候进行</p>
+<p>例子<br>
+function delay(ms) {<br>
+return new Promise(resolve =&gt; setTimeout(resolve, ms));<br>
+}</p>
+<p>delay(3000).then(() =&gt; alert('runs after 3 seconds'));</p>
+<p>首先声明delay函数带一个参数ms<br>
+返回的是一个Promise对象 其中声明了第一个参数resolve 调用setTiomeout函数的声明<br>
+接收两个参数 一个是延迟ms后发生发生的resolve函数 另一个指定延迟时间</p>
+<p>调用delay(3000) 此时将3000传值给ms 返回一个Promise对象 .then() 开始调用setTimeout函数<br>
+3s后  resolve回调函数执行  箭头函数调用  无参数执行alert('runs after 3 seconds')；</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Es6中的Promise对象 ]]></title>
+        <id>https://huyifu.github.io/post/es6-zhong-de-promise-dui-xiang/</id>
+        <link href="https://huyifu.github.io/post/es6-zhong-de-promise-dui-xiang/">
+        </link>
+        <updated>2021-03-29T11:05:19.000Z</updated>
+        <summary type="html"><![CDATA[<p>1</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>1</p>
+<!-- more -->
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JS this的指向]]></title>
+        <id>https://huyifu.github.io/post/js-this-de-zhi-xiang/</id>
+        <link href="https://huyifu.github.io/post/js-this-de-zhi-xiang/">
+        </link>
+        <updated>2021-03-29T01:11:11.000Z</updated>
+        <content type="html"><![CDATA[<!-- more -->
+<h2 id="this只在调用时才能确定this指向的对象在声明时无法确定">this只在调用时才能确定this指向的对象，在声明时无法确定</h2>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MongoDB]]></title>
+        <id>https://huyifu.github.io/post/mongodb/</id>
+        <link href="https://huyifu.github.io/post/mongodb/">
+        </link>
+        <updated>2021-03-29T01:10:48.000Z</updated>
+        <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Node.js 学习]]></title>
         <id>https://huyifu.github.io/post/nodejs-xue-xi/</id>
@@ -754,209 +905,6 @@ var xxx_style = xxx-point.style.cssText.toLowerCase(); //转化为小写
 xxx_style  = 'border-top: 1px solid #ccc;'+xxx_style; //如果没有分号不影响
 xxx-point.style.cssText = xxx_style;
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[document.body.scrollTop与document.documentElement.scrollTop兼容]]></title>
-        <id>https://huyifu.github.io/post/documentbodyscrolltop-yu-documentdocumentelementscrolltop-jian-rong/</id>
-        <link href="https://huyifu.github.io/post/documentbodyscrolltop-yu-documentdocumentelementscrolltop-jian-rong/">
-        </link>
-        <updated>2021-03-13T05:04:57.000Z</updated>
-        <content type="html"><![CDATA[<p>#scrollTop<br>
-scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离</p>
-<p>#获取当前页面的滚动条纵坐标位置<br>
-使用document.documentElement.scrollTop;</p>
-<p>#网页被卷去的高： document.body.scrollTop;<br>
-document.body.scrollTop 可以获取到当前页面被卷去的高度。</p>
-<p>#不同浏览器兼容性不同<br>
-IE6/7/8：<br>
-可以使用 document.documentElement.scrollTop；<br>
-IE9及以上：<br>
-可以使用window.pageYOffset或者document.documentElement.scrollTop<br>
-Safari:<br>
-safari： window.pageYOffset 与document.body.scrollTop都可以；<br>
-Firefox:<br>
-火狐等等相对标准些的浏览器就省心多了，直接用window.pageYOffset 或者 document.documentElement.scrollTop ；<br>
-Chrome：<br>
-谷歌浏览器只认识document.body.scrollTop;</p>
-<p>#总结：<br>
-两者同时存在时只有一个值生效 另一个值为0<br>
-故 var sTop=document.body.scrollTop+document.documentElement.scrollTop;<br>
-或 var sTop=document.body.scrollTop||document.documentElement.scrollTop;</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[css position属性]]></title>
-        <id>https://huyifu.github.io/post/css-relative-he-absolute/</id>
-        <link href="https://huyifu.github.io/post/css-relative-he-absolute/">
-        </link>
-        <updated>2021-03-07T02:07:41.000Z</updated>
-        <content type="html"><![CDATA[<p>先来看W3教程 介绍的五个值<br>
-absolute	<br>
-生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。</p>
-<p>元素的位置通过 &quot;left&quot;, &quot;top&quot;, &quot;right&quot; 以及 &quot;bottom&quot; 属性进行规定。</p>
-<p>fixed	<br>
-生成绝对定位的元素，相对于浏览器窗口进行定位。</p>
-<p>元素的位置通过 &quot;left&quot;, &quot;top&quot;, &quot;right&quot; 以及 &quot;bottom&quot; 属性进行规定。</p>
-<p>relative	<br>
-生成相对定位的元素，相对于其正常位置进行定位。</p>
-<p>因此，&quot;left:20&quot; 会向元素的 LEFT 位置添加 20 像素。</p>
-<p>static	默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。</p>
-<p>inherit	规定应该从父元素继承 position 属性的值。</p>
-<ul>
-<li>left right 指的是距离left right 多少像素</li>
-<li>float 与absolute 不能同时使用</li>
-<li>文档流布局的概念</li>
-<li>absolute是相对于最近的不为static position的祖先元素进行定位  如果没有则相对body进行定位</li>
-<li>relative 原来的空间会被保留<br>
-什么是文档流布局？<br>
-将窗体自上而下分成一行行， 并在每行中按从左至右的顺序排放元素，即为文档流。  <br>
-每个非浮动块级元素都独占一行， 浮动元素则按规定浮在行的一端。 若当前行容不下， 则另起新行再浮动。 内联元素也不会独占一行。 几乎所有元素(包括块级，内联和列表元素）均可生成子行， 用于摆放子元素。有三种情况将使得元素脱离文档流而存在，分别是 浮动，绝对定位， 固定定位。 但是在IE6中浮动元素也存在于文档流中。</li>
-</ul>
-<h2 id="absolute-与-relative">absolute 与 relative</h2>
-<p>absolute属性的元素：元素从原来的静态（position=static）安排的位置被“挤出”平面空间，自己开始新的位置，形象地说是在其他平面上，原来的平面空间被其他元素占有。<br>
-relative属性的元素：遵从静态（position=static）文档流安排，但可使用top、bottom、left、right属性进行位置偏移（不影响同级文档流的位置）。形象地说原来的位置还留着，但它可以随意移动穿插与不同位置而不影响其他元素的排布。<br>
-两者的共同点是：都可以随意偏移原本文档位置而不影响同级元素的排布。<br>
-不同点是：relative的空间被保留下来，而absolute的空间被占有了。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[css height width  auto和100% ]]></title>
-        <id>https://huyifu.github.io/post/css-height-width-auto-he-100/</id>
-        <link href="https://huyifu.github.io/post/css-height-width-auto-he-100/">
-        </link>
-        <updated>2021-03-06T04:21:29.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="两种盒子模型-w3c盒子模型-ie盒子模型">两种盒子模型  w3c盒子模型 IE盒子模型</h3>
-<p>box-sizing ： content-box w3c盒子模型<br>
-box-sizing ： border-box IE盒子模型<br>
-可视width（height） = content + padding + border +margin</p>
-<ul>
-<li>w3c盒子模型 width（height） = content</li>
-<li>IE盒子模型 width（height） = content + padding + border</li>
-</ul>
-<h3 id="width-height-100">width (height )100%</h3>
-<p>height width百分数是相对于包含块的。<br>
-如果没有显示声明包含块的height，百分数高度会重置为auto。  ——《css权威指南》</p>
-<ul>
-<li>%设定宽高是根据父级宽高来定</li>
-<li>width height 没有设置 默认auto</li>
-<li>auto 一侧定值 一侧auto 则auto为剩余空间 （类似float）</li>
-<li>两侧如果均是auto 则平分空间</li>
-</ul>
-<h3 id="margin-0-auto-为何水平居中">margin 0 auto 为何水平居中？</h3>
-<p>——两侧 auto左右平分空间</p>
-<h3 id="auto实现垂直居中">auto实现垂直居中</h3>
-<pre><code>position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-</code></pre>
-<p>试验：</p>
-<p>原理： 盒子四侧全部</p>
-<p>未完。。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ES6 let命令 和const命令]]></title>
-        <id>https://huyifu.github.io/post/es6-let-ming-ling/</id>
-        <link href="https://huyifu.github.io/post/es6-let-ming-ling/">
-        </link>
-        <updated>2021-03-04T11:43:43.000Z</updated>
-        <content type="html"><![CDATA[<p><strong>let类似var 不过声明的变量只在let命令下的代码块生效</strong></p>
-<pre><code>var a = [];
-for (var i = 0; i &lt; 10; i++) {
-  a[i] = function () {
-    console.log(i);
-  };
-}
-a[6](); // 10  a为函数数组 var 在（）创建的变量 会存在于循环外部的执行环境中 故输出10
-for (let i = 0; i &lt; 10; i++) {
-    a[i] = function () {
-      console.log(i);
-    };
-  }
-a[6](); // 6  let 块级作用域 每一轮i变量重新声明 并由于js引擎内部记忆上一轮的值 计算后赋值
-</code></pre>
-<blockquote>
-<p>for循环还有一个特别之处，就是设置循环变量的那部分是一个父作用域，而循环体内部是一个单独的子作用域。</p>
-</blockquote>
-<p>以下为代码实践证明</p>
-<pre><code>for (let i = 0; i &lt; 5; i++) {
-    i++; //let不声明i 开始影响（）里声明的i变量 子作用域影响父作用域
-    console.log(i);
-  }
-//输出1 3 5
-  for (let i = 0; i &lt; 5; i++) {
-    let i=10; //let声明i 单独的子作用域 
-    console.log(i);
-  }
-//输出5遍10
-</code></pre>
-<p><strong>var存在变量提升  let不存在</strong><br>
-变量提升</p>
-<ul>
-<li>var关键字声明的变量，无论实际声明的位置在何处，都会被视为声明在函数的顶部（如果声明不在任意函数内，则视为在全局作用域的顶部）</li>
-<li>JavaScript引擎的工作方式是，先预解析代码， 获取所有被声明的变量和函数声明，然后再一行一行地运行，这就使所有变量声明的语句，都会被提升到代码的头部，这就是变量提升</li>
-</ul>
-<pre><code>// var 的情况
-console.log(foo); // 输出undefined
-var foo = 2;
-
-// let 的情况
-console.log(bar); // 报错ReferenceError
-let bar = 2;
-</code></pre>
-<p><strong>暂时性死区</strong><br>
-用let声明变量之前，该变量不可用</p>
-<ul>
-<li>typeof 不是百分百不报错 ——</li>
-</ul>
-<pre><code>typeof x; //ReferenceError
-let x;
-</code></pre>
-<ul>
-<li>let与var</li>
-</ul>
-<pre><code>var  x = x;//不报错
-let   x = x;//报错
-</code></pre>
-<p><strong>const</strong></p>
-<ul>
-<li>声明常量（不变） 所以后必须马上赋值</li>
-<li>块级作用域有效</li>
-<li>暂时性死区</li>
-<li>不可重复声明</li>
-<li>对象冻结，应该使用Object.freeze方法。<br>
-保证常量值不改变本质是<strong>防止变量所指向内存的地址内数据进行更改</strong><br>
-简单的数据类型可以保证不改变<br>
-而对于复合型（数组和对象）则只能保证变量存放的指针不变 指向的数据结构内部无法控制</li>
-</ul>
-<pre><code>const a = [];
-a.push('Hello'); // 可执行
-a.length = 0;    // 可执行
-a = ['Dave'];    // 报错
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[路径 相对和绝对]]></title>
-        <id>https://huyifu.github.io/post/lu-jing-xiang-dui-he-jue-dui/</id>
-        <link href="https://huyifu.github.io/post/lu-jing-xiang-dui-he-jue-dui/">
-        </link>
-        <updated>2021-03-03T12:28:44.000Z</updated>
-        <content type="html"><![CDATA[<p><strong>绝对路径</strong><br>
-从根目录为起点到你想到到达的目录<br>
-<strong>相对路径</strong><br>
-以一个基准点(自身)为起点到达你想到达的目录<br>
-/ 根目录(基准点的最上层目录) 即windows系统下某个盘<br>
-./当前目录  ../上一级目录  (相对的)</p>
-<p>例子<br>
-c:/website/web/xz/index.html<br>
-c:/website/img/images/photo.jpg<br>
-在index.html中导入photo.jpg<br>
-绝对路径： src=&quot;c:/website/img/images/photo.jpg&quot; (本电脑)<br>
-相对路径 :   src=&quot;../../img/images/photo.jpg&quot; (只要保持相对位置就可以使用)</p>
 ]]></content>
     </entry>
 </feed>
