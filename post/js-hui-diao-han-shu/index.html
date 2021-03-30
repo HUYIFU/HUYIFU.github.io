@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617024108643">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617062800847">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -18,14 +18,9 @@
 
 
 
-    <meta name="description" content="回调函数
-代码实例
-function doSomething(msg, callback){
-alert(msg);
-if(typeof callback == &quot;function&quot;)
-callback();
-}
-doS..." />
+    <meta name="description" content="引言：在学习node中，开始大量的使用异步化编程 而异步函数与回调函数有着紧密的连接 此文来深入回调函数
+回调函数概念
+A callback is a function that is passed as an argument to an..." />
     <meta name="keywords" content="es6,detail" />
   </head>
   <body>
@@ -35,7 +30,7 @@ doS..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1617024108643" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1617062800847" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -102,27 +97,61 @@ doS..." />
             <div class="post-date">2021-03-29</div>
             
             <div class="post-content" v-pre>
-              <p>回调函数<br>
-代码实例<br>
-function doSomething(msg, callback){<br>
-alert(msg);<br>
-if(typeof callback == &quot;function&quot;)<br>
-callback();<br>
-}<br>
-doSomething(&quot;回调函数&quot;, function(){<br>
-alert(&quot;匿名函数实现回调!&quot;);<br>
-});</p>
-<p>声明函数 doSomething  参数msg  第二个参数callback的声明在下面调用 doSometing 的时候进行</p>
-<p>例子<br>
-function delay(ms) {<br>
-return new Promise(resolve =&gt; setTimeout(resolve, ms));<br>
-}</p>
-<p>delay(3000).then(() =&gt; alert('runs after 3 seconds'));</p>
-<p>首先声明delay函数带一个参数ms<br>
+              <p>引言：在学习node中，开始大量的使用异步化编程 而异步函数与回调函数有着紧密的连接 此文来深入回调函数</p>
+<h2 id="回调函数概念">回调函数概念</h2>
+<p>A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.</p>
+<h3 id="四级水平翻译-回调函数是一个通过作为另一个函数的参数并且在父函数已经完成后执行的函数">四级水平翻译： 回调函数是一个通过作为另一个函数的参数并且在父函数已经完成后执行的函数🤧</h3>
+<h3 id="自己的话来讲-回调函数是一个函数的参数并且在这个函数里可以调用这个回调函数至于这个回调函数什么时候调用-有的是可以指定调用-有的是满足特殊要求后系统自动调用">自己的话来讲： 回调函数是一个函数的参数，并且在这个函数里可以调用这个回调函数，至于这个回调函数什么时候调用 有的是可以指定调用 有的是满足特殊要求后系统自动调用</h3>
+<p>以下是回调函数的一些例子 每个都有相关的理解<br>
+例子一</p>
+<pre><code>function addSqua(num1, num2, callback){
+  var sum = num1 + num2;
+  return callback(sum);
+}
+function squa(num){
+  return num*num;
+}
+let num = addSqua(1, 2, squa);    
+console.log(num);
+//输出9  
+</code></pre>
+<p>以上定义了 addSqua函数 第三个参数是callback  调用时候将squa函数传值给了callback<br>
+并且 在return前调用了squa函数   其实是两层函数<br>
+例子二</p>
+<pre><code>function doSomething(msg, callback){
+    alert(msg);
+    if(typeof callback == &quot;function&quot;) 
+    callback();
+ } 
+doSomething(&quot;回调函数&quot;, function(){
+    alert(&quot;匿名函数实现回调!&quot;);
+ }); 
+</code></pre>
+<p>声明函数 doSomething  参数msg  第二个参数callback的声明在下面调用 doSometing 的时候进行<br>
+这个匿名函数传值给了callback</p>
+<p>例子三</p>
+<pre><code>setTimeout({
+  console.log(”代码执行区“);
+},ms)
+</code></pre>
+<p>setTimeout 典型的回调函数 此处在ms毫秒后 系统自动调用这个函数 当然第一个参数也可以写成指向要执行函数的变量. 前两个例子都是自己调用.<br>
+例子四（看Promise时候极具迷惑 三行代码分析起来却很多...）</p>
+<pre><code>function delay(ms) {
+  return new Promise(resolve =&gt; setTimeout(resolve, ms));
+}
+delay(3000).then(() =&gt; alert('runs after 3 seconds'));
+</code></pre>
+<p>delay声明区<br>
+首先声明delay函数带一个参数ms<br>
 返回的是一个Promise对象 其中声明了第一个参数resolve 调用setTiomeout函数的声明<br>
-接收两个参数 一个是延迟ms后发生发生的resolve函数 另一个指定延迟时间</p>
-<p>调用delay(3000) 此时将3000传值给ms 返回一个Promise对象 .then() 开始调用setTimeout函数<br>
+接收两个参数 一个是延迟ms后发生发生的resolve函数 另一个指定延迟时间<br>
+delay调用区<br>
+调用delay(3000) 此时将3000传值给ms 返回一个Promise对象 .then() 开始调用setTimeout函数<br>
 3s后  resolve回调函数执行  箭头函数调用  无参数执行alert('runs after 3 seconds')；</p>
+<h2 id="总结">总结：</h2>
+<p>回调函数不是立即执行 它需要在合适的时间进行执行  与异步的理念吻合  异步：同时执行多个工作 但不能确定每个工作具体完成的时间，一般是完成单个工作后采用回调函数来进行下一步的处理。<br>
+以上在主函数中的声明中 回调函数以参数形式存在  至于回调函数具体是什么函数 看传入的值来决定<br>
+而它的被调用执行的时机 1自己调用 2系统调用</p>
 
             </div>
             
