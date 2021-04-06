@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617094278740">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617705868664">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -31,7 +31,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1617094278740" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1617705868664" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -96,6 +96,141 @@
           
             <article class="post-item">
               <div class="left">
+                <a href="https://huyifu.github.io/post/vue-xue-xi/">
+                  <h2 class="post-title">vue学习</h2>
+                </a>
+                <div class="post-date">
+                  2021-04-05
+                </div>
+                <div class="post-abstract">
+                  
+                </div>
+              </div>
+              
+            </article>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://huyifu.github.io/post/js-zhi-xing-shang-xia-wen-zhi-xing-huan-jing/">
+                  <h2 class="post-title">Js 执行上下文（执行环境）</h2>
+                </a>
+                <div class="post-date">
+                  2021-03-31
+                </div>
+                <div class="post-abstract">
+                  
+                </div>
+              </div>
+              
+            </article>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://huyifu.github.io/post/node-kuang-jia-express-xue-xi/">
+                  <h2 class="post-title">Node 框架 Express学习</h2>
+                </a>
+                <div class="post-date">
+                  2021-03-30
+                </div>
+                <div class="post-abstract">
+                  <p>Express框架<br>
+提供简洁路由定义方式<br>
+对HTTP请求参数 简化处理<br>
+支持模板引擎<br>
+提供中间件 控制HTTP请求</p>
+<p>中间件<br>
+一堆方法 接收请求 对请求响应  也可以交给下一个中间件继续处理<br>
+两个部分组成  中间件方法和请求处理函数<br>
+app.get('请求路径','处理函数')   方法express提供</p>
+<p>简单的应用 将.get请求分成两个中间件进行处理<br>
+next 将请求的控制权交给下一个中间件<br>
+//引入express框架</p>
+<pre><code>const express = require('express');
+const app = express();//创建服务器
+app.get('/',(req,res,next) =&gt;{
+    req.addname= &quot;在请求头添加的属性&quot;;
+    next();
+});
+app.get('/',(req,res) =&gt;{
+    res.send(req.addname);
+});
+app.listen(3000);
+console.log(&quot;网站启动 端口3000&quot;);
+</code></pre>
+<p>app.use   匹配所有的请求  因此如果后续要继续处理 要使用next()<br>
+app.use('/某一个请求路径',(req,res,next))  可以指定某一个路径匹配的所有请求</p>
+<p>中间件的应用<br>
+1对页面访问某路径进行登录拦截  1 use 进行判断 如果已经登录则放行next() 2 没有登录 返回没有登录的信息<br>
+2 页面维护  直接放最前面进行拦截   不设置路径则匹配所有路径<br>
+3 自定义404路径  放在最后面没有匹配的路径  不设置路径则匹配所有路径</p>
+<p>错误处理中间件</p>
+<pre><code> thorow new Error('发生了错误'); 
+app.use( (err,req,res,next) =&gt;{
+	//err 为手动抛出的Error对象
+	res.status(500).send(err.message); //返回 err对象的错误信息属性
+} )
+</code></pre>
+<p>捕获异步代码错误<br>
+try catch块</p>
+<pre><code>const promisify = require('util').promisify
+const NewreadFile = promisify('fs.readFile') 改造读取文件成返回promise对象的异步函数
+app.get('/', async (req,res,next) =&gt;{
+     try {
+   await NewreadFile('.');
+}
+catch (ex){
+   next(ex);	
+}
+})
+</code></pre>
+<p>捕获到错误的话 程序不会因为这个错误而终止进行—— 健壮性</p>
+<p>构建模块化路由<br>
+express下的Router 路由对象<br>
+为这个路由对象可以匹配请求路径</p>
+<pre><code>const express = require('express');
+const app = express();
+//创建路由对象
+const home = express.Router();
+app.use('/home',home);
+//创建二级路由
+home.use('/index',(req,res)=&gt;{
+    res.send(&quot;二级路由 /home/index！&quot;);
+})
+app.listen(3000);
+</code></pre>
+<p>其中home模块 可以写在别的js中 通过导入导出进行模块的使用<br>
+在主index.js 中<br>
+这样创建二级路由<br>
+const xx = require('')<br>
+app.use('/xx路径', xx);</p>
+<p>Get参数<br>
+在请求函数中 使用req.query 自动将请求参数获取并转化成对象的形式<br>
+app.get('/index',(req,res)=&gt;{<br>
+res.send(req.query);<br>
+});</p>
+<p>Post 请求参数获取<br>
+使用借助第三包 body-parser<br>
+const bodyParser = require('body-parser');<br>
+而且需要在最开始对这个模块进行配置 默认<br>
+app.use(bodyParser.urlencoded( { extended: false} );</p>
+<pre><code>const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+app.use(bodyParser.urlencoded({ extended: false}));
+app.post('/index',(req,res)=&gt;{
+    res.send(req.body);
+});
+app.listen(3000);
+</code></pre>
+<p>路由参数 路由里面附带数据 ——  get传递和获取参数的另一种方式</p>
+
+                </div>
+              </div>
+              
+            </article>
+          
+            <article class="post-item">
+              <div class="left">
                 <a href="https://huyifu.github.io/post/js-jian-tou-han-shu/">
                   <h2 class="post-title">JS 箭头函数</h2>
                 </a>
@@ -133,8 +268,7 @@
                   2021-03-29
                 </div>
                 <div class="post-abstract">
-                  <p>1</p>
-
+                  
                 </div>
               </div>
               
@@ -267,51 +401,6 @@
                 </a>
                 <div class="post-date">
                   2021-03-07
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/css-height-width-auto-he-100/">
-                  <h2 class="post-title">css height width  auto和100% </h2>
-                </a>
-                <div class="post-date">
-                  2021-03-06
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/es6-let-ming-ling/">
-                  <h2 class="post-title">ES6 let命令 和const命令</h2>
-                </a>
-                <div class="post-date">
-                  2021-03-04
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/lu-jing-xiang-dui-he-jue-dui/">
-                  <h2 class="post-title">路径 相对和绝对</h2>
-                </a>
-                <div class="post-date">
-                  2021-03-03
                 </div>
                 <div class="post-abstract">
                   

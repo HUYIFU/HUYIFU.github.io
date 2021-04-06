@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>vue学习 | 古月的blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617705868664">
+<link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Vue的语法及其使用
+需要实例化
+var vm = new Vue({
+  // 选项
+})
+ var vm = new Vue({
+        el: '#vue_det', 进行与id为vue_det的元素进行绑定
+        ..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://huyifu.github.io">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1617705868664" class="site-logo">
+        <h1 class="site-title">古月的blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://huyifu.github.io" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      Nothing for nothing
+
+    </div>
+    <div class="site-footer">
+      Cover by HuSir | <a class="rss" href="https://huyifu.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">vue学习</h2>
+            <div class="post-date">2021-04-05</div>
+            
+            <div class="post-content" v-pre>
+              <p>Vue的语法及其使用<br>
+需要实例化</p>
+<pre><code>var vm = new Vue({
+  // 选项
+})
+ var vm = new Vue({
+        el: '#vue_det', 进行与id为vue_det的元素进行绑定
+        data: {    	//data定义属性
+            site: &quot;菜鸟教程&quot;, 
+            url: &quot;www.runoob.com&quot;,
+            alexa: &quot;10000&quot;
+        },
+        methods: {  	//methods定义函数
+            details: function() {
+                return  this.site + &quot; - 学的不仅是技术，更是梦想！&quot;;
+            }
+        }
+    })
+    ```
+html：
+</code></pre>
+<div id="vue_det">
+    <h4>site : {{site}}</h4>
+    <h4>url : {{url}}</h4>
+    <h4>{{details()}}</h4>
+</div>
+```
+通过使用 v-once 指令，你也能执行一次性地插值，当数据改变时，插值处的内容不会更新。但请留心这会影响到该节点上的其它数据绑定：
+```
+<span v-once>这个将不会改变: {{ msg }}</span>
+```
+模板语法
+使用 v-html 指令用于输出 html 代码：
+```
+ data: {
+    message: '<h4>菜鸟教程</h4>'
+  }
+<pre><code>v-bind用于绑定数据和元素属性   v-bind:属性名=&quot; &quot;的格式简写成:属性名=&quot; &quot;
+例如
+</code></pre>
+<p>&lt; a :class=&quot;data1&quot; :href=&quot;url&quot;&gt;click me</a><br>
+data:{<br>
+url:&quot;https://www.baidu.com&quot;,<br>
+data1: {active:isActive} //此处为一个对象 也可以进行绑定<br>
+}</p>
+<pre><code>```
+</code></pre>
+<p>指令 (Directives) 是带有 v- 前缀的特殊 attribute。指令 attribute 的值预期是单个 JavaScript 表达式</p>
+<p v-if="seen">现在你看到我了</p>
+这里，v-if 指令将根据表达式 seen 的值的真假来插入/移除 <p> 元素。
+<p>v-on 指令，它用于监听 DOM 事件：<br>
+<a v-on:click="doSomething">...</a><br>
+v-on:click =<br>
+缩写<br>
+@click =<br>
+@[event]  =<br>
+动态参数</p>
+<p>计算属性  data里的computed 写入需要计算的表达式</p>
+<pre><code>&lt;div id=&quot;example&quot;&gt;
+  &lt;p&gt;Original message: &quot;{{ message }}&quot;&lt;/p&gt;
+  &lt;p&gt;Computed reversed message: &quot;{{ reversedMessage }}&quot;&lt;/p&gt;
+&lt;/div&gt;
+var vm = new Vue({
+  el: '#example',
+  data: {
+    message: 'Hello'
+  },
+  computed: {
+    // 计算属性的 getter
+    reversedMessage: function () {
+      // `this` 指向 vm 实例
+      return this.message.split('').reverse().join('')
+    }
+  }
+})
+</code></pre>
+<p>从 2.6.0 开始，可以用方括号括起来的 JavaScript 表达式作为一个指令的参数：<br>
+v-bind:[attributeName]=&quot;url&quot;  即data中attributeName的值作为绑定的属性</p>
+<h2 id="计算属性缓存-vs-方法">计算属性缓存 vs 方法</h2>
+<p>vue 实例 中computed 与 methods 都可以基于某一个data进行表达式的运算</p>
+<pre><code>methods: {
+  reversedMessage: function () {
+    return this.message.split('').reverse().join('')
+  }
+}
+</code></pre>
+<p>与</p>
+<pre><code>  computed: {
+    // 计算属性的 getter
+    reversedMessage: function () {
+      // `this` 指向 vm 实例
+      return this.message.split('').reverse().join('')
+    }
+  }
+</code></pre>
+<h3 id="两者结果一致-但是计算属性是基于它们的响应式依赖进行缓存的">两者结果一致 但是计算属性是基于它们的响应式依赖进行缓存的</h3>
+<p>意味着 如果所依赖的data没有进行更改 计算属性会立即返回之前的计算结果，而不必再次执行函数。  所有使用computed在某些时刻可以提高性能<br>
+因为数据绑定 和依赖式的更新  可以不进行监听数据</p>
+<pre><code>var vm = new Vue({
+  el: '#demo',
+  data: {
+    firstName: 'Foo',
+    lastName: 'Bar'
+  },
+  computed: {
+    fullName: function () {
+      return this.firstName + ' ' + this.lastName
+    }
+  }
+})
+</code></pre>
+<p>在firstName 或者 lastName 更改时候 fullName自动进行更改</p>
+<p>computed  set 与get</p>
+<pre><code> &lt;body&gt;
+     &lt;div id=&quot;app&quot;&gt;
+         {{fullName}}
+     &lt;/div&gt;
+    &lt;script&gt;
+       var vm = new Vue({
+           el: &quot;#app&quot;,
+           data: {
+               firstName:&quot;Ma&quot;,
+               lastName:&quot;BinYan&quot;
+           },
+           computed:{
+               fullName :{
+                   get: function()
+                   {return this.firstName+&quot; &quot;+this.lastName},
+                  set : function(value)  //修改fullName的值时触发
+                  {
+                      var array = value.split(&quot; &quot;);
+                       this.firstName=array[0];
+                       this.lastName=array[1];
+                   }
+               }
+           }
+       })
+    &lt;/script&gt;
+  &lt;/body&gt;
+</code></pre>
+<p>侦听器<br>
+虽然计算属性在大多数情况下更合适，但有时也需要一个自定义的侦听器。这就是为什么 Vue 通过 watch 选项提供了一个更通用的方法，来响应数据的变化。当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的。</p>
+<p>绑定 HTML Class<br>
+对象语法<br>
+我们可以传给 v-bind:class 一个对象，以动态地切换 class：</p>
+<div v-bind:class="{ active: isActive }"></div>
+上面的语法表示 active 这个 class 存在与否将取决于数据 property isActive 的 truthiness。
+<p>你可以在对象中传入更多字段来动态切换多个 class。此外，v-bind:class 指令也可以与普通的 class attribute 共存。当有如下模板：</p>
+<div
+  class="static"
+  v-bind:class="{ active: isActive, 'text-danger': hasError }"
+></div>
+和如下 data：
+<p>data: {<br>
+isActive: true,<br>
+hasError: false<br>
+}<br>
+结果渲染为：</p>
+<pre><code>&lt;div class=&quot;static active&quot;&gt;&lt;/div&gt;
+
+  &lt;style&gt;
+   .styles{
+      color: yellow;
+  }
+    &lt;/style&gt;
+&lt;/head&gt;
+    
+  &lt;body&gt;
+    &lt;div id=&quot;app&quot; &gt;
+    &lt;span @click=&quot;handleClick&quot;
+    :class=&quot;{styles: isActivated}&quot;&gt;XiaoMa&lt;/span&gt;
+&lt;/div&gt;
+     &lt;script&gt;
+         var vm = new Vue({
+             el:&quot;#app&quot;,
+             data:{
+                 isActivated : false
+             },
+             methods:{
+              handleClick: function (){
+                  this.isActivated=!this.isActivated;
+              }
+             }
+         })
+ &lt;/script&gt;
+</code></pre>
+<p>条件渲染<br>
+v-if<br>
+v-if 指令用于条件性地渲染一块内容。这块内容只会在指令的表达式返回 truthy 值的时候被渲染。</p>
+<h4 v-if="awesome">Vue is awesome!</h4>
+也可以用 v-else 添加一个“else 块”：
+<h4 v-if="awesome">Vue is awesome!</h4>
+<h4 v-else>Oh no 😢</h4>
+在 < template> 元素上使用 v-if 条件渲染分组
+因为 v-if 是一个指令，所以必须将它添加到一个元素上。但是如果想切换多个元素呢？此时可以把一个 < template> 元素当做不可见的包裹元素，并在上面使用 v-if。最终的渲染结果将不包含 < t emplate> 元素。
+```
+<template v-if="ok">
+  <h1>Title</h1>
+  <p>Paragraph 1</p>
+  <p>Paragraph 2</p>
+</template>
+v-else-if 
+<div v-if="type === 'A'">
+  A
+</div>
+<div v-else-if="type === 'B'">
+  B
+</div>
+<div v-else-if="type === 'C'">
+  C
+</div>
+<div v-else>
+  Not A/B/C
+</div>
+```
+<h3 id="vue-会尽可能高效地渲染元素通常会复用已有元素而不是从头开始渲染">Vue 会尽可能高效地渲染元素，通常会复用已有元素而不是从头开始渲染。</h3>
+<p>会使得某些元素直接复用 出现一些问题</p>
+<pre><code>&lt;template v-if=&quot;loginType === 'username'&quot;&gt;
+  &lt;label&gt;Username&lt;/label&gt;
+  &lt;input placeholder=&quot;Enter your username&quot;&gt;
+&lt;/template&gt;
+&lt;template v-else&gt;
+  &lt;label&gt;Email&lt;/label&gt;
+  &lt;input placeholder=&quot;Enter your email address&quot;&gt;
+&lt;/template&gt;
+</code></pre>
+<p>input里面的内容在切换时不会清除 因为vue在渲染时复用了另一个input<br>
+解决方法—— 绑定key值<br>
+:key =&quot;id&quot;  vue根据key来判断是不是相同的元素</p>
+<p>v-show   保留有dom<br>
+条件展示元素<br>
+不同的是带有 v-show 的元素始终会被渲染并保留在 DOM 中。v-show 只是简单地切换元素的 CSS property display。</p>
+<h2 id="v-if-vs-v-show">v-if vs v-show</h2>
+<p>v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。<br>
+v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。<br>
+相比之下，v-show 就简单得多——不管初始条件是什么，元素总是会被渲染，并且只是简单地基于 CSS 进行切换。<br>
+一般来说，v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。因此，如果需要非常频繁地切换，则使用 v-show 较好；如果在运行时条件很少改变，则使用 v-if 较好。</p>
+<p>列表渲染<br>
+在 v-for 里使用对象<br>
+你也可以用 v-for 来遍历一个对象的 property。</p>
+<pre><code>&lt;ul id=&quot;v-for-object&quot; class=&quot;demo&quot;&gt;
+  &lt;li v-for=&quot;value in object&quot;&gt;
+    {{ value }}
+  &lt;/li&gt;
+&lt;/ul&gt;
+new Vue({
+  el: '#v-for-object',
+  data: {
+    object: {
+      title: 'How to do lists in Vue',
+      author: 'Jane Doe',
+      publishedAt: '2016-04-10'
+    }
+  }
+})
+</code></pre>
+<p>结果：</p>
+<p>你也可以提供第二个的参数为 property 名称 (也就是键名)：</p>
+<div v-for="(value, name) in object">
+  {{ name }}: {{ value }}
+</div>
+<p>还可以用第三个参数作为索引：</p>
+<div v-for="(value, name, index) in object">
+  {{ index }}. {{ name }}: {{ value }}
+</div>
+结果如下：
+0.title: How to do lists in Vue,
+1.author: Jane Doe,
+2.publishedAt: 2016-04-10
+<h2 id="遍历的特性">遍历的特性</h2>
+<p>维护状态<br>
+当 Vue 正在更新使用 v-for 渲染的元素列表时，它默认使用“就地更新”的策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序，而是就地更新每个元素，并且确保它们在每个索引位置正确渲染。这个类似 Vue 1.x 的 track-by=&quot;$index&quot;。<br>
+这个默认的模式是高效的，但是只适用于不依赖子组件状态或临时 DOM 状态 (例如：表单输入值) 的列表渲染输出。<br>
+为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，你需要为每项提供一个唯一 key attribute：</p>
+<div v-for="item in items" v-bind:key="item.id">
+  <!-- 内容 -->
+</div>
+建议尽可能在使用 v-for 时提供 key attribute，除非遍历输出的 DOM 内容非常简单，或者是刻意依赖默认行为以获取性能上的提升。
+<p>变更方法<br>
+Vue 将被侦听的数组的变更方法进行了包裹，所以它们也将会触发视图更新。这些被包裹过的方法包括：<br>
+push()<br>
+pop()<br>
+shift()<br>
+unshift()<br>
+splice()<br>
+sort()<br>
+reverse()<br>
+tip：用数组下标可以来改变数据 但是不会触发视图更新</p>
+<h2 id="使用ref获取dom">使用ref获取dom</h2>
+<pre><code>&lt;body&gt;
+    &lt;div id='app'&gt;
+       &lt;div ref='hello' @click=&quot;handleClick&quot;&gt;
+           click me
+        此div绑定了一个ref hello
+        在函数中使用this.$refs vue实例中所有的引用
+        this.$refs.hello可以取到这个dom节点
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+  new Vue({
+      el:'#app',
+      methods: {
+          handleClick : function(){
+              alert(this.$refs.hello.innerHTML);
+          }
+      }
+
+});
+    &lt;/script&gt;
+  &lt;/body&gt;
+
+</code></pre>
+<h2 id="组件的使用">组件的使用</h2>
+<p>Vue.component('组件名称', {组件内容});<br>
+在创建后 组件为可复用的vue实例<br>
+组件作为自定义元素来使用：<br>
+&lt;组件名&gt;&lt;/组件名&gt;</p>
+<p>组件的注册<br>
+Vue.componet 全局注册<br>
+全局注册的组件可以用在其被注册之后的任何 (通过 new Vue) 新创建的 Vue 根实例，也包括其组件树中的所有子组件的模板中。<br>
+局部注册<br>
+var ComponentA = { /* ... <em>/ }<br>
+var ComponentB = { /</em> ... <em>/ }<br>
+var ComponentC = { /</em> ... */ }<br>
+然后在 components 选项中定义你想要使用的组件：</p>
+<pre><code>new Vue({
+  el: '#app',
+  components: {
+    'component-a': ComponentA,
+    'component-b': ComponentB
+  }
+})
+</code></pre>
+<p>对于 components 对象中的每个 property 来说，其 property 名就是自定义元素的名字，其 property 值就是这个组件的选项对象。</p>
+<h3 id="tip局部组件的使用需要像上面那样声明-即局部组件中使用另一个需要声明">tip：局部组件的使用需要像上面那样声明  即局部组件中使用另一个需要声明</h3>
+<p>var ComponentA = { /* ... */ }<br>
+var ComponentB = {<br>
+components: {<br>
+'component-a': ComponentA<br>
+},<br>
+// ...<br>
+}</p>
+<h2 id="prop">Prop</h2>
+<p>子组件设置props属性来接收父组件的数据<br>
+单向数据流： 子组件不能改变父组件传来的值 父组件更新数据传给子组件的数据会进行更新<br>
+如果需要更改并传给父组件可以：<br>
+在子组件data中copy数据 并使用data中的数据进行传值</p>
+<p>1 子局部组件创建  var a={}<br>
+2 父组件在组件中声明 components:{ a : a}<br>
+3 子组件在props属性中 声明好子组件需要接收到的数据 props:['data']<br>
+4 在子组件调用时 利用props进行传值  <a :data= "需要传递的数据"></a><br>
+5  子组件需要向父组件传值时 可以调用this.$emit(&quot;事件名&quot;,参数1) 来传值 触发自定义事件<br>
+6  子组件上提前监听好了这个事件 在子组件触发这个事件开始调用处理函数 父组件里的方法进行处理<br>
+7 处理完毕 父子组件相互传值成功</p>
+<pre><code>&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;title&gt;Model&lt;/title&gt;
+    &lt;!-- 开发环境版本，包含了有帮助的命令行警告 --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue/dist/vue.js&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+ 
+  &lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;
+        &lt;p&gt;父子组件传值 子组件设置props属性接收数据&lt;/p&gt;
+        &lt;counter :count=&quot;data1&quot; @change=&quot;handleChange&quot;&gt;&lt;/counter&gt;
+        &lt;counter :count=&quot;data2&quot; @change=&quot;handleChange&quot;&gt;&lt;/counter&gt;
+        &lt;p&gt;现在给父组件添加一个数据 值为两个counter的数字和 涉及子组件给父组件传值&lt;/p&gt;
+        &lt;p&gt;涉及三步骤 子组件被点击触发自定义的change事件 然后父组件设置了监听属性监听了这个change事件 最后进行处理事件&lt;/p&gt;
+        {{totalNum}}
+    &lt;/div&gt;
+    &lt;script&gt;
+        var counter = {
+            props:['count'],
+            template:'&lt;div @click=&quot;handleClick&quot;&gt;{{number}}&lt;/div&gt;',
+            methods:{
+                handleClick:function(){
+                    this.number++;
+                    this.$emit('change',1);
+                }
+            },
+            data:function(){
+                return{
+                    number: this.count
+                }
+            }
+        }
+       new Vue({
+           el:'#app',
+           components:{
+               counter:counter
+           },
+            data: function(){
+                return{
+                    totalNum:0,
+                    data1:0,
+                    data2:0
+                }
+            },
+            methods:{
+                handleChange:function(value){
+                  // alert(value);
+                   this.totalNum+= value;
+                }
+            }
+       }) 
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="tip-如果要子组件要传给父组件多个值">tip ： 如果要子组件要传给父组件多个值</h3>
+<p>子组件： this.$emit( &quot;事件名&quot;, data1,data2)<br>
+父组件： @事件名 = &quot;处理函数(arguments)&quot;  参数对象<br>
+此时 data1为arguments[0]  data2为arguments[1] ...</p>
+<h2 id="组件名">组件名</h2>
+<p>遵循 W3C 规范中的自定义组件名 (字母全小写且必须包含一个连字符)。<br>
+定义组件名的方式有两种：</p>
+<h3 id="使用-kebab-case">使用 kebab-case</h3>
+<p>Vue.component('my-component-name', { /* ... */ })<br>
+当使用 kebab-case (短横线分隔命名) 定义一个组件时，你也必须在引用这个自定义元素时使用 kebab-case，例如 <my-component-name>。</p>
+<h3 id="使用-pascalcase">使用 PascalCase</h3>
+<p>Vue.component('MyComponentName', { /* ... */ })<br>
+当使用 PascalCase (首字母大写命名) 定义一个组件时，你在引用这个自定义元素时两种命名法都可以使用。也就是说 <my-component-name> 和 <MyComponentName> 都是可接受的。注意，尽管如此，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的。<br>
+tip：最好选择一种全部使用</p>
+<p>组件参数校验</p>
+<pre><code>Vue.component('my-component', {
+  props: {
+    // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+    propA: Number,
+    // 多个可能的类型
+    propB: [String, Number],
+    // 必填的字符串
+    propC: {
+      type: String,
+      required: true
+    },
+    // 带有默认值的数字
+    propD: {
+      type: Number,
+      default: 100
+    },
+    // 带有默认值的对象
+    propE: {
+      type: Object,
+      // 对象或数组默认值必须从一个工厂函数获取
+      default: function () {
+        return { message: 'hello' }
+      }
+    },
+    // 自定义验证函数  （返回一个布尔值）
+    propF: {
+      validator: function (value) {
+        // 这个值必须匹配下列字符串中的一个
+        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+      }
+    }
+  }
+})
+</code></pre>
+<h2 id="props特性与非props特性">props特性与非props特性</h2>
+<ul>
+<li>props特性：<br>
+子组件声明了传递参数的接收<br>
+传递的参数不会在dom标签中显示<br>
+可以通过插值表达式或者通过this.content去取得该属性中的内容。</li>
+<li>非props特性：<br>
+子组件不声明从父组件接收而来的参数<br>
+显示在子组件最外层DOM标签的HTML属性里面</li>
+</ul>
+<p>组件绑定原生事件<br>
+&lt;child @handle=&quot;handleChildClick&quot;&gt;</child>  在组件上绑定事件为自定义事件<br>
+template: '&lt;div @click=&quot;handleClick&quot;&gt;Click me</div>'  在模板里直接会被渲染 所以绑定原生事件  （一般在这个原生事件里可以this.$emit('handle') 触发另一个事件)<br>
+代码如下：</p>
+<pre><code>&lt;body&gt;
+    &lt;div id=&quot;app&quot; &gt;
+        &lt;child @handle=&quot;handleChildClick&quot;&gt;&lt;/child&gt;
+  &lt;/div&gt;
+     &lt;script&gt;
+         var child = {
+             template:  '&lt;div @click=&quot;handleClick&quot;&gt;Click me&lt;/div&gt;',
+             methods:{
+                 handleClick :function(){
+                     alert('原生事件触发');
+                     this.$emit('handle');
+                 }
+             }
+         }
+         new Vue({
+             el:'#app',
+            components:{
+                child : child,
+            },
+            methods:{
+                handleChildClick :function(){
+                    alert('自定义事件触发');
+                }
+            }
+         })
+      &lt;/script&gt;
+  &lt;/body&gt;
+</code></pre>
+<p>原生事件触发 -》 this.$emit -》 监听子组件的自定义事件接收到 -》 自定义事件触发</p>
+<h2 id="直接监听子组件的原生事件">直接监听子组件的原生事件</h2>
+<p>使用修饰符 .native<br>
+代码如下：</p>
+<pre><code>&lt;body&gt;
+    &lt;div id=&quot;app&quot; &gt;
+        &lt;child @click.native=&quot;handleChildClick&quot;&gt;&lt;/child&gt;
+    &lt;/div&gt;
+     &lt;script&gt;
+         var child = {
+             template:  '&lt;div&gt;Click me&lt;/div&gt;',
+         }
+         new Vue({
+             el:'#app',
+            components:{
+                child : child,
+            },
+            methods:{
+                handleChildClick :function(){
+                    alert('利用修饰符直接触发原生事件');
+                }
+            }
+         })
+      &lt;/script&gt;
+  &lt;/body&gt;
+</code></pre>
+<h2 id="非父子组件之间传值">非父子组件之间传值</h2>
+<p>(Bus/总线/发布者订阅模式/观察者模式）<br>
+在vue最顶部</p>
+<ul>
+<li>Vue.prototype.bus = new Vue();<br>
+在Vue的prototype挂载了一个bus属性 这个属性是指向vue的实例 调用 Vue 或者new Vue时，每个组件都会有一个bus属性，因为以后不管是 Vue 的属性还是 Vue 的实例，都是通过 Vue 来创建的，而我在 Vue 的prototype上挂载了一个bus的属性。</li>
+<li>this.bus.$emit('触发事件', data)  传递的实例</li>
+<li>this.bus.$on('触发事件', msg =&gt; {console.log('回调函数执行 msg为传递的数据'})  接收的实例</li>
+</ul>
+<p>代码如下：</p>
+<pre><code>&lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;
+        &lt;sendchild :msg=&quot;1&quot;&gt;&lt;/sendchild&gt;
+        &lt;acceptchild :msg=&quot;2&quot;&gt;&lt;/acceptchild&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+       Vue.prototype.bus = new Vue();
+        var sendchild= {
+            template: '&lt;div @click=&quot;handleClick&quot;&gt;{{content}}&lt;/div&gt;',
+            data: function(){
+                return {
+                    content: this.msg
+                }
+            },
+            methods:{
+                handleClick:function (){
+                    alert('send孩子开始传值,用bus属性 emit transport事件 数据为content');
+                    this.bus.$emit('transport',this.content);
+                },
+            },
+           mounted:function(){
+                console.log('send孩子实例创建，监听transport事件');
+                this.bus.$on('transport',msg =&gt;console.log('send孩子接收到msg数据,数据为'+msg));
+           },
+            props:{
+                msg: Number
+            },
+        }
+        var acceptchild= {
+            data: function(){
+                return {
+                    content: this.msg
+                }
+            },
+            methods:{
+                handleClick:function (){
+                    alert('accept孩子开始传值,用bus属性emit transport事件 数据为content');
+                    this.bus.$emit('transport',this.content);
+                },
+            },
+            mounted:function(){
+                console.log('accept孩子实例创建，监听transport事件');
+                this.bus.$on('transport',msg =&gt;console.log('accept孩子接收到msg数据,数据为'+msg));
+           },
+            props:{
+                msg: Number
+            },
+            template: '&lt;div @click=&quot;handleClick&quot;&gt;{{content}}&lt;/div&gt;'
+        }
+        new Vue({
+            el:'#app',
+            components:{
+                sendchild : sendchild,
+                acceptchild: acceptchild
+            }
+        })
+    &lt;/script&gt;
+  &lt;/body&gt;
+</code></pre>
+<p>使用插槽 slot  ——Vue 实现了一套内容分发的 API，将<slot>元素作为承载分发内容的出口<br>
+子组件设置slot占位  父组件为这个slot填充内容</p>
+<pre><code>&lt;div id='app'&gt;
+        &lt;!-- child组件里面写的内容会默认插值到模板里的slot标签里 --&gt;
+        &lt;child&gt;
+            &lt;h1&gt;DELL&lt;/h1&gt;
+        &lt;/child&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+     Vue.component('child',{
+         template: `
+                &lt;div&gt;
+                    &lt;p&gt;firstLine&lt;/p&gt;
+                    &lt;slot&gt;slot标签里面为默认内容&lt;/slot&gt;
+                &lt;/div&gt;
+                `
+     })
+     new Vue({
+         el: '#app'
+     })
+    &lt;/script&gt;
+</code></pre>
+<p>显示<br>
+firstLine<br>
+DELL<br>
+tip：如果child组件无内容 即<child></child><br>
+显示<br>
+firstLine<br>
+slot标签里面为默认内容</p>
+<p>如果想有多个插槽 使用具名插槽</p>
+<pre><code>  &lt;div id='app'&gt;
+        &lt;!-- child组件里面写的内容会默认插值到模板里的slot标签里 --&gt;
+        &lt;child&gt;
+            &lt;header slot=&quot;header&quot;&gt;Header&lt;/header&gt;
+            &lt;footer slot=&quot;footer&quot;&gt;Footer&lt;/footer&gt;
+        &lt;/child&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+     Vue.component('child',{
+         template: `
+                &lt;div&gt;
+                     &lt;slot name='header'&gt;default Header&lt;/slot&gt;
+                    &lt;div class=&quot;main&quot;&gt;Main&lt;/div&gt;
+                    &lt;slot name='footer'&gt;default Footer&lt;/slot&gt;
+                &lt;/div&gt;
+                `
+     })
+     new Vue({
+         el: '#app'
+     })
+    &lt;/script&gt;
+</code></pre>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://huyifu.github.io/post/js-zhi-xing-shang-xia-wen-zhi-xing-huan-jing/">
+                  <h3 class="post-title">
+                    Js 执行上下文（执行环境）
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

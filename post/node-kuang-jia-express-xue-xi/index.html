@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>node | 古月的blog</title>
+<title>Node 框架 Express学习 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -12,14 +12,28 @@
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
 
 <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 
 
-    <meta name="description" content="Nothing for nothing
-">
+    <meta name="description" content="Express框架
+提供简洁路由定义方式
+对HTTP请求参数 简化处理
+支持模板引擎
+提供中间件 控制HTTP请求
+中间件
+一堆方法 接收请求 对请求响应  也可以交给下一个中间件继续处理
+两个部分组成  中间件方法和请求处理函数
+app...." />
+    <meta name="keywords" content="node" />
   </head>
   <body>
     <div id="app" class="main">
@@ -90,18 +104,12 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: node</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/node-kuang-jia-express-xue-xi/">
-                  <h2 class="post-title">Node 框架 Express学习</h2>
-                </a>
-                <div class="post-date">
-                  2021-03-30
-                </div>
-                <div class="post-abstract">
-                  <p>Express框架<br>
+          <div class="post-detail">
+            <h2 class="post-title">Node 框架 Express学习</h2>
+            <div class="post-date">2021-03-30</div>
+            
+            <div class="post-content" v-pre>
+              <p>Express框架<br>
 提供简洁路由定义方式<br>
 对HTTP请求参数 简化处理<br>
 支持模板引擎<br>
@@ -191,32 +199,45 @@ app.post('/index',(req,res)=&gt;{
 app.listen(3000);
 </code></pre>
 <p>路由参数 路由里面附带数据 ——  get传递和获取参数的另一种方式</p>
+<!-- more -->
+<p>app.get('/find/:id/:name', (req,res)=&gt; console.log(req.params)😉 req.params为对象<br>
+tip：客户端访问find路径时必须带有id name参数 否则无法获取请求<br>
+http://localhost:3000/find/111/name<br>
+{id:111,name:name}</p>
+<p>访问静态文件<br>
+使用express.static 方法<br>
+app.use(express.static('放置静态文件的目录'))  客户端可直接通过路径访问到</p>
 
-                </div>
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://huyifu.github.io/tag/node/" class="tag">
+                    node
+                  </a>
+                
               </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://huyifu.github.io/post/es6-zhong-de-promise-dui-xiang/">
-                  <h2 class="post-title">Es6中的Promise对象 </h2>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://huyifu.github.io/post/js-jian-tou-han-shu/">
+                  <h3 class="post-title">
+                    JS 箭头函数
+                  </h3>
                 </a>
-                <div class="post-date">
-                  2021-03-29
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
               </div>
-              
-            </article>
-          
+            
 
-          <div class="pagination-container">
-  
-  
-</div>
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
 
         </div>
       </div>
@@ -242,6 +263,29 @@ var app = new Vue({
     hljs.initHighlightingOnLoad()
   </script>
 
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
 
 
 

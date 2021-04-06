@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617094278740">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617705868664">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -24,9 +24,12 @@
 
 
 
-    <meta name="description" content="1
-
-" />
+    <meta name="description" content="引言：JS异步解决 使用Promise对象
+之前学习了node 大量使用Promise 虽然会用了 但是对其了解还不够深入
+Promise 是一个对象，它代表了一个异步操作的最终完成或者失败。
+Promise对象的使用
+创建：
+Promis..." />
     <meta name="keywords" content="node,es6,detail" />
   </head>
   <body>
@@ -36,7 +39,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1617094278740" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1617705868664" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -103,8 +106,58 @@
             <div class="post-date">2021-03-29</div>
             
             <div class="post-content" v-pre>
-              <p>1</p>
-<!-- more -->
+              <p>引言：JS异步解决 使用Promise对象<br>
+之前学习了node 大量使用Promise 虽然会用了 但是对其了解还不够深入<br>
+Promise 是一个对象，它代表了一个异步操作的最终完成或者失败。</p>
+<h2 id="promise对象的使用">Promise对象的使用</h2>
+<p>创建：<br>
+Promise 对象的构造器（constructor）语法如下：<br>
+let promise = new Promise(function(resolve, reject) {<br>
+//进行工作<br>
+//在工作完成后进行 这个Promise对象的resolve or reject<br>
+});<br>
+//现在可以可以进行对这个对象的使用了<br>
+这个对象有三种方法调用 then catch finally</p>
+<ol>
+<li>then<br>
+最重要最基础的一个就是 .then。<br>
+语法如下：<br>
+promise.then(<br>
+function(result) { /* handle a successful result <em>/ },<br>
+function(error) { /</em> handle an error */ }<br>
+);<br>
+如果用箭头函数也可以写成<br>
+promise.then(res =&gt; console.log('成功结果'), err =&gt; console.log('失败对象'));<br>
+.then 的第一个参数是一个函数，该函数将在 promise resolved 后运行并接收结果。<br>
+.then 的第二个参数也是一个函数，该函数将在 promise rejected 后运行并接收 error。<br>
+一个实例</li>
+</ol>
+<pre><code>function delay(ms) {
+  return new Promise(resolve =&gt; setTimeout(resolve, ms));
+}
+delay(3000).then(() =&gt; alert('runs after 3 seconds'));
+</code></pre>
+<p>返回promise对象的延时函数<br>
+delay声明中 resolve作为参数  直接执行setTimeout函数 并在ms毫秒后执行 resolve()；</p>
+<h2 id="promise声明的对象会立即执行">（promise声明的对象会立即执行）</h2>
+<p>在delay函数开始调用 然后3s后执行回调函数  无参  即执行 function(){alert('runs after 3 seconds'));}<br>
+2. catch<br>
+如果我们只对 error 感兴趣，那么我们可以使用 null 作为第一个参数：.then(null, errorHandlingFunction)。或者我们也可以使用 .catch(errorHandlingFunction)<br>
+promise.catch(err)<br>
+let promise = new Promise((resolve, reject) =&gt; {<br>
+setTimeout(() =&gt; reject(new Error(&quot;Whoops!&quot;)), 1000);<br>
+});<br>
+// .catch(f) 与 promise.then(null, f) 一样<br>
+promise.catch(alert); // 1 秒后显示 &quot;Error: Whoops!&quot;<br>
+3. finnally<br>
+finally 处理程序（handler）没有参数。在 finally 中，我们不知道 promise 是否成功。没关系，因为我们的任务通常是执行“常规”的定稿程序（finalizing procedures）。<br>
+finally 处理程序将结果和 error 传递给下一个处理程序。</p>
+<p>由 new Promise 构造器返回的 promise 对象具有以下内部属性：<br>
+state — 最初是 &quot;pending&quot;，然后在 resolve 被调用时变为 &quot;fulfilled&quot;，或者在 reject 被调用时变为 &quot;rejected&quot;。<br>
+result — 最初是 undefined，然后在 resolve(value) 被调用时变为 value，或者在 reject(error) 被调用时变为 error。</p>
+<h3 id="promise的state属性一旦确定无法修改">Promise的state属性一旦确定无法修改</h3>
+<p>solve(1);<br>
+reject(2);//此时无效</p>
 
             </div>
             

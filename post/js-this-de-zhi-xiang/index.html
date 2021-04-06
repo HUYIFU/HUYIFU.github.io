@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617094278740">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617705868664">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -24,9 +24,10 @@
 
 
 
-    <meta name="description" content="
-this只在调用时才能确定this指向的对象，在声明时无法确定
-" />
+    <meta name="description" content="引言：目前查找资料和自己整理的this的理解
+this的由来：函数可以在不同环境下执行，this用来指代当前的执行环境，因此this就是执行环境
+那么执行环境是什么呢
+执行环境(Execution Context，也称为&quot;执行上下..." />
     <meta name="keywords" content="es6,detail" />
   </head>
   <body>
@@ -36,7 +37,7 @@ this只在调用时才能确定this指向的对象，在声明时无法确定
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1617094278740" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1617705868664" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -103,7 +104,20 @@ this只在调用时才能确定this指向的对象，在声明时无法确定
             <div class="post-date">2021-03-29</div>
             
             <div class="post-content" v-pre>
-              <!-- more -->
+              <p>引言：目前查找资料和自己整理的this的理解<br>
+this的由来：函数可以在不同环境下执行，this用来指代当前的执行环境，因此this就是执行环境<br>
+那么执行环境是什么呢</p>
+<h2 id="执行环境execution-context也称为执行上下文是javascript中最为重要的一个概念-执行环境定义了变量或函数有权访问的其它数据决定了各自的行为-当javascript代码执行的时候会进入不同的执行环境这些不同的执行环境就构成了执行环境栈">执行环境(Execution Context，也称为&quot;执行上下文&quot;)是JavaScript中最为重要的一个概念。执行环境定义了变量或函数有权访问的其它数据，决定了各自的行为。当JavaScript代码执行的时候，会进入不同的执行环境，这些不同的执行环境就构成了执行环境栈。</h2>
+<p>JavaScript中主要存在三种执行环境:</p>
+<p>全局执行环境<br>
+　　　JavaScript代码执行的默认环境。通常被默认为window对象，所有的全局变量和函数都作为window对象的属性和方法存在。当执行环境中的代码执行完毕之后，执行环境被销毁，其中的所有变量和函数也随之销毁。对于全局执行环境来说，当关闭网页或浏览器时，该环境被销毁。</p>
+<p>函数执行环境<br>
+　　   当执行一个JavaScript函数时，函数的环境被推入环境栈中，执行完毕之后，栈将执行环境推出，将控制权转交给之前的执行环境。</p>
+<p>Eval环境<br>
+　　　执行eval()函数时创建。</p>
+<p>执行上下文是以栈（一种 LIFO 的数据结构）的方式被存放起来的，我们称之为执行上下文栈（Execution Context Stack）。<br>
+在 JavaScript 代码开始执行时，首先进入全局环境，此时全局上下文被创建并入栈，之后当调用函数时则进入相应的函数环境，此时相应函数上下文被创建并入栈，当处于栈顶的执行上下文代码执行完毕后，则会将其出栈。</p>
+<h3 id="执行环境属性重要的三种-变量对象-作用域链-this指向">执行环境属性重要的三种： 变量对象， 作用域链， this指向</h3>
 <h2 id="this只在调用时才能确定this指向的对象在声明时无法确定">this只在调用时才能确定this指向的对象，在声明时无法确定</h2>
 
             </div>
