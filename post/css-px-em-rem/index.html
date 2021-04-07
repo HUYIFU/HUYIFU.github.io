@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>CSS px em rem及其适配方案 | 古月的blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617797636362">
+<link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="引言： 弄清px em rem font-size等等概念  并尝试用来进行移动端的适配
+px的概念
+px为图像的最小单位。px是固定长度单位，不随其它元素的变化而变化
+px像素（Pixel）。相对长度单位。像素px是相对于显示器屏幕分辨率..." />
+    <meta name="keywords" content="Css学习,detail" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://huyifu.github.io">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1617797636362" class="site-logo">
+        <h1 class="site-title">古月的blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://huyifu.github.io" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      Nothing for nothing
+
+    </div>
+    <div class="site-footer">
+      Cover by HuSir | <a class="rss" href="https://huyifu.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">CSS px em rem及其适配方案</h2>
+            <div class="post-date">2021-04-06</div>
+            
+            <div class="post-content" v-pre>
+              <p>引言： 弄清px em rem font-size等等概念  并尝试用来进行移动端的适配</p>
+<h2 id="px的概念">px的概念</h2>
+<p>px为图像的最小单位。px是固定长度单位，不随其它元素的变化而变化<br>
+px像素（Pixel）。相对长度单位。像素px是相对于显示器屏幕分辨率而言的。<br>
+屏幕分辨率 即显示器屏幕所有的像素点之和（100 x 100） 横轴100px大小 纵轴100px大小 10000为屏幕分辨率</p>
+<h3 id="此处就引出了一个问题当css都使用px作为距离的单位-不同设备的屏幕分辨率是不一致的-手机的屏幕分辨率小于电脑-在手机上打开的网页会出现问题">此处就引出了一个问题：当css都使用px作为距离的单位  不同设备的屏幕分辨率是不一致的  手机的屏幕分辨率小于电脑  在手机上打开的网页会出现问题</h3>
+<h2 id="em的概念">em的概念</h2>
+<p>em是相对长度单位。相对于当前对象内文本的字体尺寸。如当前对行内文本的字体尺寸未被人为设置，则相对于浏览器的默认字体尺寸。一般浏览器字体大小默认为16px  即 1em=16px</p>
+<ol>
+<li>em的值并不是固定的；</li>
+<li>em会继承父级元素的字体大小。<br>
+来看下面的例子</li>
+</ol>
+<pre><code>.box4 {
+  width: 5em;
+  height: 5em;
+  background-color: brown;
+}
+ .box3{
+     width: 10em;
+     height: 10em;
+     background-color: rgb(54, 67, 122);
+ }
+ .box2{
+     
+     width: 15em;
+     height: 15em;
+     background-color:rgb(43, 39, 48);
+ }
+ .box1{
+        width: 20em;
+        height: 20em;
+        background-color: blueviolet;
+ }
+</code></pre>
+<pre><code>&lt;div class=&quot;box1&quot;&gt;
+     &lt;div class=&quot;box2&quot;&gt;
+       &lt;div class=&quot;box3&quot;&gt;
+         &lt;div class=&quot;box4&quot;&gt;
+         &lt;/div&gt;
+       &lt;/div&gt;
+     &lt;/div&gt;
+   &lt;/div&gt;
+
+</code></pre>
+<p><img src="https://huyifu.github.io/post-images/1617765321700.png" alt="" loading="lazy"><br>
+根元素html字体大小默认16px 则正方形div大小为 80 160 240 320 px<br>
+当把box2 的font-size改为 20px<br>
+结果box3 box4等比扩大了<br>
+<img src="https://huyifu.github.io/post-images/1617765837522.png" alt="" loading="lazy"></p>
+<h3 id="说明font-size的继承性-而因为em是根据当前字体的大小来确定的">说明font-size的继承性  而因为em是根据当前字体的大小来确定的</h3>
+<p>div大小为 120px 200px 300px 320px<br>
+em是相对当前对象中文字大小的长度单位，若当前对象中的文字大小未设置，就会从父元素中继承其大小，父元素也没有设置，就一直上溯，直到浏览器默认字体大小，然后其字体大小会继承给当前对象，归根结底，em一直是相对当前对象字体大小的，当前对象字体大小确定后，em就会确定下来（1em=当前对象字体大小px）。 ps：其实上溯也就是从根元素给子元素 子给孙 一直继承下来而已<br>
+tip： 如果给当前font-size设置 em的话  会先继承父元素的font-size 然后成功设置好之后 （即em大小已经确定）再去给其他属性赋值<br>
+若将上文box3 font-size改为 1.25em 则会继承box2的font-size 变成1.25倍  再给width height等属性赋值 至于box4则继续继承box3改变之后的这个font-size</p>
+<h3 id="由于font-size存在这种继承性-em的大小往往需要计算-在某些情况下-设置了字体大小也会对子元素进行影响-使得使用复杂">由于font-size存在这种继承性 em的大小往往需要计算 在某些情况下 设置了字体大小也会对子元素进行影响 使得使用复杂</h3>
+<h2 id="rem的概念">rem的概念</h2>
+<p>rem是CSS3新增的一个相对单位（root em，根em）。使用rem为元素设定字体大小时，仍然是相对大小，但相对的只是HTML根元素。<br>
+与em很像 只是相对的目标不一样 改成html根元素为目标后 不会再有使用em的父子层叠 使得font-size联动改变的情况 使用起来简单一些</p>
+<h2 id="现在想要通过rem和媒体查询来进行移动端的适配">现在想要通过rem和媒体查询来进行移动端的适配</h2>
+<p>先来了解一下基础概念</p>
+<h2 id="minmax-width">min/max width</h2>
+<p>max-width : 最大宽度 即如果元素width超过这个值则保持width为max-width</p>
+<pre><code> .box1{
+            max-width: 800px;
+        }
+     &lt;div class=&quot;box1&quot;&gt;一二三&lt;/div&gt;
+     ```
+     block独占一行 宽度为视窗宽度  如果宽度大于800px则元素width保持800px不变
+min-width: 最小宽度 即如果元素width小于这个值则保持width为min-width
+
+
+## 媒体查询
+CSS媒体查询（CSS Media Queries）是CSS基本特性之一。它的作用就是让我们在相同的HTML基础上可以以不同的CSS实现适配各种终端的UI效果（比如，桌面端、iPad、双屏幕、折叠设备和移动手机等）。
+媒体查询语法
+媒体查询由一种媒体类型组成，并可包含一个或多个表达式，这些表达式可以解析为 true 或 false。
+@media not|only mediatype and (expressions) {
+  CSS-Code;
+}
+1. 如果不使用 not or  only  则mediatype 为可选 并且所有设备都可以 进行匹配
+2. and为与符号 可以用and进行多个表达式的连接
+3. 在表达式里为 媒体特性名称：媒体特性值 如 max-width: 900px  max-width 为特性名称 900px为具体的值 （视窗如果小于900px则为true）
+### 媒体特性种类：
+视窗和页面，显示媒体，颜色媒体，交互媒体特性等等。
+此处主要用视窗和页面媒体特性来进行屏幕分辨率的分类
+用到 width heigth orientation属性来处理
+</code></pre>
+<p>/* 智能手机 <em>/<br>
+@media only screen and (max-width: 400px) { body { background-color: #F09A9D; } }<br>
+/</em> 平板 <em>/<br>
+@media only screen and (min-width: 401px) and (max-width: 960px) { body { background-color: #F5CF8E; } }<br>
+/</em> PC、平板电脑 */<br>
+@media only screen and (min-width: 961px) { body { background-color: #B2D6FF; } }</p>
+<pre><code>上面三种情况 （tip：属性边界都包含在里面）
+第一种 视窗比400px小 true
+第二种 视窗大于等于401px 小于等于960px true
+第三种 视窗大于等于961px true
+
+### orientation （取向）
+区分横屏竖屏
+媒体特性值有两种
+portrait：竖屏，屏幕视窗高度大于宽度
+landscape：横屏，屏幕视窗宽度大于高度
+
+
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://huyifu.github.io/tag/css-xue-xi/" class="tag">
+                    Css学习
+                  </a>
+                
+                  <a href="https://huyifu.github.io/tag/detail/" class="tag">
+                    detail
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://huyifu.github.io/post/vue-xue-xi/">
+                  <h3 class="post-title">
+                    vue学习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
