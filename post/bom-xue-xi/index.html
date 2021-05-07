@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>ES6 let命令 和const命令 | 古月的blog</title>
+<title>BOM 学习 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,13 +24,15 @@
 
 
 
-    <meta name="description" content="let类似var 不过声明的变量只在let命令下的代码块生效
-var a = [];
-for (var i = 0; i &lt; 10; i++) {
-  a[i] = function () {
-    console.log(i);
-..." />
-    <meta name="keywords" content="es6,blogs,detail" />
+    <meta name="description" content="引言： 学习js三部分中的浏览器对象模型
+BOM 对象——浏览器对象模型
+浏览器对象模型，它是对一系列在浏览器环境中使用对象的统称，这些对象提供了访问浏览器的功能。
+bom有五大核心对象
+
+window
+location
+navigator..." />
+    <meta name="keywords" content="JS_红宝书" />
   </head>
   <body>
     <div id="app" class="main">
@@ -102,99 +104,58 @@ for (var i = 0; i &lt; 10; i++) {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">ES6 let命令 和const命令</h2>
-            <div class="post-date">2021-03-04</div>
+            <h2 class="post-title">BOM 学习</h2>
+            <div class="post-date">2021-04-14</div>
             
             <div class="post-content" v-pre>
-              <p><strong>let类似var 不过声明的变量只在let命令下的代码块生效</strong></p>
-<pre><code>var a = [];
-for (var i = 0; i &lt; 10; i++) {
-  a[i] = function () {
-    console.log(i);
-  };
-}
-a[6](); // 10  a为函数数组 var 在（）创建的变量 会存在于循环外部的执行环境中 故输出10
-for (let i = 0; i &lt; 10; i++) {
-    a[i] = function () {
-      console.log(i);
-    };
-  }
-a[6](); // 6  let 块级作用域 每一轮i变量重新声明 并由于js引擎内部记忆上一轮的值 计算后赋值
-</code></pre>
-<blockquote>
-<p>for循环还有一个特别之处，就是设置循环变量的那部分是一个父作用域，而循环体内部是一个单独的子作用域。</p>
-</blockquote>
-<p>以下为代码实践证明</p>
-<pre><code>for (let i = 0; i &lt; 5; i++) {
-    i++; //let不声明i 开始影响（）里声明的i变量 子作用域影响父作用域
-    console.log(i);
-  }
-//输出1 3 5
-  for (let i = 0; i &lt; 5; i++) {
-    let i=10; //let声明i 单独的子作用域 
-    console.log(i);
-  }
-//输出5遍10
-</code></pre>
-<p><strong>var存在变量提升  let不存在</strong><br>
-变量提升</p>
+              <p>引言： 学习js三部分中的浏览器对象模型</p>
+<h3 id="bom-对象浏览器对象模型">BOM 对象——浏览器对象模型</h3>
+<p>浏览器对象模型，它是对一系列在浏览器环境中使用对象的统称，这些对象提供了访问浏览器的功能。</p>
+<h3 id="bom有五大核心对象">bom有五大核心对象</h3>
+<ol>
+<li>window</li>
+<li>location</li>
+<li>navigator</li>
+<li>screen</li>
+<li>history</li>
+</ol>
+<h2 id="与dom关系">与DOM关系</h2>
+<h3 id="window对象是bom对象的顶层对象">window对象是Bom对象的顶层对象</h3>
+<h3 id="window对象包含">window对象包含</h3>
+<ol>
+<li>doucument对象</li>
+<li>frames对象</li>
+<li>location对象</li>
+<li>navigator对象</li>
+<li>screen对象</li>
+<li>history对象<br>
+而dom最根本的对象为document对象<br>
+得出结论：</li>
+</ol>
+<h3 id="bom是包含dom的">BOM是包含DOM的</h3>
+<p>接下来一一探究 window对象 frames对象 location对象 navigator对象 screen对象 history对象</p>
+<h3 id="window对象">window对象</h3>
+<p>bom的顶层对象，在浏览器中具有双重角色，1 js访问浏览器的一个接口 2 ECMAScript里的全局global对象</p>
 <ul>
-<li>var关键字声明的变量，无论实际声明的位置在何处，都会被视为声明在函数的顶部（如果声明不在任意函数内，则视为在全局作用域的顶部）</li>
-<li>JavaScript引擎的工作方式是，先预解析代码， 获取所有被声明的变量和函数声明，然后再一行一行地运行，这就使所有变量声明的语句，都会被提升到代码的头部，这就是变量提升</li>
+<li>所有在全局作用域声明的变量都会作为window对象的属性 但是直接定义的全局变量不可delete删除  因为使用var 添加的window属性名[[Configurable]] 值为false</li>
+<li>窗口关系及框架 没搞框架都有自己的window对象 保存在frames中  top指向最高层的看框架，也就是浏览器窗口  ...</li>
+<li>窗口位置 screenLeft  窗口相对于屏幕左边的位置  以及screenX （兼容问题） ...</li>
+<li>窗口大小 页面视口大小 ： document.documentElement.clientWidth  or  document.body.clientWidth</li>
+<li>导航的打开窗口   window.open(URL,frame Name) 第二个参数也可 _self _parent _top _blank</li>
+<li>间歇调用 超时调用   setInterval  setTimeout</li>
+<li>系统对话框 alert confirm prompt<br>
+对于 setInterval  setTimeout</li>
 </ul>
-<pre><code>// var 的情况
-console.log(foo); // 输出undefined
-var foo = 2;
-
-// let 的情况
-console.log(bar); // 报错ReferenceError
-let bar = 2;
-</code></pre>
-<p><strong>暂时性死区</strong><br>
-用let声明变量之前，该变量不可用</p>
-<ul>
-<li>typeof 不是百分百不报错 ——</li>
-</ul>
-<pre><code>typeof x; //ReferenceError
-let x;
-</code></pre>
-<ul>
-<li>let与var</li>
-</ul>
-<pre><code>var  x = x;//不报错
-let   x = x;//报错
-</code></pre>
-<p><strong>const</strong></p>
-<ul>
-<li>声明常量（不变） 所以后必须马上赋值</li>
-<li>块级作用域有效</li>
-<li>暂时性死区</li>
-<li>不可重复声明</li>
-<li>对象冻结，应该使用Object.freeze方法。<br>
-保证常量值不改变本质是<strong>防止变量所指向内存的地址内数据进行更改</strong><br>
-简单的数据类型可以保证不改变<br>
-而对于复合型（数组和对象）则只能保证变量存放的指针不变 指向的数据结构内部无法控制</li>
-</ul>
-<pre><code>const a = [];
-a.push('Hello'); // 可执行
-a.length = 0;    // 可执行
-a = ['Dave'];    // 报错
-</code></pre>
+<h4 id="js是单线程语言这些方法看起来是异步多线程其实是在特定的时间快速执行-还是在单线程上">JS是单线程语言，这些方法看起来是异步多线程，其实是在特定的时间快速执行 （还是在单线程上）</h4>
+<p>第二个参数最小标准为10 不足则自动补为10<br>
+tip：屏幕频率一般60hz，每16.7ms刷新一次</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://huyifu.github.io/tag/es6/" class="tag">
-                    es6
-                  </a>
-                
-                  <a href="https://huyifu.github.io/tag/blogs/" class="tag">
-                    blogs
-                  </a>
-                
-                  <a href="https://huyifu.github.io/tag/detail/" class="tag">
-                    detail
+                  <a href="https://huyifu.github.io/tag/js_-hong-bao-shu/" class="tag">
+                    JS_红宝书
                   </a>
                 
               </div>
@@ -202,9 +163,9 @@ a = ['Dave'];    // 报错
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://huyifu.github.io/post/lu-jing-xiang-dui-he-jue-dui/">
+                <a href="https://huyifu.github.io/post/rem-js-gua-pei/">
                   <h3 class="post-title">
-                    路径 相对和绝对
+                    rem JS 适配
                   </h3>
                 </a>
               </div>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Html 元素种类 | 古月的blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1620375897026">
+<link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="引言：打好基础~  img行内元素 却可以设置宽高？
+三种类型： 块状 行内（内联）  内联块状
+
+块状block
+块级元素特点：
+1、每个块级元素都从新的一行开始，并且其后的元素也另起一行。
+2、元素的高度、宽度、行高以及顶和底边距都可设..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://huyifu.github.io">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1620375897026" class="site-logo">
+        <h1 class="site-title">古月的blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://huyifu.github.io" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      Nothing for nothing
+
+    </div>
+    <div class="site-footer">
+      Cover by HuSir | <a class="rss" href="https://huyifu.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Html 元素种类</h2>
+            <div class="post-date">2021-04-15</div>
+            
+            <div class="post-content" v-pre>
+              <p>引言：打好基础~  img行内元素 却可以设置宽高？</p>
+<h2 id="三种类型-块状-行内内联-内联块状">三种类型： 块状 行内（内联）  内联块状</h2>
+<ol>
+<li>块状block<br>
+块级元素特点：<br>
+1、每个块级元素都从新的一行开始，并且其后的元素也另起一行。<br>
+2、元素的高度、宽度、行高以及顶和底边距都可设置。<br>
+3、元素宽度在不设置的情况下，是它本身父容器的100%（和父元素的宽度一致），除非设定一个宽度。<br>
+有：div、p、h1~h6、ul、ol、li、dl、dt、dd、table、form、rticle、aside、footer、header、main、nav、section ......</li>
+<li>内联inline<br>
+内联元素特点：<br>
+1、和其他元素都在一行上；<br>
+2、元素的高度、宽度及顶部和底部边距不可设置；<br>
+3、元素的宽度就是它包含的文字或图片的宽度，不可改变。<br>
+有：</li>
+</ol>
+<pre><code>&lt;a&gt;、&lt;span&gt;、&lt;br&gt;、&lt;i&gt;、&lt;em&gt;、&lt;strong&gt;、&lt;label&gt;、&lt;q&gt;、&lt;var&gt;、&lt;cite&gt;、&lt;code&gt; 在html中，&lt;span&gt;、&lt;a&gt;、&lt;label&gt;、&lt;strong&gt; 和&lt;em&gt;就是典型的内联元素（行内元素）（inline）元素。
+</code></pre>
+<ol start="3">
+<li>内联块状 inline-block<br>
+顾名思义 先是inline属性排列  内容再是block属性<br>
+在CSS中通过display:inline-block对一个对象指定inline-block属性，简单来说就是将对象呈现为inline对象，但是对象的内容作为block对象呈现。<br>
+特点<br>
+1 和其他元素在一行<br>
+2 可以设置宽高 边距 等</li>
+</ol>
+<h3 id="此外还有另一种划分方式">此外还有另一种划分方式 ：</h3>
+<p>因为所有块级都是可替换元素  所以这里讨论行内元素的替换元素与非替换元素</p>
+<h2 id="替换元素和非替换元素">替换元素和非替换元素</h2>
+<ol>
+<li>替换元素（所有块级都是可替换元素）<br>
+特征：可以设置宽高<br>
+标签：img、input、iframe、video、embed、canvas、audio<br>
+替换元素就是浏览器根据元素的标签和属性，来决定元素的具体显示内容。<br>
+例如浏览器会根据<img>标签的src属性的值来读取图片信息并显示出来，而如果查看html代码，则看不到图片的实际内容；又例如根据<input>标签的type属性来决定是显示输入框，还是单选按钮等。</li>
+<li>非替换元素<br>
+特征：不可以设置宽高，宽高由内容决定<br>
+标签：a、strong、span、code、label<br>
+不可替换元素html 的大多数元素是不可替换元素，即其内容直接表现给用户端（例如浏览器）。<br>
+例如： <p>段落的内容</p> 段落<p>是一个不可替换元素，文字“段落的内容”全被显示。</li>
+</ol>
+<h3 id="回到引言中-img-input-都是行内元素-但是实际使用中都不自觉的已经设置了宽高-而且生效了-因为这是替换元素可置换元素-可以设置宽高">回到引言中 img input 都是行内元素 但是实际使用中都不自觉的已经设置了宽高 而且生效了 因为这是替换元素（可置换元素）  可以设置宽高</h3>
+<h2 id="总结">总结：</h2>
+<ol>
+<li>块级元素
+<ol>
+<li>替换（可置换）</li>
+</ol>
+</li>
+<li>内联元素
+<ol>
+<li>替换（可置换）</li>
+<li>非替换 （不可置换）</li>
+</ol>
+</li>
+</ol>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://huyifu.github.io/post/bom-xue-xi/">
+                  <h3 class="post-title">
+                    BOM 学习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>ES6 let命令 和const命令 | 古月的blog</title>
+<title>rem JS 适配 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,13 +24,10 @@
 
 
 
-    <meta name="description" content="let类似var 不过声明的变量只在let命令下的代码块生效
-var a = [];
-for (var i = 0; i &lt; 10; i++) {
-  a[i] = function () {
-    console.log(i);
-..." />
-    <meta name="keywords" content="es6,blogs,detail" />
+    <meta name="description" content="JS如下:
+window.onload =function(){
+    let htmlwidth=document.documentElement.clientWidth || document.body.clientWidth;//有..." />
+    <meta name="keywords" content="JS_红宝书" />
   </head>
   <body>
     <div id="app" class="main">
@@ -102,99 +99,55 @@ for (var i = 0; i &lt; 10; i++) {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">ES6 let命令 和const命令</h2>
-            <div class="post-date">2021-03-04</div>
+            <h2 class="post-title">rem JS 适配</h2>
+            <div class="post-date">2021-04-07</div>
             
             <div class="post-content" v-pre>
-              <p><strong>let类似var 不过声明的变量只在let命令下的代码块生效</strong></p>
-<pre><code>var a = [];
-for (var i = 0; i &lt; 10; i++) {
-  a[i] = function () {
-    console.log(i);
-  };
+              <p>JS如下:</p>
+<pre><code>window.onload =function(){
+    let htmlwidth=document.documentElement.clientWidth || document.body.clientWidth;//有些浏览器documentElement获取不到,那就使用后面的body
+    console.log(htmlwidth);
+    // 2.htmlDom
+    let htmlDom=document.getElementsByTagName(&quot;html&quot;)[0]
+    console.log(htmlDom);
+    //3.设置根元素样式
+    htmlDom.style.fontSize=htmlwidth/20+'px';//记住这个20是等份的意思,这样每一份是16px,即1rem=16px;
 }
-a[6](); // 10  a为函数数组 var 在（）创建的变量 会存在于循环外部的执行环境中 故输出10
-for (let i = 0; i &lt; 10; i++) {
-    a[i] = function () {
-      console.log(i);
-    };
-  }
-a[6](); // 6  let 块级作用域 每一轮i变量重新声明 并由于js引擎内部记忆上一轮的值 计算后赋值
 </code></pre>
-<blockquote>
-<p>for循环还有一个特别之处，就是设置循环变量的那部分是一个父作用域，而循环体内部是一个单独的子作用域。</p>
-</blockquote>
-<p>以下为代码实践证明</p>
-<pre><code>for (let i = 0; i &lt; 5; i++) {
-    i++; //let不声明i 开始影响（）里声明的i变量 子作用域影响父作用域
-    console.log(i);
-  }
-//输出1 3 5
-  for (let i = 0; i &lt; 5; i++) {
-    let i=10; //let声明i 单独的子作用域 
-    console.log(i);
-  }
-//输出5遍10
-</code></pre>
-<p><strong>var存在变量提升  let不存在</strong><br>
-变量提升</p>
-<ul>
-<li>var关键字声明的变量，无论实际声明的位置在何处，都会被视为声明在函数的顶部（如果声明不在任意函数内，则视为在全局作用域的顶部）</li>
-<li>JavaScript引擎的工作方式是，先预解析代码， 获取所有被声明的变量和函数声明，然后再一行一行地运行，这就使所有变量声明的语句，都会被提升到代码的头部，这就是变量提升</li>
-</ul>
-<pre><code>// var 的情况
-console.log(foo); // 输出undefined
-var foo = 2;
+<h3 id="现在把整个宽度为20rem份-但是出现了一个问题-出现缩放不能跟着改变-如果浏览器发生缩放-会出现一些问题">现在把整个宽度为20rem份 ，但是出现了一个问题 出现缩放不能跟着改变 如果浏览器发生缩放 会出现一些问题</h3>
+<p>如果想随着页面缩放进行font-size的调整 需要用到window的监听函数<br>
+EventTarget.addEventListener()；<br>
+addEventListener()添加事件监听<br>
+addEventListener(event, function, useCapture)<br>
+（1）参数event必填，表示监听的事件，例如 click, resize等，不加前缀on的事件。<br>
+（2）参数 function必填，表示事件触发后调用的函数，可以是外部定义函数，也可以是匿名函数。不带参数。<br>
+（3）参数 useCapture选填，填true或者false，用于描述事件是冒泡还是捕获触发，true表示捕获，默认false表示冒泡。<br>
+代码修改如下 现在是缩放等比的状态</p>
+<pre><code>function gethtmlfontsize(){
+    // 三个步骤:
+    // 1.获取html的宽,
+    let htmlwidth=document.documentElement.clientWidth || document.body.clientWidth;//有些浏览器documentElement获取不到,那就使用后面的body
+    console.log(htmlwidth);
+    
+    // 2.htmlDom
+    let htmlDom=document.getElementsByTagName(&quot;html&quot;)[0]
+    console.log(htmlDom);
 
-// let 的情况
-console.log(bar); // 报错ReferenceError
-let bar = 2;
-</code></pre>
-<p><strong>暂时性死区</strong><br>
-用let声明变量之前，该变量不可用</p>
-<ul>
-<li>typeof 不是百分百不报错 ——</li>
-</ul>
-<pre><code>typeof x; //ReferenceError
-let x;
-</code></pre>
-<ul>
-<li>let与var</li>
-</ul>
-<pre><code>var  x = x;//不报错
-let   x = x;//报错
-</code></pre>
-<p><strong>const</strong></p>
-<ul>
-<li>声明常量（不变） 所以后必须马上赋值</li>
-<li>块级作用域有效</li>
-<li>暂时性死区</li>
-<li>不可重复声明</li>
-<li>对象冻结，应该使用Object.freeze方法。<br>
-保证常量值不改变本质是<strong>防止变量所指向内存的地址内数据进行更改</strong><br>
-简单的数据类型可以保证不改变<br>
-而对于复合型（数组和对象）则只能保证变量存放的指针不变 指向的数据结构内部无法控制</li>
-</ul>
-<pre><code>const a = [];
-a.push('Hello'); // 可执行
-a.length = 0;    // 可执行
-a = ['Dave'];    // 报错
+    //3.设置根元素样式
+    htmlDom.style.fontSize=htmlwidth/20+'px';
+}
+// 调用一次
+gethtmlfontsize();
+// 添加监听事件(resize是监听的意思)
+window.addEventListener('resize',gethtmlfontsize);
 </code></pre>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://huyifu.github.io/tag/es6/" class="tag">
-                    es6
-                  </a>
-                
-                  <a href="https://huyifu.github.io/tag/blogs/" class="tag">
-                    blogs
-                  </a>
-                
-                  <a href="https://huyifu.github.io/tag/detail/" class="tag">
-                    detail
+                  <a href="https://huyifu.github.io/tag/js_-hong-bao-shu/" class="tag">
+                    JS_红宝书
                   </a>
                 
               </div>
@@ -202,9 +155,9 @@ a = ['Dave'];    // 报错
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://huyifu.github.io/post/lu-jing-xiang-dui-he-jue-dui/">
+                <a href="https://huyifu.github.io/post/css-px-em-rem/">
                   <h3 class="post-title">
-                    路径 相对和绝对
+                    CSS px em rem及其适配方案
                   </h3>
                 </a>
               </div>

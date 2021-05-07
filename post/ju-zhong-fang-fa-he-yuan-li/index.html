@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" >
 
-<title>居中方法和原理 | 古月的blog</title>
+<title>居中方法和原理总结 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1617797636362">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1620375897026">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -24,8 +24,12 @@
 
 
 
-    <meta name="description" content="1
-" />
+    <meta name="description" content="引言：居中(水平 垂直)需求大，这里总结一下居中的几种方式和对应的原理
+
+translate实现水平和垂直居中
+translate(x,y) 根据自身向x ， y 移动  若为百分比 则数值为自身的宽和高
+
+position: absolu..." />
     <meta name="keywords" content="Css学习,detail" />
   </head>
   <body>
@@ -35,7 +39,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1617797636362" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1620375897026" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -98,11 +102,71 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">居中方法和原理</h2>
+            <h2 class="post-title">居中方法和原理总结</h2>
             <div class="post-date">2021-03-18</div>
             
             <div class="post-content" v-pre>
-              <p>1</p>
+              <p>引言：居中(水平 垂直)需求大，这里总结一下居中的几种方式和对应的原理</p>
+<ol>
+<li>translate实现水平和垂直居中<br>
+translate(x,y) 根据自身向x ， y 移动  若为百分比 则数值为自身的宽和高</li>
+</ol>
+<pre><code>position: absolute
+left:50%;
+top:50%,
+translate(-50%,-50%)
+</code></pre>
+<p>left:50%; top:50%,  实现要居中的内容左上角到达父元素中心<br>
+translate(-50%,-50%)  根据自身宽高移动一半 实现完美居中<br>
+tip：外盒子需要被内盒子定位到 所以需要relative定位<br>
+2. margin：0 auto 水平居中<br>
+适用：定宽的block盒子<br>
+block 块状独占一行 如果不定宽则默认100% 也没有auto默认值了<br>
+auto值是浏览器自动判断 在此处会平分剩余空间<br>
+从而达到水平居中效果<br>
+tip： 如果是行内元素可以改成block进行使用margin进行水平居中<br>
+3. text-align 水平居中（对内容进行对齐）<br>
+text-align CSS属性定义行内内容（例如文字）如何相对它的块父元素对齐。text-align 并不控制块元素自己的对齐，只控制它的行内内容的对齐。 ——MDN<br>
+其实经过实践，text-align的特点有</p>
+<ul>
+<li>具有继承性</li>
+<li>对设置其属性的行内级子元素具有居中效果<br>
+因为具有继承性，无论是块状还是行内的内联元素都能进行居中 所以所有的行内子元素都能进行居中</li>
+</ul>
+<ol start="4">
+<li>display: flex; justify-content: center;  水平居中<br>
+flex布局的一个内置排列方法<br>
+（稍微看了下flex布局 另起一篇进行学习）<br>
+justify-content: center  伸缩元素向每行中点排列。每行第一个元素到行首的距离将与每行最后一个元素到行尾的距离相同。<br>
+设置为flex属性的元素为 flex容器   而其所有的子元素称为 flex项目 flexitem<br>
+justify-content 还有很多排列方法 不一一探讨</li>
+<li>line-height  垂直居中</li>
+</ol>
+<h3 id="标准定义两行文字基线之间的距离">标准定义：两行文字基线之间的距离。</h3>
+<p>有以下要点</p>
+<ul>
+<li>在 CSS 中，每一行文字也可以看成一个“行盒子”，而每一个行盒子都有4 条线：顶线、 中线、基线和底线。 内容高度为文本高度 上下距离（line-height - 文本高度） /2</li>
+<li>line-height=上距离+内容高度+下距离</li>
+<li>上下距离是一定会一样的 上距离==下距离</li>
+<li>某些时候（单文本）可以不用设置height 因为line-height会撑开盒子 设置height与line-height相等多此一举</li>
+<li>可以被继承<br>
+了解完这些 也可以理解为什么line-height可以进行垂直居中了</li>
+</ul>
+<ol start="6">
+<li>varticle-align 垂直居中<br>
+父元素设置以下两个属性进行table布局<br>
+display: table-cell;<br>
+vertical-align:middle;</li>
+<li>align-items: center; 垂直居中<br>
+给待处理的块状元素的父元素添加属性 display: flex; align-items: center;</li>
+<li>top: 0; right: 0; bottom: 0; left: 0; margin: auto; 水平和垂直居中<br>
+对父元素设置position：relative  子元素设置position： absolute   -&gt;此时子元素已经变成块级元素<br>
+再对子元素设置top: 0; right: 0; bottom: 0; left: 0; margin: auto; （子元素进行定高宽）</li>
+<li>grid 网格布局内置水平 垂直居中方法<br>
+align-items: center; 内容垂直居中在单元格里<br>
+justify-content: center; 内容整体水平居中在grid容器</li>
+</ol>
+<p>总结：里面还有一些方法可以自由转换 如flaot隐性转化成块状等等 在父相子绝中 margin代替 transform...   目前还缺少实践 无法总结出每种方式的优缺点和比较适用的场景  之后再回来修改~</p>
 
             </div>
             

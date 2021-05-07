@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>document.body.scrollTop与document.documentElement.scrollTop兼容 | 古月的blog</title>
+<title>intersectionObsever 实现瀑布流 | 古月的blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,12 +24,12 @@
 
 
 
-    <meta name="description" content="#scrollTop
-scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离
-#获取当前页面的滚动条纵坐标位置
-使用document.documentElement.scrollTop;
-#网页被卷去的高： docu..." />
-    <meta name="keywords" content="Css学习,detail" />
+    <meta name="description" content="引言：项目需要实现瀑布流和懒加载  使用这个交叉观察者API
+原因：使用传统的监听scroll会使得scroll事件密集 性能下降 ——只会触发少的次数 在元素开始出现视图或脱离视图   触发回调函数
+语法
+创建
+var io = new ..." />
+    <meta name="keywords" content="" />
   </head>
   <body>
     <div id="app" class="main">
@@ -101,52 +101,36 @@ scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶�
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">document.body.scrollTop与document.documentElement.scrollTop兼容</h2>
-            <div class="post-date">2021-03-13</div>
+            <h2 class="post-title">intersectionObsever 实现瀑布流</h2>
+            <div class="post-date">2021-04-23</div>
             
             <div class="post-content" v-pre>
-              <p>#scrollTop<br>
-scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离</p>
-<p>#获取当前页面的滚动条纵坐标位置<br>
-使用document.documentElement.scrollTop;</p>
-<p>#网页被卷去的高： document.body.scrollTop;<br>
-document.body.scrollTop 可以获取到当前页面被卷去的高度。</p>
-<p>#不同浏览器兼容性不同<br>
-IE6/7/8：<br>
-可以使用 document.documentElement.scrollTop；<br>
-IE9及以上：<br>
-可以使用window.pageYOffset或者document.documentElement.scrollTop<br>
-Safari:<br>
-safari： window.pageYOffset 与document.body.scrollTop都可以；<br>
-Firefox:<br>
-火狐等等相对标准些的浏览器就省心多了，直接用window.pageYOffset 或者 document.documentElement.scrollTop ；<br>
-Chrome：<br>
-谷歌浏览器只认识document.body.scrollTop;</p>
-<p>#总结：<br>
-两者同时存在时只有一个值生效 另一个值为0<br>
-故 var sTop=document.body.scrollTop+document.documentElement.scrollTop;<br>
-或 var sTop=document.body.scrollTop||document.documentElement.scrollTop;</p>
+              <p>引言：项目需要实现瀑布流和懒加载  使用这个交叉观察者API<br>
+原因：使用传统的监听scroll会使得scroll事件密集 性能下降 ——只会触发少的次数 在元素开始出现视图或脱离视图   触发回调函数</p>
+<h2 id="语法">语法</h2>
+<h3 id="创建">创建</h3>
+<p>var io = new IntersectionObserver(callback, option);<br>
+IntersectionObserver是浏览器原生提供的构造函数，接受两个参数：callback是可见性变化时的回调函数，option是配置对象（该参数可选）。</p>
+<pre><code>// 开始观察
+io.observe(document.getElementById('example'));
+// 停止观察
+io.unobserve(element);
+// 关闭观察器
+io.disconnect();
+上面代码中，observe的参数是一个 DOM 节点对象。如果要观察多个节点，就要多次调用这个方法。
+io.observe(elementA);
+io.observe(elementB);
+</code></pre>
+<p>回调函数会返回一个对象数组 ——观察了几个元素就有几个IntersectionObserverEntry对象</p>
 
             </div>
-            
-              <div class="tag-container">
-                
-                  <a href="https://huyifu.github.io/tag/css-xue-xi/" class="tag">
-                    Css学习
-                  </a>
-                
-                  <a href="https://huyifu.github.io/tag/detail/" class="tag">
-                    detail
-                  </a>
-                
-              </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://huyifu.github.io/post/css-relative-he-absolute/">
+                <a href="https://huyifu.github.io/post/sql-server/">
                   <h3 class="post-title">
-                    css position属性
+                    sql server
                   </h3>
                 </a>
               </div>
