@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1620375897026">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1625023507639">
 <link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
 
 
@@ -41,7 +41,7 @@ navigator..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://huyifu.github.io">
-        <img src="https://huyifu.github.io/images/avatar.png?v=1620375897026" class="site-logo">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1625023507639" class="site-logo">
         <h1 class="site-title">古月的blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -147,8 +147,29 @@ navigator..." />
 对于 setInterval  setTimeout</li>
 </ul>
 <h4 id="js是单线程语言这些方法看起来是异步多线程其实是在特定的时间快速执行-还是在单线程上">JS是单线程语言，这些方法看起来是异步多线程，其实是在特定的时间快速执行 （还是在单线程上）</h4>
-<p>第二个参数最小标准为10 不足则自动补为10<br>
-tip：屏幕频率一般60hz，每16.7ms刷新一次</p>
+<p>第二个参数最小标准为10 不足则自动补为10 （内置）<br>
+tip：屏幕频率一般60hz，每16.7ms刷新一次<br>
+累计效应：当setInterval 函数第二个参数过于小 可能会出现同时触发多次的现象</p>
+<h5 id="原因-涉及js-事件的event-loop-此处简单说明">原因：（ 涉及JS 事件的event loop   此处简单说明）</h5>
+<p>主线程 同步代码区   event table  异步执行区<br>
+当执行setInterval（func，xx）时候  func函数会被推入event table<br>
+当经过xxms之后 func函数被放入同步代码区的最底部<br>
+同步代码区的执行是需要时间的（包括被放入的func函数）<br>
+当推入速度过快 而执行速度很慢  同步区就会出现多个 func函数 从而出现  定时器函数触发时间并没有按照每xxms执行 甚至 同时运行两遍.....</p>
+<p>tip：超时调用（setTimeout）可以用来模拟 间歇调用（SetInterval）<br>
+使用递归和设置循环次数</p>
+<pre><code>var num=0;
+function  incrementNumber(){
+    num++;
+    if (num&lt;100)
+    {
+        setTimeout(incrementNumber,500);
+    }
+}
+</code></pre>
+<p>这样能避免后一个间歇函数在前一个提前触发 以及大部分的累计效应—— 因为在前一个超时函数真正执行时候才会把下一个超时函数放入event table</p>
+<h3 id="frames对象">frames对象</h3>
+<p>###location对象</p>
 
             </div>
             

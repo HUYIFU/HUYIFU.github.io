@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Jquery+node+socket.io 实现聊天室 | 古月的blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1625023507639">
+<link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="引言：做计网实验大作业，要求实现即时多人聊天，基础功能为文字传输，（图片等文件之后补充）
+打算用jquery node socket.io 实现  (正好学下jquery使用)
+客户端
+服务器端
+jquery学习
+引入:
+&lt;scrip..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://huyifu.github.io">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1625023507639" class="site-logo">
+        <h1 class="site-title">古月的blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://huyifu.github.io" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      Nothing for nothing
+
+    </div>
+    <div class="site-footer">
+      Cover by HuSir | <a class="rss" href="https://huyifu.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Jquery+node+socket.io 实现聊天室</h2>
+            <div class="post-date">2021-05-29</div>
+            
+            <div class="post-content" v-pre>
+              <p>引言：做计网实验大作业，要求实现即时多人聊天，基础功能为文字传输，（图片等文件之后补充）<br>
+打算用jquery node socket.io 实现  (正好学下jquery使用)</p>
+<h3 id="客户端">客户端</h3>
+<h3 id="服务器端">服务器端</h3>
+<h4 id="jquery学习">jquery学习</h4>
+<p>引入:</p>
+<pre><code>&lt;script src=&quot;https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js&quot;&gt;
+</code></pre>
+<p>语法:<br>
+$(selector).action()<br>
+jquery语句使用以上语法  selector表示所选取的元素    action表示对元素采取的动作</p>
+<pre><code>$(this).hide() - 隐藏当前元素
+$(&quot;p&quot;).hide() - 隐藏所有 &lt;p&gt; 元素
+$(&quot;p.test&quot;).hide() - 隐藏所有 class=&quot;test&quot; 的 &lt;p&gt; 元素
+$(&quot;#test&quot;).hide() - 隐藏 id=&quot;test&quot; 的元素
+</code></pre>
+<p>tip:  使用文档就绪事件  jq入口函数</p>
+<pre><code>$(document).ready(function(){
+   // 开始写 jQuery 代码...
+});
+</code></pre>
+<p>这是为了防止文档在完全加载（就绪）之前运行 jQuery 代码，即在 DOM 加载完成后才可以对 DOM 进行操作。</p>
+<p>选取元素的方式:(此处选择几个常用的)</p>
+<ul>
+<li>$(&quot;p.pclass&quot;) 选取class为pclass的p元素</li>
+<li>$(&quot;p.first&quot;) 第一个p元素</li>
+<li>$(&quot;ul li:first-child&quot;) 每个ul的第一个li元素</li>
+<li>$(&quot;[href]&quot;) 带有href属性的元素</li>
+</ul>
+<p>获得内容<br>
+text() - 设置或返回所选元素的文本内容<br>
+html() - 设置或返回所选元素的内容（包括 HTML 标记）<br>
+val() - 设置或返回表单字段的值<br>
+attr() -设置或返回属性内容的值</p>
+<p>设置值:<br>
+text(要设置的值)<br>
+html  val  同上<br>
+attr(&quot;要设置的属性的名称,像href&quot;,&quot;要设置的值,像www.hao123.com&quot;)</p>
+<p>拥有回调函数:<br>
+回调函数有两个参数：被选元素列表中当前元素的下标，以及原始（旧的）值。然后以函数新值返回您希望使用的字符串。</p>
+<pre><code>$(&quot;#btn1&quot;).click(function(){
+    $(&quot;#test1&quot;).text(function(i,origText){
+        return &quot;旧文本: &quot; + origText + &quot; 新文本: Hello world! (index: &quot; + i + &quot;)&quot;; 
+    });
+});
+</code></pre>
+<p>聊天内容要使用到的:  创建元素  添加元素 删除元素</p>
+<pre><code>function appendText(){
+    var txt1=&quot;&lt;p&gt;文本-1。&lt;/p&gt;&quot;;              // 使用 HTML 标签创建文本
+    var txt2=$(&quot;&lt;p&gt;&lt;/p&gt;&quot;).text(&quot;文本-2。&quot;);  // 使用 jQuery 创建文本
+    var txt3=document.createElement(&quot;p&quot;);
+    txt3.innerHTML=&quot;文本-3。&quot;;               // 使用 DOM 创建文本 text with DOM
+    $(&quot;body&quot;).append(txt1,txt2,txt3);        // 追加新元素
+}
+</code></pre>
+<p>append 加至所选元素的开头<br>
+prepend加至所选元素的末尾</p>
+<p>删除:<br>
+remove() - 删除被选元素（及其子元素）<br>
+empty() - 从被选元素中删除子元素</p>
+<p>添加类</p>
+<p>css方法 ——设置或者返回所选元素的样式属性<br>
+返回属性(只返回第一个匹配)<br>
+$(&quot;p&quot;).css(&quot;height&quot;)<br>
+tip： 返回首个匹配元素的height值</p>
+<p>设置属性(所有匹配)<br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mi mathvariant="normal">&quot;</mi><mi>p</mi><mi mathvariant="normal">&quot;</mi><mo>)</mo><mi mathvariant="normal">.</mi><mi>c</mi><mi>s</mi><mi>s</mi><mo>(</mo><mi mathvariant="normal">&quot;</mi><mi>b</mi><mi>a</mi><mi>c</mi><mi>k</mi><mi>g</mi><mi>r</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>d</mi><mo>−</mo><mi>c</mi><mi>o</mi><mi>l</mi><mi>o</mi><mi>r</mi><mi mathvariant="normal">&quot;</mi><mo separator="true">,</mo><mi mathvariant="normal">&quot;</mi><mi>y</mi><mi>e</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>w</mi><mi mathvariant="normal">&quot;</mi><mo>)</mo><mo separator="true">;</mo></mrow><annotation encoding="application/x-tex">(&quot;p&quot;).css(&quot;background-color&quot;,&quot;yellow&quot;);
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord mathdefault">p</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mord">.</span><span class="mord mathdefault">c</span><span class="mord mathdefault">s</span><span class="mord mathdefault">s</span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord mathdefault">b</span><span class="mord mathdefault">a</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">&quot;</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">&quot;</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mpunct">;</span></span></span></span>(&quot;p&quot;).css({&quot;background-color&quot;:&quot;yellow&quot;,&quot;font-size&quot;:&quot;200%&quot;});</p>
+<p>jquery尺寸<br>
+width() 返回content width<br>
+innnerWidth() padding + content width<br>
+outerWidth() border + padding + content  width<br>
+outerWidth() magin + border  + padding + content width<br>
+tip:  box-sizing: 两种值<br>
+content-box  是默认值。如果你设置一个元素的宽为100px，那么这个元素的内容区会有100px 宽，并且任何边框和内边距的宽度都会被增加到最后绘制出来的元素宽度中。<br>
+border-box 告诉浏览器：你想要设置的边框和内边距的值是包含在width内的。也就是说，如果你将一个元素的width设为100px，那么这100px会包含它的border和padding，内容区的实际宽度是width减去(border + padding)的值。大多数情况下，这使得我们更容易地设定一个元素的宽高。</p>
+<p>jquery 遍历</p>
+<ul>
+<li>向上遍历dom  祖先<br>
+parent()<br>
+直接父元素<br>
+parents()<br>
+所有祖先元素直到文档根元素<html><br>
+parentsUtil()<br>
+$(&quot;span&quot;).parentsUtil(&quot;div&quot;)<br>
+返回给定两个元素之间的所有祖先元素<br>
+不包括两个临界点</li>
+<li>向下遍历  后代<br>
+children() 所有的直接子元素<br>
+find() 方法返回被选元素的所有后代元素，一路向下直到最后一个后代。</li>
+<li>水平遍历dom  同胞<br>
+siblings() 所有同胞<br>
+tip:  过滤   $(&quot;span&quot;).siblings(&quot;p&quot;)  所有p同胞<br>
+next() 方法返回被选元素的下一个同胞元素。（从左到右）<br>
+nextAll()  返回被选元素之后的所有同胞   （从左到右）<br>
+nextUntil() 方法返回介于两个给定参数之间的所有跟随的同胞元素。<br>
+nextUntil(&quot;dom1&quot;).nextUtil(&quot;dom2&quot;)    (从左到右)<br>
+tip： dom1 一定要位于左  dom2 位于右<br>
+prev()<br>
+prevAll()<br>
+prevUntil()<br>
+从右至左</li>
+</ul>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://huyifu.github.io/post/js-event-loop/">
+                  <h3 class="post-title">
+                    JS Event Loop
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

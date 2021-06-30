@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Node开发Web Server博客 Node.js+Express+Koa2+MySQL | 古月的blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://huyifu.github.io/favicon.ico?v=1625023507639">
+<link rel="stylesheet" href="https://huyifu.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Day1 :
+项目需求，功能了解
+node复习：
+
+使用loadsh   ——Lodash 是一个一致性、模块化、高性能的 JavaScript 实用工具库。
+内置模块化方法  （array number ....)
+debugge
+com..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://huyifu.github.io">
+        <img src="https://huyifu.github.io/images/avatar.png?v=1625023507639" class="site-logo">
+        <h1 class="site-title">古月的blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://huyifu.github.io" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="https://huyifu.github.io/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      Nothing for nothing
+
+    </div>
+    <div class="site-footer">
+      Cover by HuSir | <a class="rss" href="https://huyifu.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Node开发Web Server博客 Node.js+Express+Koa2+MySQL</h2>
+            <div class="post-date">2021-06-23</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="day1">Day1 :</h2>
+<p>项目需求，功能了解</p>
+<p>node复习：</p>
+<ul>
+<li>使用loadsh   ——Lodash 是一个一致性、模块化、高性能的 JavaScript 实用工具库。<br>
+内置模块化方法  （array number ....)</li>
+<li>debugge</li>
+<li>common js   是个模块规范</li>
+</ul>
+<p>从输入url到显示页面的过程:<br>
+DNS 域名解析   建立TCP连接(三次握手)  发送http请求 (浏览器)<br>
+server 接收到http请求  处理 返回 (服务端)<br>
+client接收并处理  (浏览器)</p>
+<p>get请求  (querystring) ?value1=xx&amp;value2=yy<br>
+将查询字符串转化成对象   querysring.parse(url.split(&quot;?&quot;)[1]) ;</p>
+<pre><code>querystring.parse(&quot;name=whitemu&amp;sex=man&amp;sex=women&quot;)
+{
+	name: 'whitemu',
+	sex: ['man', 'women']
+}
+
+</code></pre>
+<p>直接访问浏览器是get请求  (一般浏览器还会自动发一个头标的get请求)</p>
+<p>post 请求<br>
+安装postman  - 能模拟http请求的工具软件，支持get/post两种方式，对于程序开发人员来说提供了一种测试工具。 Postman能够保留用户的请求历史记录，方便下次请求时直接查找。</p>
+<p>综合test  (使用postman测试)</p>
+<pre><code>const http = require('http');
+const querystring = require('querystring');
+const server = http.createServer((req,res)=&gt;{
+   const method = req.method;
+   const url = req.url;
+   const path = url.split(&quot;?&quot;)[0]  //分割出的url接口路径
+   const query = querystring.parse(url.split(&quot;?&quot;)[1])  //查询字符串转成对象
+   //设置返回格式 JSON
+   res.setHeader('Content-type','application/json');
+    //返回数据
+    const resData = {
+        method,
+        url,
+        path,
+        query
+    }
+    if (method === 'GET'){
+        res.end(JSON.stringify(resData)) //JSON是对象的字符串表达形式 这里stringfy化成字符串
+    }
+    if (method === 'POST'){
+        let postData = '';
+        req.on('data',chunk =&gt;{
+            postData += chunk.toString();  //化成字符串
+        })
+        req.on('end',()=&gt;{
+            resData.postData = postData;//赋予对象属性
+            res.end(JSON.stringify(resData));
+        })
+    }
+});
+server.listen(8000);
+console.log(&quot;挂载8000端口&quot;);
+
+</code></pre>
+<h1 id="原生node开始搭建项目">原生node开始搭建项目</h1>
+<figure data-type="image" tabindex="1"><img src="https://huyifu.github.io/post-images/1624437988815.png" alt="" loading="lazy"></figure>
+<h2 id="服务器搭建">服务器搭建</h2>
+<p>接口设计：<br>
+<img src="https://huyifu.github.io/post-images/1624438074970.png" alt="" loading="lazy"><br>
+六个接口 五个为博客接口  一个为用户接口</p>
+<p>目前的目录：<br>
+<img src="https://huyifu.github.io/post-images/1624446539796.png" alt="" loading="lazy"><br>
+bin文件夹下的 www.js</p>
+<pre><code>//跟server技术相关的服务器代码  
+const http = require('http');
+const PORT = 8000; //端口
+const serverHandle = require('../app.js');//引入服务器处理函数
+const server = http.createServer(serverHandle);
+server.listen(PORT);
+console.log(&quot;挂载在&quot;+PORT+&quot;端口&quot;);
+</code></pre>
+<p>tip:  这里引入了app模块  在app模块里填写了具体的服务器回调函数<br>
+app.js</p>
+<pre><code>const handleBlogRouter = require('./src/router/blog');
+const handleUserRouter = require('./src/router/user');
+
+const serverHandle = (req,res) =&gt;{
+    //(相关配置) 设置返回格式 JSON
+    res.setHeader('Content-type', 'application/jaon');
+    //处理blog路由
+    const blogData = handleBlogRouter(req,res);
+    if (blogData){
+        //返回博客数据
+        res.end(JSON.stringify(blogData));
+        return;
+    }
+    //处理user路由
+    const userData = handleUserRouter(req,res);
+    if (userData){
+        //返回user数据
+        res.end(JSON.stringify(userData));
+        return;
+    }
+    //未命中路由
+    res.end(&quot;404!&quot;);
+}
+module.exports = serverHandle //暴露服务器处理函数
+</code></pre>
+<p>路由初始化 ，（blog路由接口和user路由接口）<br>
+blog.js  user.js</p>
+<h3 id="定义数据模型类">定义数据模型（类）</h3>
+<p>新建文件夹model  resModel.js</p>
+<pre><code>class BaseModel{ //class  js原型对象的语法糖
+    constructor(data,message){
+        if (typeof data === 'string'){ //此处兼容只传一个参
+            this.message = data;
+            data = null;
+            message = null;
+        }
+        if (data){
+            this.data = data;//增添data属性
+        }
+        if (message){
+            this.message = message;//增添message属性
+        }
+    }
+}
+class SuccessModel extends BaseModel{
+    constructor(data,message){
+         super(data,message); //调用父类构造
+         this.errno = 0;
+    }
+}
+class ErrorModel extends BaseModel{
+    constructor(data,message){
+        super(data,message);
+        this.errno = -1;
+    }
+}
+module.exports = {
+    SuccessModel,
+    ErrorModel
+}
+</code></pre>
+<h3 id="controller调控数据-包含所有数据相关操作">controller调控数据 包含所有数据相关操作</h3>
+<p>新建对应js  blog.js  user.js</p>
+<h2 id="day2-继续开发路由">Day2： 继续开发路由</h2>
+<p>当前文件目录：<br>
+<img src="https://huyifu.github.io/post-images/1624515858537.png" alt="" loading="lazy"><br>
+目前是四层路由关系<br>
+www.js（入口)  -&gt;app.js(服务器相关设置) -&gt;router blog.js/user.js(分路由处理) -&gt;controller  blog.js/user.js(数据相关操作)</p>
+<h3 id="路由已经初步全部开发完成未接数据库">路由已经初步全部开发完成（未接数据库）</h3>
+<p>例子：   localhost:8000/api/blog/new   新增博客接口<br>
+首先app.js 处理post数据和分路由到blog.js  (用到promise先处理chunk数据流)</p>
+<pre><code>const handleBlogRouter = require('./src/router/blog');
+const handleUserRouter = require('./src/router/user');
+const querystring = require('querystring');
+//处理 postData
+const getPostData = (req) =&gt; {
+    const promise = new Promise((resolve, reject) =&gt; {
+        //生成promise实例
+        if (req.method !== 'POST') {
+            resolve({});//resolve空对象 不表示出错
+            return;
+        }
+        if (req.headers['content-type'] !== 'application/json') {
+            resolve({});
+            return;
+        }
+        let postData = '';
+        req.on('data', chunk =&gt; {
+            postData += chunk.toString();
+        });
+        req.on('end', () =&gt; {
+            if (!postData) {
+                resolve({});//空数据 resolve空对象
+                return;
+            }
+            resolve(JSON.parse(postData));//resolve 数据对象
+        })
+    })
+    return promise;
+}
+
+const serverHandle = (req, res) =&gt; {
+    //(相关配置) 设置返回格式 JSON
+    res.setHeader('Content-type', 'application/jaon');
+
+    //获取path 
+    const url = req.url;
+    req.path = url.split('?')[0];
+
+    //解析query
+    req.query = querystring.parse(url.split('?')[1]);
+
+    //处理postData(promise对象resolve后执行then)
+    getPostData(req).then(postData =&gt; {
+        req.body = postData; //将postData放入请求体中
+        //处理blog路由
+        const blogData = handleBlogRouter(req, res);
+        if (blogData) {
+            //返回博客数据
+            res.end(JSON.stringify(blogData));
+            return;
+        }
+        //处理user路由
+        const userData = handleUserRouter(req, res);
+        if (userData) {
+            //返回user数据
+            res.end(JSON.stringify(userData));
+            return;
+        }
+        //未命中路由
+        res.end(&quot;404!&quot;);
+    })
+
+}
+module.exports = serverHandle //暴露服务器处理函数
+
+</code></pre>
+<p>router 下的blog.js  （引入newBlog 和 SuccessModel )</p>
+<pre><code> //新增一篇博客
+    if (method === 'POST' &amp;&amp; req.path === '/api/blog/new'){
+        const newData = newBlog(req.body);
+        return new SuccessModel(newData);
+    }
+</code></pre>
+<p>controller 下的blog.js （暴露newBlog)</p>
+<pre><code>const newBlog = (blogData = {}) =&gt;{
+    console.log('newBlogData',blogData);
+    return {
+        id:3
+    }
+}
+</code></pre>
+<p>tip: 假数据  其中箭头函数里设置默认参数 blogData undefined就为 {} 空对象  返回</p>
+<h2 id="day3-连接数据库">Day3： 连接数据库</h2>
+<h3 id="数据储存">数据储存</h3>
+<p>mysql 的下载和安装配置<br>
+建立数据库 myblog<br>
+建表<br>
+1 user表<br>
+id int  PK<br>
+username  varchar(20)<br>
+password varchar(20)<br>
+realname varchar(10)<br>
+2 blogs 表<br>
+id int PK<br>
+title varchar(50)<br>
+content longtext    -&gt;长内容<br>
+creatime bigint(20) -&gt;13位毫秒 bigint<br>
+author varchar(20)<br>
+3</p>
+<p>删除 修改表 ....</p>
+<p>表的curd（增删改查） 简单示例</p>
+<ul>
+<li>增加一行<br>
+use myblog;<br>
+insert into users(username,’password‘,realname) values('lisi','123','李四');</li>
+<li>查询<br>
+use myblog<br>
+select  * from users;</li>
+<li>修改<br>
+use myblog<br>
+update users  set   realname = 'xx' where username = 'lisi'</li>
+<li>删除 （可以delete 这里用修改state字段表示 是否有效 )<br>
+use myblog<br>
+update users set state = 0;</li>
+</ul>
+<h3 id="开发环境dev-生产环境pro">开发环境dev   生产环境pro</h3>
+<p>dev环境：开发环境，外部用户无法访问，开发人员使用，版本变动很大。<br>
+pro环境：生产环境，面向外部用户的环境，连接上互联网即可访问的正式环境。</p>
+<p>在package.json中配置 dev 和pro</p>
+<pre><code>&quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;,
+    &quot;dev&quot;: &quot;cross-env NODE_ENV=dev nodemon ./bin/www.js&quot;,
+    &quot;prd&quot;: &quot;cross-env NODE_ENV=production nodemon ./bin/www.js&quot;
+  },
+</code></pre>
+<p>安装好cross-env      运行时敲入 npm run dev<br>
+自动运行 nodemon ./bin/www.js 并存入NODE_ENV中<br>
+在node中，有全局变量process表示的是当前的node进程。<br>
+process.env包含着关于系统环境的信息，但是process.env中并不存在NODE_ENV这个东西<br>
+。NODE_ENV是一个用户自定义的变量，在webpack中它的用途是判断生产环境或开发环境。</p>
+<h4 id="引用时-processenvnode_env-来表示是开发环境还是生产环境">引用时 process.env.NODE_ENV 来表示是开发环境还是生产环境</h4>
+<p>config db.js 代码如下</p>
+<pre><code>const env = process.env.NODE_ENV //环境参数
+
+let MYSQL_CONFIG;
+if (env === 'dev'){
+  //开发环境
+  MYSQL_CONFIG = {
+      host: 'localhost',
+      user: 'root',
+      password: '1234',
+      port: '3306',
+      database: 'myblog'
+  }
+}
+if (env === 'production'){
+  //生产环境
+}
+
+module.exports = {
+    MYSQL_CONFIG
+}
+</code></pre>
+<h2 id="day4-实现路由数据库">Day4 : 实现路由（数据库）</h2>
+<h4 id="在实际调用数据库操作时引用统一的数据库配置以及sql语句执行">在实际调用数据库操作时引用统一的数据库配置以及sql语句执行</h4>
+<p>db 下 mysql代码如下：</p>
+<pre><code>const mysql = require('mysql');
+const { MYSQL_CONFIG} = require('../config/db'); //引入配置文件
+//创建连接对象
+const con = mysql.createConnection(MYSQL_CONFIG);
+//开始连接
+con.connect();
+
+//统一执行sql的函数
+function exec(sql){
+    const promise = new Promise((resolve,reject)=&gt;{
+        con.query(sql, (err,result) =&gt;{
+            if (err){
+                reject(err);
+                return;
+            }
+            resolve(result);
+        })
+    })
+    return promise;
+}
+module.exports = {
+    exec
+}
+</code></pre>
+<p>调用exec 返回promise对象</p>
+<p>例子： /api/blog/detail GET</p>
+<h3 id="从内到外分析-promise对象的调用-四层">从内到外分析 Promise对象的调用 四层</h3>
+<p>一   mysql    exec函数<br>
+数据库连接对象con 执行查询<br>
+外层包了个promise对象  在查询成功时resolve成功回调结果<br>
+失败时reject失败回调结果<br>
+函数返回这个promise</p>
+<p>二   controller/blog   getDetail</p>
+<pre><code>const getDetail = (id)=&gt;{
+    const sql = `select * from blogs where id='${id}'`
+    return exec(sql).then(result =&gt;{
+        return result[0];
+    })
+}
+</code></pre>
+<p>在exec函数resolve时 调用then方法<br>
+tip： 这里return 这个返回结果对象  自动生成一个已经resolve这个返回结果的promise对象<br>
+再次把这个新生成的promise对象作为函数返回值返回出去</p>
+<p>三   router/blog</p>
+<pre><code> //获取一篇博客的内容
+    if (method === 'GET' &amp;&amp; req.path ==='/api/blog/detail'){
+        // const Detaildata = getDetail(id);
+        // return new SuccessModel(Detaildata);
+        const result  = getDetail(id);
+        return result.then(data =&gt;{
+            return new SuccessModel(data);
+        })
+    }
+</code></pre>
+<p>得到 getDetail 返回的promise对象（当生成时候就已经resolve） then方法  返回SuccessModel 实例（就是对象）  同第二层  返回一个新的promise对象（已经resolve这个实例对象）</p>
+<p>四  app</p>
+<pre><code>const blogResult = handleBlogRouter(req,res);
+        if (blogResult){
+            //返回的promise对象 resolve后自动调用then
+            blogResult.then(blogData =&gt;{
+                res.end(JSON.stringify(blogData));
+            })
+            return;
+        }
+</code></pre>
+<p>then 方法 服务器返回JSON格式的字符串数据</p>
+<h2 id="day5">Day5 :</h2>
+<p>全部接口以及实现<br>
+app.js</p>
+<pre><code>const handleBlogRouter = require('./src/router/blog');
+const handleUserRouter = require('./src/router/user');
+const querystring = require('querystring');
+//处理 postData
+const getPostData = (req) =&gt; {
+    const promise = new Promise((resolve, reject) =&gt; {
+        //生成promise实例
+        if (req.method !== 'POST') {
+            resolve({});//resolve空对象 不表示出错
+            return;
+        }
+        if (req.headers['content-type'] !== 'application/json') {
+            resolve({});
+            return;
+        }
+        let postData = '';
+        req.on('data', chunk =&gt; {
+            postData += chunk.toString();
+        });
+        req.on('end', () =&gt; {
+            if (!postData) {
+                resolve({});//空数据 resolve空对象
+                return;
+            }
+            resolve(JSON.parse(postData));//resolve 数据对象
+        })
+    })
+    return promise;
+}
+
+const serverHandle = (req, res) =&gt; {
+    //(相关配置) 设置返回格式 JSON
+    res.setHeader('Content-type', 'application/jaon');
+
+    //获取path 
+    const url = req.url;
+    req.path = url.split('?')[0];
+
+    //解析query
+    req.query = querystring.parse(url.split('?')[1]);
+
+    //处理postData(promise对象resolve后执行then)
+    getPostData(req).then(postData =&gt; {
+        req.body = postData; //将postData放入请求体中
+        //处理blog路由
+        const blogResult = handleBlogRouter(req,res);
+        if (blogResult){
+            //返回的promise对象 resolve后自动调用then
+            blogResult.then(blogData =&gt;{
+                res.end(JSON.stringify(blogData));
+            })
+            return;
+        }
+        //处理user路由
+        const userResult = handleUserRouter(req,res);
+        if (userResult){
+            userResult.then(userData=&gt;{
+                res.end(JSON.stringify(userData));
+            })
+            return;
+        }
+        //未命中路由
+        res.end(&quot;404!&quot;);
+    })
+
+}
+module.exports = serverHandle //暴露服务器处理函数
+</code></pre>
+<p>router/user.js</p>
+<pre><code>const  {loginCheck} = require('../controller/user');
+const { SuccessModel, ErrorModel } = require('../model/resModel');
+const handleUserRouter = (req,res)=&gt;{
+    const method = req.method ;
+    //用户登录
+    if (method === 'POST' &amp;&amp; req.path ==='/api/user/login'){
+       const {username  , password} = req.body;
+       const result = loginCheck(username,password);
+       return result.then(data =&gt;{
+           if (data.username)
+           return new SuccessModel();
+           else
+           return new ErrorModel(&quot;登录失败&quot;);
+       })
+    }
+}
+module.exports = handleUserRouter;
+</code></pre>
+<p>controller/user.js</p>
+<pre><code>const {exec}= require('../db/mysql');
+const loginCheck = (username,password)=&gt;{
+    let sql=`
+    select username from users where username = '${username}' and password = '${password}'
+    `;
+    return exec(sql).then(rows =&gt;{
+        console.log(rows);
+        return rows[0] || {};
+    });
+}
+module.exports = {
+    loginCheck
+};
+</code></pre>
+<p>router/blog.js</p>
+<pre><code>const {getList,
+     getDetail,
+      newBlog,
+      updateBlog,
+      deleteBlog
+} = require('../controller/blog')
+const {SuccessModel, ErrorModel} = require('../model/resModel');
+const handleBlogRouter = (req, res)=&gt;{
+    const method = req.method;
+    const id = req.query.id;
+    //获取博客列表
+    if (method === 'GET' &amp;&amp; req.path ==='/api/blog/list'){
+        const author = req.query.author || '';
+        const keyword = req.query.keyword || '';
+        // const listData = getList(author,keyword);
+        // return  new  SuccessModel(listData);
+        const result = getList(author,keyword);
+        return result.then(listData =&gt;{
+            return new SuccessModel(listData);
+        })
+    }
+    //获取一篇博客的内容
+    if (method === 'GET' &amp;&amp; req.path ==='/api/blog/detail'){
+        // const Detaildata = getDetail(id);
+        // return new SuccessModel(Detaildata);
+        const result  = getDetail(id);
+        return result.then(data =&gt;{
+            return new SuccessModel(data);
+        })
+    }
+    //新增一篇博客
+    if (method === 'POST' &amp;&amp; req.path === '/api/blog/new'){
+        const author = 'zhangsan';
+        req.body.author = author;
+        const result = newBlog(req.body);
+      return  result.then(data =&gt;{
+           return new SuccessModel(data);
+        })
+    }
+    //更新一篇博客
+    if (method === 'POST' &amp;&amp; req.path === '/api/blog/update'){
+        const result = updateBlog(id,req.body);
+        return result.then(bool=&gt;{
+            if (bool)
+            return new SuccessModel();
+            else
+            return new ErrorModel(&quot;更新博客失败&quot;);
+        })
+    }
+    //删除一篇博客
+    if (method === 'POST' &amp;&amp; req.path === '/api/blog/delete'){
+        const author = &quot;zhangsan&quot;;
+        const result = deleteBlog(id,author,req.body);
+        return result.then(bool =&gt;{
+            if (bool)
+            return new SuccessModel();
+            else
+            return new ErrorModel(&quot;删除博客失败&quot;);
+        })
+    }
+}
+module.exports = handleBlogRouter; //暴露博客接口函数
+</code></pre>
+<p>controller/blog.js</p>
+<pre><code>const { exec } = require('../db/mysql')
+
+const getList = (author, keyword) =&gt; {
+    let sql = `select * from blogs where 1=1 `
+    if (author) {
+        sql += `and author='${author}'`
+    }
+    if (keyword) {
+        sql += `and title like '%${keyword}%'`
+    }
+    sql += `order by creatTime desc`;
+    return exec(sql);
+}
+
+const getDetail = (id) =&gt; {
+    const sql = `select * from blogs where id='${id}'`
+    return exec(sql).then(result =&gt; {
+        return result[0];
+    })
+}
+const newBlog = (blogData = {}) =&gt; {
+    //返回新增博客插入到数据库的id
+    const title = blogData.title;
+    const content = blogData.content;
+    const author = blogData.author;
+    const creatTime = Date.now();
+    const sql = `insert into blogs (title, content, creatTime, author) values(
+        '${title}','${content}',${creatTime},'${author}')`;
+    return  exec(sql).then(insertData =&gt;{
+          return {
+              id: insertData.insertId
+          }
+    })
+}
+const updateBlog = (id, blogData = {}) =&gt; {
+    // console.log('updateBlog', blogData);
+    // return true;
+    const title = blogData.title;
+    const content = blogData.content;
+    const sql = `
+    update blogs set title ='${title}',content = '${content}' where id = ${id}
+    `;
+    return exec(sql).then(updateData =&gt;{
+        if (updateData.affectedRows&gt;0){
+            return true;
+        }
+        return false;
+    })
+}
+const deleteBlog = (id,author,blogData = {}) =&gt; {
+    const sql = `delete from blogs where id='${id}' and author='${author}'`;
+    return exec(sql).then(deleteData =&gt;{
+        if (deleteData.affectedRows&gt;0){
+            return true;
+        }
+        return false;
+    })
+}
+module.exports = {
+    getList,
+    getDetail,
+    newBlog,
+    updateBlog,
+    deleteBlog
+}
+</code></pre>
+<h2 id="登录">登录</h2>
+<p>核心： 登录校验&amp;登录信息储存</p>
+<ul>
+<li>cookie,session</li>
+<li>session 写入 redis</li>
+<li>开发登录功能 和前端联调（用nginx 反向代理）</li>
+</ul>
+<h3 id="cookie">cookie</h3>
+<ul>
+<li>存储在浏览器的一段字符串(最大5kb)</li>
+<li>跨域不共享</li>
+<li>格式：k1=v1;k2=v2; 存储结构化数据</li>
+<li>每次发送http请求 将请求域的cookie 一起发送给server</li>
+<li>server 可以修改cookie并返回给浏览器</li>
+<li>浏览器也可以通过js修改cookie（有限制）</li>
+</ul>
+<h4 id="浏览器查看cookie三种方式">浏览器查看cookie三种方式</h4>
+<ol>
+<li>控制台查看浏览器发送的请求中带有cookie （返回带有服务器修改后的cookie）</li>
+<li>Storage中的Cookies</li>
+<li>js document.cookie 查看</li>
+</ol>
+<p>js不能删除浏览器cookie<br>
+可以通过 赋值累加自定义cookie<br>
+document.cookie = &quot;k1=v1&quot;;</p>
+<h2 id="day6">Day6 :</h2>
+<p>cookie 做限制</p>
+<pre><code>if (method === 'GET' &amp;&amp; req.path ==='/api/user/login'){
+        const {username  , password} = req.query;
+        const result = login(username,password);
+        return result.then(data =&gt;{
+           if (data.username)
+            {
+                //操作cookie
+                res.setHeader('Set-Cookie',`username=${data.username}; path=/; httpOnly; expires=${getCookieExpires()}`)
+                return new SuccessModel();
+            }
+            
+            return new ErrorModel(&quot;登录失败&quot;);
+        })
+     }
+</code></pre>
+<p>tip:<br>
+path设置根路由  对域名的所有接口都生效（登录之后生成cookie）<br>
+httpOnly 设置之后客户端查看不到cookie并且不能修改  提供安全性<br>
+expires 设置过期时间</p>
+<h3 id="session">session</h3>
+<p>都放cookie的弊端：<br>
+暴露敏感信息（username）...<br>
+<img src="https://huyifu.github.io/post-images/1625023401214.png" alt="" loading="lazy"><br>
+解决：<br>
+cookie放userId  server端放置对应username</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://huyifu.github.io/post/jquerynodesocketio-shi-xian-liao-tian-shi/">
+                  <h3 class="post-title">
+                    Jquery+node+socket.io 实现聊天室
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

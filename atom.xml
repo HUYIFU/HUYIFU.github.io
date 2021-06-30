@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huyifu.github.io</id>
     <title>古月的blog</title>
-    <updated>2021-05-07T08:47:48.421Z</updated>
+    <updated>2021-06-30T03:25:19.158Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huyifu.github.io"/>
     <link rel="self" href="https://huyifu.github.io/atom.xml"/>
@@ -11,6 +11,794 @@
     <logo>https://huyifu.github.io/images/avatar.png</logo>
     <icon>https://huyifu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 古月的blog</rights>
+    <entry>
+        <title type="html"><![CDATA[Node开发Web Server博客 Node.js+Express+Koa2+MySQL]]></title>
+        <id>https://huyifu.github.io/post/node-kai-fa-web-server-bo-ke-nodejsexpresskoa2mysql/</id>
+        <link href="https://huyifu.github.io/post/node-kai-fa-web-server-bo-ke-nodejsexpresskoa2mysql/">
+        </link>
+        <updated>2021-06-23T02:22:22.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="day1">Day1 :</h2>
+<p>项目需求，功能了解</p>
+<p>node复习：</p>
+<ul>
+<li>使用loadsh   ——Lodash 是一个一致性、模块化、高性能的 JavaScript 实用工具库。<br>
+内置模块化方法  （array number ....)</li>
+<li>debugge</li>
+<li>common js   是个模块规范</li>
+</ul>
+<p>从输入url到显示页面的过程:<br>
+DNS 域名解析   建立TCP连接(三次握手)  发送http请求 (浏览器)<br>
+server 接收到http请求  处理 返回 (服务端)<br>
+client接收并处理  (浏览器)</p>
+<p>get请求  (querystring) ?value1=xx&amp;value2=yy<br>
+将查询字符串转化成对象   querysring.parse(url.split(&quot;?&quot;)[1]) ;</p>
+<pre><code>querystring.parse(&quot;name=whitemu&amp;sex=man&amp;sex=women&quot;)
+{
+	name: 'whitemu',
+	sex: ['man', 'women']
+}
+
+</code></pre>
+<p>直接访问浏览器是get请求  (一般浏览器还会自动发一个头标的get请求)</p>
+<p>post 请求<br>
+安装postman  - 能模拟http请求的工具软件，支持get/post两种方式，对于程序开发人员来说提供了一种测试工具。 Postman能够保留用户的请求历史记录，方便下次请求时直接查找。</p>
+<p>综合test  (使用postman测试)</p>
+<pre><code>const http = require('http');
+const querystring = require('querystring');
+const server = http.createServer((req,res)=&gt;{
+   const method = req.method;
+   const url = req.url;
+   const path = url.split(&quot;?&quot;)[0]  //分割出的url接口路径
+   const query = querystring.parse(url.split(&quot;?&quot;)[1])  //查询字符串转成对象
+   //设置返回格式 JSON
+   res.setHeader('Content-type','application/json');
+    //返回数据
+    const resData = {
+        method,
+        url,
+        path,
+        query
+    }
+    if (method === 'GET'){
+        res.end(JSON.stringify(resData)) //JSON是对象的字符串表达形式 这里stringfy化成字符串
+    }
+    if (method === 'POST'){
+        let postData = '';
+        req.on('data',chunk =&gt;{
+            postData += chunk.toString();  //化成字符串
+        })
+        req.on('end',()=&gt;{
+            resData.postData = postData;//赋予对象属性
+            res.end(JSON.stringify(resData));
+        })
+    }
+});
+server.listen(8000);
+console.log(&quot;挂载8000端口&quot;);
+
+</code></pre>
+<h1 id="原生node开始搭建项目">原生node开始搭建项目</h1>
+<figure data-type="image" tabindex="1"><img src="https://huyifu.github.io/post-images/1624437988815.png" alt="" loading="lazy"></figure>
+<h2 id="服务器搭建">服务器搭建</h2>
+<p>接口设计：<br>
+<img src="https://huyifu.github.io/post-images/1624438074970.png" alt="" loading="lazy"><br>
+六个接口 五个为博客接口  一个为用户接口</p>
+<p>目前的目录：<br>
+<img src="https://huyifu.github.io/post-images/1624446539796.png" alt="" loading="lazy"><br>
+bin文件夹下的 www.js</p>
+<pre><code>//跟server技术相关的服务器代码  
+const http = require('http');
+const PORT = 8000; //端口
+const serverHandle = require('../app.js');//引入服务器处理函数
+const server = http.createServer(serverHandle);
+server.listen(PORT);
+console.log(&quot;挂载在&quot;+PORT+&quot;端口&quot;);
+</code></pre>
+<p>tip:  这里引入了app模块  在app模块里填写了具体的服务器回调函数<br>
+app.js</p>
+<pre><code>const handleBlogRouter = require('./src/router/blog');
+const handleUserRouter = require('./src/router/user');
+
+const serverHandle = (req,res) =&gt;{
+    //(相关配置) 设置返回格式 JSON
+    res.setHeader('Content-type', 'application/jaon');
+    //处理blog路由
+    const blogData = handleBlogRouter(req,res);
+    if (blogData){
+        //返回博客数据
+        res.end(JSON.stringify(blogData));
+        return;
+    }
+    //处理user路由
+    const userData = handleUserRouter(req,res);
+    if (userData){
+        //返回user数据
+        res.end(JSON.stringify(userData));
+        return;
+    }
+    //未命中路由
+    res.end(&quot;404!&quot;);
+}
+module.exports = serverHandle //暴露服务器处理函数
+</code></pre>
+<p>路由初始化 ，（blog路由接口和user路由接口）<br>
+blog.js  user.js</p>
+<h3 id="定义数据模型类">定义数据模型（类）</h3>
+<p>新建文件夹model  resModel.js</p>
+<pre><code>class BaseModel{ //class  js原型对象的语法糖
+    constructor(data,message){
+        if (typeof data === 'string'){ //此处兼容只传一个参
+            this.message = data;
+            data = null;
+            message = null;
+        }
+        if (data){
+            this.data = data;//增添data属性
+        }
+        if (message){
+            this.message = message;//增添message属性
+        }
+    }
+}
+class SuccessModel extends BaseModel{
+    constructor(data,message){
+         super(data,message); //调用父类构造
+         this.errno = 0;
+    }
+}
+class ErrorModel extends BaseModel{
+    constructor(data,message){
+        super(data,message);
+        this.errno = -1;
+    }
+}
+module.exports = {
+    SuccessModel,
+    ErrorModel
+}
+</code></pre>
+<h3 id="controller调控数据-包含所有数据相关操作">controller调控数据 包含所有数据相关操作</h3>
+<p>新建对应js  blog.js  user.js</p>
+<h2 id="day2-继续开发路由">Day2： 继续开发路由</h2>
+<p>当前文件目录：<br>
+<img src="https://huyifu.github.io/post-images/1624515858537.png" alt="" loading="lazy"><br>
+目前是四层路由关系<br>
+www.js（入口)  -&gt;app.js(服务器相关设置) -&gt;router blog.js/user.js(分路由处理) -&gt;controller  blog.js/user.js(数据相关操作)</p>
+<h3 id="路由已经初步全部开发完成未接数据库">路由已经初步全部开发完成（未接数据库）</h3>
+<p>例子：   localhost:8000/api/blog/new   新增博客接口<br>
+首先app.js 处理post数据和分路由到blog.js  (用到promise先处理chunk数据流)</p>
+<pre><code>const handleBlogRouter = require('./src/router/blog');
+const handleUserRouter = require('./src/router/user');
+const querystring = require('querystring');
+//处理 postData
+const getPostData = (req) =&gt; {
+    const promise = new Promise((resolve, reject) =&gt; {
+        //生成promise实例
+        if (req.method !== 'POST') {
+            resolve({});//resolve空对象 不表示出错
+            return;
+        }
+        if (req.headers['content-type'] !== 'application/json') {
+            resolve({});
+            return;
+        }
+        let postData = '';
+        req.on('data', chunk =&gt; {
+            postData += chunk.toString();
+        });
+        req.on('end', () =&gt; {
+            if (!postData) {
+                resolve({});//空数据 resolve空对象
+                return;
+            }
+            resolve(JSON.parse(postData));//resolve 数据对象
+        })
+    })
+    return promise;
+}
+
+const serverHandle = (req, res) =&gt; {
+    //(相关配置) 设置返回格式 JSON
+    res.setHeader('Content-type', 'application/jaon');
+
+    //获取path 
+    const url = req.url;
+    req.path = url.split('?')[0];
+
+    //解析query
+    req.query = querystring.parse(url.split('?')[1]);
+
+    //处理postData(promise对象resolve后执行then)
+    getPostData(req).then(postData =&gt; {
+        req.body = postData; //将postData放入请求体中
+        //处理blog路由
+        const blogData = handleBlogRouter(req, res);
+        if (blogData) {
+            //返回博客数据
+            res.end(JSON.stringify(blogData));
+            return;
+        }
+        //处理user路由
+        const userData = handleUserRouter(req, res);
+        if (userData) {
+            //返回user数据
+            res.end(JSON.stringify(userData));
+            return;
+        }
+        //未命中路由
+        res.end(&quot;404!&quot;);
+    })
+
+}
+module.exports = serverHandle //暴露服务器处理函数
+
+</code></pre>
+<p>router 下的blog.js  （引入newBlog 和 SuccessModel )</p>
+<pre><code> //新增一篇博客
+    if (method === 'POST' &amp;&amp; req.path === '/api/blog/new'){
+        const newData = newBlog(req.body);
+        return new SuccessModel(newData);
+    }
+</code></pre>
+<p>controller 下的blog.js （暴露newBlog)</p>
+<pre><code>const newBlog = (blogData = {}) =&gt;{
+    console.log('newBlogData',blogData);
+    return {
+        id:3
+    }
+}
+</code></pre>
+<p>tip: 假数据  其中箭头函数里设置默认参数 blogData undefined就为 {} 空对象  返回</p>
+<h2 id="day3-连接数据库">Day3： 连接数据库</h2>
+<h3 id="数据储存">数据储存</h3>
+<p>mysql 的下载和安装配置<br>
+建立数据库 myblog<br>
+建表<br>
+1 user表<br>
+id int  PK<br>
+username  varchar(20)<br>
+password varchar(20)<br>
+realname varchar(10)<br>
+2 blogs 表<br>
+id int PK<br>
+title varchar(50)<br>
+content longtext    -&gt;长内容<br>
+creatime bigint(20) -&gt;13位毫秒 bigint<br>
+author varchar(20)<br>
+3</p>
+<p>删除 修改表 ....</p>
+<p>表的curd（增删改查） 简单示例</p>
+<ul>
+<li>增加一行<br>
+use myblog;<br>
+insert into users(username,’password‘,realname) values('lisi','123','李四');</li>
+<li>查询<br>
+use myblog<br>
+select  * from users;</li>
+<li>修改<br>
+use myblog<br>
+update users  set   realname = 'xx' where username = 'lisi'</li>
+<li>删除 （可以delete 这里用修改state字段表示 是否有效 )<br>
+use myblog<br>
+update users set state = 0;</li>
+</ul>
+<h3 id="开发环境dev-生产环境pro">开发环境dev   生产环境pro</h3>
+<p>dev环境：开发环境，外部用户无法访问，开发人员使用，版本变动很大。<br>
+pro环境：生产环境，面向外部用户的环境，连接上互联网即可访问的正式环境。</p>
+<p>在package.json中配置 dev 和pro</p>
+<pre><code>&quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;,
+    &quot;dev&quot;: &quot;cross-env NODE_ENV=dev nodemon ./bin/www.js&quot;,
+    &quot;prd&quot;: &quot;cross-env NODE_ENV=production nodemon ./bin/www.js&quot;
+  },
+</code></pre>
+<p>安装好cross-env      运行时敲入 npm run dev<br>
+自动运行 nodemon ./bin/www.js 并存入NODE_ENV中<br>
+在node中，有全局变量process表示的是当前的node进程。<br>
+process.env包含着关于系统环境的信息，但是process.env中并不存在NODE_ENV这个东西<br>
+。NODE_ENV是一个用户自定义的变量，在webpack中它的用途是判断生产环境或开发环境。</p>
+<h4 id="引用时-processenvnode_env-来表示是开发环境还是生产环境">引用时 process.env.NODE_ENV 来表示是开发环境还是生产环境</h4>
+<p>config db.js 代码如下</p>
+<pre><code>const env = process.env.NODE_ENV //环境参数
+
+let MYSQL_CONFIG;
+if (env === 'dev'){
+  //开发环境
+  MYSQL_CONFIG = {
+      host: 'localhost',
+      user: 'root',
+      password: '1234',
+      port: '3306',
+      database: 'myblog'
+  }
+}
+if (env === 'production'){
+  //生产环境
+}
+
+module.exports = {
+    MYSQL_CONFIG
+}
+</code></pre>
+<h2 id="day4-实现路由数据库">Day4 : 实现路由（数据库）</h2>
+<h4 id="在实际调用数据库操作时引用统一的数据库配置以及sql语句执行">在实际调用数据库操作时引用统一的数据库配置以及sql语句执行</h4>
+<p>db 下 mysql代码如下：</p>
+<pre><code>const mysql = require('mysql');
+const { MYSQL_CONFIG} = require('../config/db'); //引入配置文件
+//创建连接对象
+const con = mysql.createConnection(MYSQL_CONFIG);
+//开始连接
+con.connect();
+
+//统一执行sql的函数
+function exec(sql){
+    const promise = new Promise((resolve,reject)=&gt;{
+        con.query(sql, (err,result) =&gt;{
+            if (err){
+                reject(err);
+                return;
+            }
+            resolve(result);
+        })
+    })
+    return promise;
+}
+module.exports = {
+    exec
+}
+</code></pre>
+<p>调用exec 返回promise对象</p>
+<p>例子： /api/blog/detail GET</p>
+<h3 id="从内到外分析-promise对象的调用-四层">从内到外分析 Promise对象的调用 四层</h3>
+<p>一   mysql    exec函数<br>
+数据库连接对象con 执行查询<br>
+外层包了个promise对象  在查询成功时resolve成功回调结果<br>
+失败时reject失败回调结果<br>
+函数返回这个promise</p>
+<p>二   controller/blog   getDetail</p>
+<pre><code>const getDetail = (id)=&gt;{
+    const sql = `select * from blogs where id='${id}'`
+    return exec(sql).then(result =&gt;{
+        return result[0];
+    })
+}
+</code></pre>
+<p>在exec函数resolve时 调用then方法<br>
+tip： 这里return 这个返回结果对象  自动生成一个已经resolve这个返回结果的promise对象<br>
+再次把这个新生成的promise对象作为函数返回值返回出去</p>
+<p>三   router/blog</p>
+<pre><code> //获取一篇博客的内容
+    if (method === 'GET' &amp;&amp; req.path ==='/api/blog/detail'){
+        // const Detaildata = getDetail(id);
+        // return new SuccessModel(Detaildata);
+        const result  = getDetail(id);
+        return result.then(data =&gt;{
+            return new SuccessModel(data);
+        })
+    }
+</code></pre>
+<p>得到 getDetail 返回的promise对象（当生成时候就已经resolve） then方法  返回SuccessModel 实例（就是对象）  同第二层  返回一个新的promise对象（已经resolve这个实例对象）</p>
+<p>四  app</p>
+<pre><code>const blogResult = handleBlogRouter(req,res);
+        if (blogResult){
+            //返回的promise对象 resolve后自动调用then
+            blogResult.then(blogData =&gt;{
+                res.end(JSON.stringify(blogData));
+            })
+            return;
+        }
+</code></pre>
+<p>then 方法 服务器返回JSON格式的字符串数据</p>
+<h2 id="day5">Day5 :</h2>
+<p>全部接口以及实现<br>
+app.js</p>
+<pre><code>const handleBlogRouter = require('./src/router/blog');
+const handleUserRouter = require('./src/router/user');
+const querystring = require('querystring');
+//处理 postData
+const getPostData = (req) =&gt; {
+    const promise = new Promise((resolve, reject) =&gt; {
+        //生成promise实例
+        if (req.method !== 'POST') {
+            resolve({});//resolve空对象 不表示出错
+            return;
+        }
+        if (req.headers['content-type'] !== 'application/json') {
+            resolve({});
+            return;
+        }
+        let postData = '';
+        req.on('data', chunk =&gt; {
+            postData += chunk.toString();
+        });
+        req.on('end', () =&gt; {
+            if (!postData) {
+                resolve({});//空数据 resolve空对象
+                return;
+            }
+            resolve(JSON.parse(postData));//resolve 数据对象
+        })
+    })
+    return promise;
+}
+
+const serverHandle = (req, res) =&gt; {
+    //(相关配置) 设置返回格式 JSON
+    res.setHeader('Content-type', 'application/jaon');
+
+    //获取path 
+    const url = req.url;
+    req.path = url.split('?')[0];
+
+    //解析query
+    req.query = querystring.parse(url.split('?')[1]);
+
+    //处理postData(promise对象resolve后执行then)
+    getPostData(req).then(postData =&gt; {
+        req.body = postData; //将postData放入请求体中
+        //处理blog路由
+        const blogResult = handleBlogRouter(req,res);
+        if (blogResult){
+            //返回的promise对象 resolve后自动调用then
+            blogResult.then(blogData =&gt;{
+                res.end(JSON.stringify(blogData));
+            })
+            return;
+        }
+        //处理user路由
+        const userResult = handleUserRouter(req,res);
+        if (userResult){
+            userResult.then(userData=&gt;{
+                res.end(JSON.stringify(userData));
+            })
+            return;
+        }
+        //未命中路由
+        res.end(&quot;404!&quot;);
+    })
+
+}
+module.exports = serverHandle //暴露服务器处理函数
+</code></pre>
+<p>router/user.js</p>
+<pre><code>const  {loginCheck} = require('../controller/user');
+const { SuccessModel, ErrorModel } = require('../model/resModel');
+const handleUserRouter = (req,res)=&gt;{
+    const method = req.method ;
+    //用户登录
+    if (method === 'POST' &amp;&amp; req.path ==='/api/user/login'){
+       const {username  , password} = req.body;
+       const result = loginCheck(username,password);
+       return result.then(data =&gt;{
+           if (data.username)
+           return new SuccessModel();
+           else
+           return new ErrorModel(&quot;登录失败&quot;);
+       })
+    }
+}
+module.exports = handleUserRouter;
+</code></pre>
+<p>controller/user.js</p>
+<pre><code>const {exec}= require('../db/mysql');
+const loginCheck = (username,password)=&gt;{
+    let sql=`
+    select username from users where username = '${username}' and password = '${password}'
+    `;
+    return exec(sql).then(rows =&gt;{
+        console.log(rows);
+        return rows[0] || {};
+    });
+}
+module.exports = {
+    loginCheck
+};
+</code></pre>
+<p>router/blog.js</p>
+<pre><code>const {getList,
+     getDetail,
+      newBlog,
+      updateBlog,
+      deleteBlog
+} = require('../controller/blog')
+const {SuccessModel, ErrorModel} = require('../model/resModel');
+const handleBlogRouter = (req, res)=&gt;{
+    const method = req.method;
+    const id = req.query.id;
+    //获取博客列表
+    if (method === 'GET' &amp;&amp; req.path ==='/api/blog/list'){
+        const author = req.query.author || '';
+        const keyword = req.query.keyword || '';
+        // const listData = getList(author,keyword);
+        // return  new  SuccessModel(listData);
+        const result = getList(author,keyword);
+        return result.then(listData =&gt;{
+            return new SuccessModel(listData);
+        })
+    }
+    //获取一篇博客的内容
+    if (method === 'GET' &amp;&amp; req.path ==='/api/blog/detail'){
+        // const Detaildata = getDetail(id);
+        // return new SuccessModel(Detaildata);
+        const result  = getDetail(id);
+        return result.then(data =&gt;{
+            return new SuccessModel(data);
+        })
+    }
+    //新增一篇博客
+    if (method === 'POST' &amp;&amp; req.path === '/api/blog/new'){
+        const author = 'zhangsan';
+        req.body.author = author;
+        const result = newBlog(req.body);
+      return  result.then(data =&gt;{
+           return new SuccessModel(data);
+        })
+    }
+    //更新一篇博客
+    if (method === 'POST' &amp;&amp; req.path === '/api/blog/update'){
+        const result = updateBlog(id,req.body);
+        return result.then(bool=&gt;{
+            if (bool)
+            return new SuccessModel();
+            else
+            return new ErrorModel(&quot;更新博客失败&quot;);
+        })
+    }
+    //删除一篇博客
+    if (method === 'POST' &amp;&amp; req.path === '/api/blog/delete'){
+        const author = &quot;zhangsan&quot;;
+        const result = deleteBlog(id,author,req.body);
+        return result.then(bool =&gt;{
+            if (bool)
+            return new SuccessModel();
+            else
+            return new ErrorModel(&quot;删除博客失败&quot;);
+        })
+    }
+}
+module.exports = handleBlogRouter; //暴露博客接口函数
+</code></pre>
+<p>controller/blog.js</p>
+<pre><code>const { exec } = require('../db/mysql')
+
+const getList = (author, keyword) =&gt; {
+    let sql = `select * from blogs where 1=1 `
+    if (author) {
+        sql += `and author='${author}'`
+    }
+    if (keyword) {
+        sql += `and title like '%${keyword}%'`
+    }
+    sql += `order by creatTime desc`;
+    return exec(sql);
+}
+
+const getDetail = (id) =&gt; {
+    const sql = `select * from blogs where id='${id}'`
+    return exec(sql).then(result =&gt; {
+        return result[0];
+    })
+}
+const newBlog = (blogData = {}) =&gt; {
+    //返回新增博客插入到数据库的id
+    const title = blogData.title;
+    const content = blogData.content;
+    const author = blogData.author;
+    const creatTime = Date.now();
+    const sql = `insert into blogs (title, content, creatTime, author) values(
+        '${title}','${content}',${creatTime},'${author}')`;
+    return  exec(sql).then(insertData =&gt;{
+          return {
+              id: insertData.insertId
+          }
+    })
+}
+const updateBlog = (id, blogData = {}) =&gt; {
+    // console.log('updateBlog', blogData);
+    // return true;
+    const title = blogData.title;
+    const content = blogData.content;
+    const sql = `
+    update blogs set title ='${title}',content = '${content}' where id = ${id}
+    `;
+    return exec(sql).then(updateData =&gt;{
+        if (updateData.affectedRows&gt;0){
+            return true;
+        }
+        return false;
+    })
+}
+const deleteBlog = (id,author,blogData = {}) =&gt; {
+    const sql = `delete from blogs where id='${id}' and author='${author}'`;
+    return exec(sql).then(deleteData =&gt;{
+        if (deleteData.affectedRows&gt;0){
+            return true;
+        }
+        return false;
+    })
+}
+module.exports = {
+    getList,
+    getDetail,
+    newBlog,
+    updateBlog,
+    deleteBlog
+}
+</code></pre>
+<h2 id="登录">登录</h2>
+<p>核心： 登录校验&amp;登录信息储存</p>
+<ul>
+<li>cookie,session</li>
+<li>session 写入 redis</li>
+<li>开发登录功能 和前端联调（用nginx 反向代理）</li>
+</ul>
+<h3 id="cookie">cookie</h3>
+<ul>
+<li>存储在浏览器的一段字符串(最大5kb)</li>
+<li>跨域不共享</li>
+<li>格式：k1=v1;k2=v2; 存储结构化数据</li>
+<li>每次发送http请求 将请求域的cookie 一起发送给server</li>
+<li>server 可以修改cookie并返回给浏览器</li>
+<li>浏览器也可以通过js修改cookie（有限制）</li>
+</ul>
+<h4 id="浏览器查看cookie三种方式">浏览器查看cookie三种方式</h4>
+<ol>
+<li>控制台查看浏览器发送的请求中带有cookie （返回带有服务器修改后的cookie）</li>
+<li>Storage中的Cookies</li>
+<li>js document.cookie 查看</li>
+</ol>
+<p>js不能删除浏览器cookie<br>
+可以通过 赋值累加自定义cookie<br>
+document.cookie = &quot;k1=v1&quot;;</p>
+<h2 id="day6">Day6 :</h2>
+<p>cookie 做限制</p>
+<pre><code>if (method === 'GET' &amp;&amp; req.path ==='/api/user/login'){
+        const {username  , password} = req.query;
+        const result = login(username,password);
+        return result.then(data =&gt;{
+           if (data.username)
+            {
+                //操作cookie
+                res.setHeader('Set-Cookie',`username=${data.username}; path=/; httpOnly; expires=${getCookieExpires()}`)
+                return new SuccessModel();
+            }
+            
+            return new ErrorModel(&quot;登录失败&quot;);
+        })
+     }
+</code></pre>
+<p>tip:<br>
+path设置根路由  对域名的所有接口都生效（登录之后生成cookie）<br>
+httpOnly 设置之后客户端查看不到cookie并且不能修改  提供安全性<br>
+expires 设置过期时间</p>
+<h3 id="session">session</h3>
+<p>都放cookie的弊端：<br>
+暴露敏感信息（username）...<br>
+<img src="https://huyifu.github.io/post-images/1625023401214.png" alt="" loading="lazy"><br>
+解决：<br>
+cookie放userId  server端放置对应username</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Jquery+node+socket.io 实现聊天室]]></title>
+        <id>https://huyifu.github.io/post/jquerynodesocketio-shi-xian-liao-tian-shi/</id>
+        <link href="https://huyifu.github.io/post/jquerynodesocketio-shi-xian-liao-tian-shi/">
+        </link>
+        <updated>2021-05-29T11:42:04.000Z</updated>
+        <content type="html"><![CDATA[<p>引言：做计网实验大作业，要求实现即时多人聊天，基础功能为文字传输，（图片等文件之后补充）<br>
+打算用jquery node socket.io 实现  (正好学下jquery使用)</p>
+<h3 id="客户端">客户端</h3>
+<h3 id="服务器端">服务器端</h3>
+<h4 id="jquery学习">jquery学习</h4>
+<p>引入:</p>
+<pre><code>&lt;script src=&quot;https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js&quot;&gt;
+</code></pre>
+<p>语法:<br>
+$(selector).action()<br>
+jquery语句使用以上语法  selector表示所选取的元素    action表示对元素采取的动作</p>
+<pre><code>$(this).hide() - 隐藏当前元素
+$(&quot;p&quot;).hide() - 隐藏所有 &lt;p&gt; 元素
+$(&quot;p.test&quot;).hide() - 隐藏所有 class=&quot;test&quot; 的 &lt;p&gt; 元素
+$(&quot;#test&quot;).hide() - 隐藏 id=&quot;test&quot; 的元素
+</code></pre>
+<p>tip:  使用文档就绪事件  jq入口函数</p>
+<pre><code>$(document).ready(function(){
+   // 开始写 jQuery 代码...
+});
+</code></pre>
+<p>这是为了防止文档在完全加载（就绪）之前运行 jQuery 代码，即在 DOM 加载完成后才可以对 DOM 进行操作。</p>
+<p>选取元素的方式:(此处选择几个常用的)</p>
+<ul>
+<li>$(&quot;p.pclass&quot;) 选取class为pclass的p元素</li>
+<li>$(&quot;p.first&quot;) 第一个p元素</li>
+<li>$(&quot;ul li:first-child&quot;) 每个ul的第一个li元素</li>
+<li>$(&quot;[href]&quot;) 带有href属性的元素</li>
+</ul>
+<p>获得内容<br>
+text() - 设置或返回所选元素的文本内容<br>
+html() - 设置或返回所选元素的内容（包括 HTML 标记）<br>
+val() - 设置或返回表单字段的值<br>
+attr() -设置或返回属性内容的值</p>
+<p>设置值:<br>
+text(要设置的值)<br>
+html  val  同上<br>
+attr(&quot;要设置的属性的名称,像href&quot;,&quot;要设置的值,像www.hao123.com&quot;)</p>
+<p>拥有回调函数:<br>
+回调函数有两个参数：被选元素列表中当前元素的下标，以及原始（旧的）值。然后以函数新值返回您希望使用的字符串。</p>
+<pre><code>$(&quot;#btn1&quot;).click(function(){
+    $(&quot;#test1&quot;).text(function(i,origText){
+        return &quot;旧文本: &quot; + origText + &quot; 新文本: Hello world! (index: &quot; + i + &quot;)&quot;; 
+    });
+});
+</code></pre>
+<p>聊天内容要使用到的:  创建元素  添加元素 删除元素</p>
+<pre><code>function appendText(){
+    var txt1=&quot;&lt;p&gt;文本-1。&lt;/p&gt;&quot;;              // 使用 HTML 标签创建文本
+    var txt2=$(&quot;&lt;p&gt;&lt;/p&gt;&quot;).text(&quot;文本-2。&quot;);  // 使用 jQuery 创建文本
+    var txt3=document.createElement(&quot;p&quot;);
+    txt3.innerHTML=&quot;文本-3。&quot;;               // 使用 DOM 创建文本 text with DOM
+    $(&quot;body&quot;).append(txt1,txt2,txt3);        // 追加新元素
+}
+</code></pre>
+<p>append 加至所选元素的开头<br>
+prepend加至所选元素的末尾</p>
+<p>删除:<br>
+remove() - 删除被选元素（及其子元素）<br>
+empty() - 从被选元素中删除子元素</p>
+<p>添加类</p>
+<p>css方法 ——设置或者返回所选元素的样式属性<br>
+返回属性(只返回第一个匹配)<br>
+$(&quot;p&quot;).css(&quot;height&quot;)<br>
+tip： 返回首个匹配元素的height值</p>
+<p>设置属性(所有匹配)<br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mi mathvariant="normal">&quot;</mi><mi>p</mi><mi mathvariant="normal">&quot;</mi><mo>)</mo><mi mathvariant="normal">.</mi><mi>c</mi><mi>s</mi><mi>s</mi><mo>(</mo><mi mathvariant="normal">&quot;</mi><mi>b</mi><mi>a</mi><mi>c</mi><mi>k</mi><mi>g</mi><mi>r</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>d</mi><mo>−</mo><mi>c</mi><mi>o</mi><mi>l</mi><mi>o</mi><mi>r</mi><mi mathvariant="normal">&quot;</mi><mo separator="true">,</mo><mi mathvariant="normal">&quot;</mi><mi>y</mi><mi>e</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>w</mi><mi mathvariant="normal">&quot;</mi><mo>)</mo><mo separator="true">;</mo></mrow><annotation encoding="application/x-tex">(&quot;p&quot;).css(&quot;background-color&quot;,&quot;yellow&quot;);
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord mathdefault">p</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mord">.</span><span class="mord mathdefault">c</span><span class="mord mathdefault">s</span><span class="mord mathdefault">s</span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord mathdefault">b</span><span class="mord mathdefault">a</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">&quot;</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">&quot;</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mpunct">;</span></span></span></span>(&quot;p&quot;).css({&quot;background-color&quot;:&quot;yellow&quot;,&quot;font-size&quot;:&quot;200%&quot;});</p>
+<p>jquery尺寸<br>
+width() 返回content width<br>
+innnerWidth() padding + content width<br>
+outerWidth() border + padding + content  width<br>
+outerWidth() magin + border  + padding + content width<br>
+tip:  box-sizing: 两种值<br>
+content-box  是默认值。如果你设置一个元素的宽为100px，那么这个元素的内容区会有100px 宽，并且任何边框和内边距的宽度都会被增加到最后绘制出来的元素宽度中。<br>
+border-box 告诉浏览器：你想要设置的边框和内边距的值是包含在width内的。也就是说，如果你将一个元素的width设为100px，那么这100px会包含它的border和padding，内容区的实际宽度是width减去(border + padding)的值。大多数情况下，这使得我们更容易地设定一个元素的宽高。</p>
+<p>jquery 遍历</p>
+<ul>
+<li>向上遍历dom  祖先<br>
+parent()<br>
+直接父元素<br>
+parents()<br>
+所有祖先元素直到文档根元素<html><br>
+parentsUtil()<br>
+$(&quot;span&quot;).parentsUtil(&quot;div&quot;)<br>
+返回给定两个元素之间的所有祖先元素<br>
+不包括两个临界点</li>
+<li>向下遍历  后代<br>
+children() 所有的直接子元素<br>
+find() 方法返回被选元素的所有后代元素，一路向下直到最后一个后代。</li>
+<li>水平遍历dom  同胞<br>
+siblings() 所有同胞<br>
+tip:  过滤   $(&quot;span&quot;).siblings(&quot;p&quot;)  所有p同胞<br>
+next() 方法返回被选元素的下一个同胞元素。（从左到右）<br>
+nextAll()  返回被选元素之后的所有同胞   （从左到右）<br>
+nextUntil() 方法返回介于两个给定参数之间的所有跟随的同胞元素。<br>
+nextUntil(&quot;dom1&quot;).nextUtil(&quot;dom2&quot;)    (从左到右)<br>
+tip： dom1 一定要位于左  dom2 位于右<br>
+prev()<br>
+prevAll()<br>
+prevUntil()<br>
+从右至左</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JS Event Loop]]></title>
+        <id>https://huyifu.github.io/post/js-event-loop/</id>
+        <link href="https://huyifu.github.io/post/js-event-loop/">
+        </link>
+        <updated>2021-05-14T08:58:23.000Z</updated>
+        <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[intersectionObsever 实现瀑布流]]></title>
         <id>https://huyifu.github.io/post/intersectionobsever-shi-xian-pu-bu-liu/</id>
@@ -156,8 +944,29 @@ io.observe(elementB);
 对于 setInterval  setTimeout</li>
 </ul>
 <h4 id="js是单线程语言这些方法看起来是异步多线程其实是在特定的时间快速执行-还是在单线程上">JS是单线程语言，这些方法看起来是异步多线程，其实是在特定的时间快速执行 （还是在单线程上）</h4>
-<p>第二个参数最小标准为10 不足则自动补为10<br>
-tip：屏幕频率一般60hz，每16.7ms刷新一次</p>
+<p>第二个参数最小标准为10 不足则自动补为10 （内置）<br>
+tip：屏幕频率一般60hz，每16.7ms刷新一次<br>
+累计效应：当setInterval 函数第二个参数过于小 可能会出现同时触发多次的现象</p>
+<h5 id="原因-涉及js-事件的event-loop-此处简单说明">原因：（ 涉及JS 事件的event loop   此处简单说明）</h5>
+<p>主线程 同步代码区   event table  异步执行区<br>
+当执行setInterval（func，xx）时候  func函数会被推入event table<br>
+当经过xxms之后 func函数被放入同步代码区的最底部<br>
+同步代码区的执行是需要时间的（包括被放入的func函数）<br>
+当推入速度过快 而执行速度很慢  同步区就会出现多个 func函数 从而出现  定时器函数触发时间并没有按照每xxms执行 甚至 同时运行两遍.....</p>
+<p>tip：超时调用（setTimeout）可以用来模拟 间歇调用（SetInterval）<br>
+使用递归和设置循环次数</p>
+<pre><code>var num=0;
+function  incrementNumber(){
+    num++;
+    if (num&lt;100)
+    {
+        setTimeout(incrementNumber,500);
+    }
+}
+</code></pre>
+<p>这样能避免后一个间歇函数在前一个提前触发 以及大部分的累计效应—— 因为在前一个超时函数真正执行时候才会把下一个超时函数放入event table</p>
+<h3 id="frames对象">frames对象</h3>
+<p>###location对象</p>
 ]]></content>
     </entry>
     <entry>
@@ -974,452 +1783,6 @@ slot标签里面为默认内容</p>
      })
     &lt;/script&gt;
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Js 执行上下文（执行环境）]]></title>
-        <id>https://huyifu.github.io/post/js-zhi-xing-shang-xia-wen-zhi-xing-huan-jing/</id>
-        <link href="https://huyifu.github.io/post/js-zhi-xing-shang-xia-wen-zhi-xing-huan-jing/">
-        </link>
-        <updated>2021-03-30T16:13:19.000Z</updated>
-        <content type="html"><![CDATA[<p>引言：在兜兜转转一圈后总算是大概理清了 执行环境 this 词法环境等等概念 如果之后学习又有新的看法和解释继续修改<br>
-行文思路： 执行上下文 的类型 存储方式<br>
-执行上下文的生命周期 和结构<br>
-结构一 es3<br>
-变量对象(variable object)，this指针(this value)，作用域链(scope chain) 三部分分别讲解在执行上下文在生命周期里的变化<br>
-结构二 es6<br>
-词法环境组件和变量环境组件   两部分分别讲解<br>
-在执行上下文在生命周期里的变化<br>
-总结：</p>
-<h1 id="js是解释执行的语言">JS是解释执行的语言</h1>
-<p>因此代码会通过先解析后执行的方式进行运行，而这个过程JS引擎会构造出一个抽象的环境 这个环境就是执行环境(Execution Context，也称为&quot;执行上下文&quot;)</p>
-<h2 id="执行上下文有三种类型">执行上下文有三种类型</h2>
-<ol>
-<li>全局执行上下文： 这是默认的、最基础的执行上下文。不在任何函数中的代码都位于全局执行上下文中。它做了两件事：1. 创建一个全局对象，在浏览器中这个全局对象就是 window 对象。2. 将 this 指针指向这个全局对象。一个程序中只能存在一个全局执行上下文。</li>
-<li>函数执行上下文： 每次调用函数时，都会为该函数创建一个新的执行上下文。每个函数都拥有自己的执行上下文，但是只有在函数被调用的时候才会被创建。一个程序中可以存在任意数量的函数执行上下文。每当一个新的执行上下文被创建，它都会按照特定的顺序执行一系列步骤，具体过程将在本文后面讨论。</li>
-<li>Eval 函数执行上下文： 运行在 eval 函数中的代码也获得了自己的执行上下文，但由于 Javascript 开发人员不常用 eval 函数，所以在这里不再讨论。</li>
-</ol>
-<h2 id="执行上下文的存储方式">执行上下文的存储方式</h2>
-<p>每一个上下文在本质上都是一种作用域层级。每个代码段开始执行的时候都会创建一个新的上下文来运行它，并且在代码退出的时候销毁掉。而这种方式其实是一种堆栈的方式<br>
-在JS中，是以栈(后进先出)这种数据结构存储执行上下文的，也就是我们所说的 执行栈。<br>
-执行JS代码时，JS引擎首先会创建一个全局执行上下文，并压入栈底；之后每当 调用 一个函数时，都会为该函数创建一个函数执行上下文，并压入栈。<br>
-之后引擎会执行栈顶的函数，函数执行结束后，该函数执行上下文从栈中弹出；再执行下一个函数，直到全部出栈。</p>
-<pre><code>function A() {
-  console.log('this is A')
-  function B() {
-    console.log('this is B')
-  }
-  B()
-}
-A()
-</code></pre>
-<p>执行上下文栈<br>
-调用栈依次为：<br>
-[ 全局环境 ]<br>
-[ 全局环境，A 执行环境 ] A()，调用 A 函数，A 执行环境入栈<br>
-[ 全局环境，A 执行环境，B 执行环境 ] A 函数执行时，遇到 B()， 调用 B 函数，B 入栈<br>
-[ 全局环境，A 执行环境 ] B 执行结束，出栈<br>
-[ 全局环境 ] A 执行结束出栈<br>
-[全局环境退出] 所有代码执行完毕 全局环境出栈<br>
-关于执行栈有以下特点：</p>
-<ul>
-<li>JavaScript执行在单线程上，所有的代码都是排队执行。</li>
-<li>一开始浏览器执行全局的代码时，首先创建全局的执行上下文，压入执行栈的顶部。</li>
-<li>每当进入一个函数的执行就会创建函数的执行上下文，并且把它压入执行栈的顶部。当前函数执行完成后，当前函数的执行上下文出栈，并等待垃圾回收。</li>
-<li>浏览器的JS执行引擎总是访问栈顶的执行上下文。</li>
-<li>全局上下文只有唯一的一个，它在浏览器关闭时出栈。</li>
-<li>关于递归函数——即多次调用自身的函数，需要特别注意：每次递归调用自身都会创建一个新的上下文。这使得 JavaScript 运行时能够追踪递归的层级以及从递归中得到的返回值，但这也意味着每次递归都会消耗内存来创建新的上下文。</li>
-</ul>
-<h2 id="创建执行上下文有两个阶段1-创建阶段-和-2-执行阶段-生命周期">创建执行上下文有两个阶段：1) 创建阶段 和 2) 执行阶段。（生命周期）</h2>
-<p>ps：在执行上下文出栈会有垃圾回收机制，本文不做探讨<br>
-在查询大量资料后：发现执行上下文的结构有两种</p>
-<h3 id="1-es3-变量对象variable-objectthis指针this-value作用域链scope-chain">1 es3： 变量对象(variable object)，this指针(this value)，作用域链(scope chain)</h3>
-<h3 id="2-es6-词法环境组件和变量环境组件-伴随着let等新内容而重新定义">2 es6： 词法环境组件和变量环境组件 （伴随着let等新内容而重新定义）</h3>
-<p>先来探讨es3  其中闭包和提升的原理就在这里<br>
-es3 执行上下文的生命周期<br>
-创建阶段： 创建变量对象 建立作用域链 确定this指针指向<br>
-指行阶段： 变量对象VO 变成活动对象 AO<br>
-回收阶段： 执行上下文出栈等待垃圾回收机制</p>
-<h3 id="变量对象">变量对象</h3>
-<p>变量对象(variable object) 是与执行上下文相关的 数据作用域(scope of data) 。<br>
-它是与上下文关联的特殊对象，用于存储被定义在上下文中的 变量(variables) 和 函数声明(function declarations) 和函数的形参</p>
-<ul>
-<li>全局上下文的变量对象 (VO === this === global)</li>
-</ul>
-<p>只有全局上下文的变量对象允许通过VO的属性名称来间接访问(因为在全局上下文里，全局对象自身就是变量对象，稍后会详细介绍)，在其它上下文中是不能直接访问VO对象的，因为它只是内部机制的一个实现。<br>
-全局对象就是全局变量对象<br>
-全局对象初始创建阶段将Math、String、Date、parseInt作为自身属性，等属性初始化，同样也可以有额外创建的其它对象作为属性（其可以指向到全局对象自身）。例如，在DOM中，全局对象的window属性就可以引用全局对象自身(当然，并不是所有的具体实现都是这样)：</p>
-<pre><code>global = {
-  Math: &lt;...&gt;,
-  String: &lt;...&gt;
-  ...
-  ...
-  window: global //引用自身
-};
-</code></pre>
-<p>VO(globalContext) === global;</p>
-<ul>
-<li>函数上下文的变量对象</li>
-</ul>
-<p>在函数执行上下文中，VO是不能直接访问的，此时由活动对象(activation object,缩写为AO)扮演VO的角色。<br>
-活动对象是在进入函数上下文时刻被创建的，它通过函数的arguments属性初始化。arguments属性的值是Arguments对象。<br>
-Arguments对象是活动对象的一个属性，它包括如下属性：<br>
-callee — 指向当前函数的引用<br>
-length — 真正传递的参数个数<br>
-properties-indexes (字符串类型的整数) 属性的值就是函数的参数值(按参数列表从左到右排列)。 properties-indexes内部元素的个数等于arguments.length. properties-indexes 的值和实际传递进来的参数之间是共享的。<br>
-以下是例子供理解：</p>
-<pre><code>function foo(x, y, z) {
-  // 声明的函数参数数量arguments (x, y, z)
-  alert(foo.length); // 3
-  // 真正传进来的参数个数(only x, y)
-  alert(arguments.length); // 2
-  // 参数的callee是函数自身
-  alert(arguments.callee === foo); // true
-  // 参数共享
-  alert(x === arguments[0]); // true
-  alert(x); // 10
-  arguments[0] = 20;
-  alert(x); // 20
-  x = 30;
-  alert(arguments[0]); // 30
-  // 不过，没有传进来的参数z，和参数的第3个索引值是不共享的
-  z = 40;
-  alert(arguments[2]); // undefined
-  arguments[2] = 50;
-  alert(z); // 40
-}
-foo(10, 20);
-</code></pre>
-<p>两种变量对象已经解释完毕<br>
-执行上下文创建阶段结束后 现在在执行上下文之前 VO的值含有：<br>
-函数的所有形参(如果我们是在函数执行上下文中)<br>
-由名称和对应值组成的一个变量对象的属性被创建；没有传递对应参数的话，那么由名称和undefined值组成的一种变量对象的属性也将被创建。<br>
-所有函数声明(FunctionDeclaration, FD)<br>
-由名称和对应值（函数对象(function-object)）组成一个变量对象的属性被创建；如果变量对象已经存在相同名称的属性，则完全替换这个属性。<br>
-所有变量声明(var, VariableDeclaration)<br>
-由名称和对应值（undefined）组成一个变量对象的属性被创建；如果变量名称跟已经声明的形式参数或函数相同，则变量声明不会干扰已经存在的这类属性。<br>
-可以来看这个例子</p>
-<pre><code>function outerFun (arg1, arg2) {
-    var outerV1 = 1
-    var outerV2 = 2
-    function innerFun1 () {
-        var innerV1 = 3;
-        var innerV2 = 4;
-        console.log('i am innerFun1...')
-    }
-    function innerFun2 () {
-        console.log('i am innerFun2...')
-    }
-    function outerV2 () {
-        return 'i am outerV2'
-    }
-}
-outerFun(1);
-</code></pre>
-<p>此处VO内容有三部分</p>
-<ol>
-<li>arguments属性 即Arguments 对象<br>
-arguments:  Arguments Object<br>
-这个对象属性  有<br>
-arguments.length: 1 只传值了一个<br>
-arguments.callee: outerFun的地址<br>
-arguments[@@iterator]<br>
-返回一个新的Array 迭代器 对象，该对象包含参数中每个索引的值。</li>
-<li>所有变量的声明：此时为undefinde<br>
-outerV1: undefined<br>
-outerV2: undefined</li>
-<li>所有函数的声明： 值为该函数所在内存的地址<br>
-innerFun1 : innerFun1 reference  （ innerFun1 引用）<br>
-innerFun2 : innerFun2 reference  （ innerFun2 引用）</li>
-</ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Node 框架 Express学习]]></title>
-        <id>https://huyifu.github.io/post/node-kuang-jia-express-xue-xi/</id>
-        <link href="https://huyifu.github.io/post/node-kuang-jia-express-xue-xi/">
-        </link>
-        <updated>2021-03-30T08:43:15.000Z</updated>
-        <summary type="html"><![CDATA[<p>Express框架<br>
-提供简洁路由定义方式<br>
-对HTTP请求参数 简化处理<br>
-支持模板引擎<br>
-提供中间件 控制HTTP请求</p>
-<p>中间件<br>
-一堆方法 接收请求 对请求响应  也可以交给下一个中间件继续处理<br>
-两个部分组成  中间件方法和请求处理函数<br>
-app.get('请求路径','处理函数')   方法express提供</p>
-<p>简单的应用 将.get请求分成两个中间件进行处理<br>
-next 将请求的控制权交给下一个中间件<br>
-//引入express框架</p>
-<pre><code>const express = require('express');
-const app = express();//创建服务器
-app.get('/',(req,res,next) =&gt;{
-    req.addname= &quot;在请求头添加的属性&quot;;
-    next();
-});
-app.get('/',(req,res) =&gt;{
-    res.send(req.addname);
-});
-app.listen(3000);
-console.log(&quot;网站启动 端口3000&quot;);
-</code></pre>
-<p>app.use   匹配所有的请求  因此如果后续要继续处理 要使用next()<br>
-app.use('/某一个请求路径',(req,res,next))  可以指定某一个路径匹配的所有请求</p>
-<p>中间件的应用<br>
-1对页面访问某路径进行登录拦截  1 use 进行判断 如果已经登录则放行next() 2 没有登录 返回没有登录的信息<br>
-2 页面维护  直接放最前面进行拦截   不设置路径则匹配所有路径<br>
-3 自定义404路径  放在最后面没有匹配的路径  不设置路径则匹配所有路径</p>
-<p>错误处理中间件</p>
-<pre><code> thorow new Error('发生了错误'); 
-app.use( (err,req,res,next) =&gt;{
-	//err 为手动抛出的Error对象
-	res.status(500).send(err.message); //返回 err对象的错误信息属性
-} )
-</code></pre>
-<p>捕获异步代码错误<br>
-try catch块</p>
-<pre><code>const promisify = require('util').promisify
-const NewreadFile = promisify('fs.readFile') 改造读取文件成返回promise对象的异步函数
-app.get('/', async (req,res,next) =&gt;{
-     try {
-   await NewreadFile('.');
-}
-catch (ex){
-   next(ex);	
-}
-})
-</code></pre>
-<p>捕获到错误的话 程序不会因为这个错误而终止进行—— 健壮性</p>
-<p>构建模块化路由<br>
-express下的Router 路由对象<br>
-为这个路由对象可以匹配请求路径</p>
-<pre><code>const express = require('express');
-const app = express();
-//创建路由对象
-const home = express.Router();
-app.use('/home',home);
-//创建二级路由
-home.use('/index',(req,res)=&gt;{
-    res.send(&quot;二级路由 /home/index！&quot;);
-})
-app.listen(3000);
-</code></pre>
-<p>其中home模块 可以写在别的js中 通过导入导出进行模块的使用<br>
-在主index.js 中<br>
-这样创建二级路由<br>
-const xx = require('')<br>
-app.use('/xx路径', xx);</p>
-<p>Get参数<br>
-在请求函数中 使用req.query 自动将请求参数获取并转化成对象的形式<br>
-app.get('/index',(req,res)=&gt;{<br>
-res.send(req.query);<br>
-});</p>
-<p>Post 请求参数获取<br>
-使用借助第三包 body-parser<br>
-const bodyParser = require('body-parser');<br>
-而且需要在最开始对这个模块进行配置 默认<br>
-app.use(bodyParser.urlencoded( { extended: false} );</p>
-<pre><code>const bodyParser = require('body-parser');
-const express = require('express');
-const app = express();
-app.use(bodyParser.urlencoded({ extended: false}));
-app.post('/index',(req,res)=&gt;{
-    res.send(req.body);
-});
-app.listen(3000);
-</code></pre>
-<p>路由参数 路由里面附带数据 ——  get传递和获取参数的另一种方式</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>Express框架<br>
-提供简洁路由定义方式<br>
-对HTTP请求参数 简化处理<br>
-支持模板引擎<br>
-提供中间件 控制HTTP请求</p>
-<p>中间件<br>
-一堆方法 接收请求 对请求响应  也可以交给下一个中间件继续处理<br>
-两个部分组成  中间件方法和请求处理函数<br>
-app.get('请求路径','处理函数')   方法express提供</p>
-<p>简单的应用 将.get请求分成两个中间件进行处理<br>
-next 将请求的控制权交给下一个中间件<br>
-//引入express框架</p>
-<pre><code>const express = require('express');
-const app = express();//创建服务器
-app.get('/',(req,res,next) =&gt;{
-    req.addname= &quot;在请求头添加的属性&quot;;
-    next();
-});
-app.get('/',(req,res) =&gt;{
-    res.send(req.addname);
-});
-app.listen(3000);
-console.log(&quot;网站启动 端口3000&quot;);
-</code></pre>
-<p>app.use   匹配所有的请求  因此如果后续要继续处理 要使用next()<br>
-app.use('/某一个请求路径',(req,res,next))  可以指定某一个路径匹配的所有请求</p>
-<p>中间件的应用<br>
-1对页面访问某路径进行登录拦截  1 use 进行判断 如果已经登录则放行next() 2 没有登录 返回没有登录的信息<br>
-2 页面维护  直接放最前面进行拦截   不设置路径则匹配所有路径<br>
-3 自定义404路径  放在最后面没有匹配的路径  不设置路径则匹配所有路径</p>
-<p>错误处理中间件</p>
-<pre><code> thorow new Error('发生了错误'); 
-app.use( (err,req,res,next) =&gt;{
-	//err 为手动抛出的Error对象
-	res.status(500).send(err.message); //返回 err对象的错误信息属性
-} )
-</code></pre>
-<p>捕获异步代码错误<br>
-try catch块</p>
-<pre><code>const promisify = require('util').promisify
-const NewreadFile = promisify('fs.readFile') 改造读取文件成返回promise对象的异步函数
-app.get('/', async (req,res,next) =&gt;{
-     try {
-   await NewreadFile('.');
-}
-catch (ex){
-   next(ex);	
-}
-})
-</code></pre>
-<p>捕获到错误的话 程序不会因为这个错误而终止进行—— 健壮性</p>
-<p>构建模块化路由<br>
-express下的Router 路由对象<br>
-为这个路由对象可以匹配请求路径</p>
-<pre><code>const express = require('express');
-const app = express();
-//创建路由对象
-const home = express.Router();
-app.use('/home',home);
-//创建二级路由
-home.use('/index',(req,res)=&gt;{
-    res.send(&quot;二级路由 /home/index！&quot;);
-})
-app.listen(3000);
-</code></pre>
-<p>其中home模块 可以写在别的js中 通过导入导出进行模块的使用<br>
-在主index.js 中<br>
-这样创建二级路由<br>
-const xx = require('')<br>
-app.use('/xx路径', xx);</p>
-<p>Get参数<br>
-在请求函数中 使用req.query 自动将请求参数获取并转化成对象的形式<br>
-app.get('/index',(req,res)=&gt;{<br>
-res.send(req.query);<br>
-});</p>
-<p>Post 请求参数获取<br>
-使用借助第三包 body-parser<br>
-const bodyParser = require('body-parser');<br>
-而且需要在最开始对这个模块进行配置 默认<br>
-app.use(bodyParser.urlencoded( { extended: false} );</p>
-<pre><code>const bodyParser = require('body-parser');
-const express = require('express');
-const app = express();
-app.use(bodyParser.urlencoded({ extended: false}));
-app.post('/index',(req,res)=&gt;{
-    res.send(req.body);
-});
-app.listen(3000);
-</code></pre>
-<p>路由参数 路由里面附带数据 ——  get传递和获取参数的另一种方式</p>
-<!-- more -->
-<p>app.get('/find/:id/:name', (req,res)=&gt; console.log(req.params)😉 req.params为对象<br>
-tip：客户端访问find路径时必须带有id name参数 否则无法获取请求<br>
-http://localhost:3000/find/111/name<br>
-{id:111,name:name}</p>
-<p>访问静态文件<br>
-使用express.static 方法<br>
-app.use(express.static('放置静态文件的目录'))  客户端可直接通过路径访问到</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JS 箭头函数]]></title>
-        <id>https://huyifu.github.io/post/js-jian-tou-han-shu/</id>
-        <link href="https://huyifu.github.io/post/js-jian-tou-han-shu/">
-        </link>
-        <updated>2021-03-29T12:09:30.000Z</updated>
-        <content type="html"><![CDATA[<p>引言：在学习nonde 回调函数时频繁出现箭头函数 此文来详细了解箭头函数深入的特性。</p>
-<h3 id="箭头函数表达式的语法比函数表达式更简洁并且没有自己的thisargumentssupernewtarget-箭头函数表达式更适用于那些本来需要匿名函数的地方并且它不能用作构造函数-因为构造函数用this指向新构建的对象">箭头函数表达式的语法比函数表达式更简洁，并且没有自己的this，arguments，super，new.target。箭头函数表达式更适用于那些本来需要匿名函数的地方，并且它不能用作构造函数。因为构造函数用this指向新构建的对象。</h3>
-<p>五种基础表达形式</p>
-<pre><code>1. (param1, param2, …, paramN) =&gt; { statements } //标准 参数1~N 执行statements
-2. (param1, param2, …, paramN) =&gt; expression // 只有一个表达式 相当于 相当于：(param1, param2, …, paramN) =&gt;{ return expression; }
-3. singleParam =&gt; { statements }  //只有一个参数可不写（）
-4. () =&gt;{statements}  //无参数使用（） 应用1.
-5.() =&gt; expression   //无参数使用（） 应用2.
-</code></pre>
-<p>此外还有其他表达形式</p>
-<pre><code>//加括号的函数体返回对象字面量表达式：
-params =&gt; ({foo: bar})
-//支持剩余参数和默认参数
-(param1, param2, ...rest) =&gt; { statements }
-(param1 = defaultValue1, param2, …, paramN = defaultValueN) =&gt; {
-statements }
-//同样支持参数列表解构
-let f = ([a, b] = [1, 2], {x: c} = {x: a + b}) =&gt; a + b + c;
-f();  // 6
-</code></pre>
-<h3 id="箭头函数没有单独的this箭头函数不会创建自己的this它只会从自己的作用域链的上一层继承this">箭头函数没有单独的this，箭头函数不会创建自己的this,它只会从自己的作用域链的上一层继承this。</h3>
-<p>以下为用this时候出现的一些问题</p>
-<pre><code>function Counter() {
-  this.num = 0;
-  this.timer = setInterval(function add() {
-    this.num++;
-    console.log(this.num);
-  }, 1000);
-}
-var a = new Counter();
-</code></pre>
-<p>输出：<br>
-NaN<br>
-.. 1s一个<br>
-this指向window对象  this理解另一篇进行深入探讨  此处出现问题<br>
-当使用箭头函数改写</p>
-<pre><code>function Counter() {
-  this.num = 0;
-  this.timer = setInterval(()=&gt;{
-      this.num++;
-      console.log(num);
-  },1000)
-}
-var a = new Counter();
-</code></pre>
-<p>预期输出<br>
-1<br>
-2<br>
-..</p>
-<h3 id="通过call-apply调用箭头函数">通过call、apply调用箭头函数</h3>
-<p>由于箭头函数没有自己的this指针，通过call()、apply()方法调用时，第一个参数会被忽略。（箭头函数中若用了this，这个this指向包裹箭头函数的第一个普通函数的 this。）</p>
-<h3 id="不绑定arguments">不绑定arguments</h3>
-<p>大多数情况下，使用剩余参数是相较于arguments对象的更好选择。</p>
-<h3 id="箭头函数没有prototype属性">箭头函数没有prototype属性。</h3>
-<pre><code>var Foo = () =&gt; {};
-console.log(Foo.prototype); // undefined
-</code></pre>
-<h3 id="闭包">闭包</h3>
-<pre><code>// 标准的闭包函数
-function A(){
-      var i=0;
-      return function b(){
-              return (++i);
-      };
-};
-var v=A();
-v();    //1
-v();    //2
-//箭头函数体的闭包（ i=0 是默认参数）
-var Add = (i=0) =&gt; {return (() =&gt; (++i) )};
-var v = Add();
-v();           //1
-v();           //2
-//因为仅有一个返回，return 及括号（）也可以省略
-var Add = (i=0)=&gt; ()=&gt; (++i);
-</code></pre>
-<h2 id="总结">总结：</h2>
-<ul>
-<li>没有 this</li>
-<li>没有 arguments</li>
-<li>不能使用 new 进行调用</li>
-<li>它们也没有 super</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
